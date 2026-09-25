@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<body>
+    <main layout:fragment="content" class="shell page-content narrow-card">
+        <span class="eyebrow" th:text="#{login.eyebrow}">WELCOME BACK</span>
+        <h1 th:text="#{login.title}">Log in</h1>
+        <p class="page-intro" th:text="#{login.intro}">Use one of the demo accounts to log in.</p>
+        <section class="surface form-card">
+            <p class="form-note" th:text="#{login.demo.text}">Try ami / Ami@1234 or jason / Jason@1234.</p>
+            <div class="form-note form-note-error" th:if="${loginError}" th:text="#{login.error}">Incorrect username or password.</div>
+            <form th:action="@{/login}" method="post" class="checkout-form">
+                <div class="field">
+                    <label for="username" th:text="#{login.username}">Username</label>
+                    <input id="username" name="username" type="text" autocomplete="username" maxlength="30" required
+                           th:value="${username}">
+                </div>
+                <div class="field">
+                    <label for="password" th:text="#{login.password}">Password</label>
+                    <input id="password" name="password" type="password" autocomplete="current-password" maxlength="100" required>
+                </div>
+                <button class="button button-full" type="submit" th:text="#{login.submit}">Log in</button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

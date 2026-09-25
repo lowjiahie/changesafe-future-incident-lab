@@ -29,3 +29,9 @@ INSERT IGNORE INTO products_in_stock (product_id, amount) VALUES
     ('4', 55),
     ('5', 102),
     ('6', 1);
+
+-- Demo users. Passwords are synthetic and for local/demo login only:
+-- ami / Ami@1234, jason / Jason@1234.
+INSERT IGNORE INTO users (username, password_hash, first_name, last_name, phone, address, email) VALUES
+    ('ami', '$2y$10$G.WEppl09rdxnkVTqX8x1ugTDZLj3nUXtL/MrCnnc8hBbOGyiz87K', 'Ami', 'Tanaka', '+1 555 0101', '12 Sakura Lane, Springfield', 'ami@example.com'),
+    ('jason', '$2y$10$.kSu7tWaO/.69fKjAsb5KuIQR/PVIx2GhPeHFs1AZUiiHMAhdosJ.', 'Jason', 'Lee', '+1 555 0102', '48 Maple Street, Springfield', 'jason@example.com');

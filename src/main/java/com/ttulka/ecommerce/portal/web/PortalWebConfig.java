@@ -44,6 +44,9 @@ class PortalWebConfig {
             var cartId = new CartIdFromCookies(request, response).cartId();
             model.addAttribute("cartCount", retrieveCart.byId(cartId).items().stream()
                     .mapToInt(item -> item.quantity().value()).sum());
+
+            var loggedInUsername = LoggedInUserFromSession.username(request);
+            model.addAttribute("loggedInUsername", loggedInUsername == null ? null : loggedInUsername.value());
         }
     }
 }

@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<body>
+    <main layout:fragment="content" class="shell page-content narrow-card">
+        <span class="eyebrow" th:text="#{profile.eyebrow}">YOUR ACCOUNT</span>
+        <h1 th:text="#{profile.title}">Your profile</h1>
+        <p class="page-intro" th:text="#{profile.intro}">Keep your account details up to date.</p>
+        <section class="surface form-card">
+            <div class="form-note form-note-success" th:if="${saved}" th:text="#{profile.saved}">Your profile was updated.</div>
+            <form th:action="@{/profile}" method="post" class="checkout-form">
+                <div class="field">
+                    <label for="username" th:text="#{profile.username}">Username</label>
+                    <input id="username" type="text" th:value="${username}" disabled>
+                </div>
+                <div class="field">
+                    <label for="firstName" th:text="#{profile.firstName}">First name</label>
+                    <input id="firstName" name="firstName" type="text" maxlength="50" required
+                           th:value="${firstName}"
+                           th:attr="aria-invalid=${firstNameError != null ? 'true' : null}">
+                    <small class="field-error" th:if="${firstNameError}" th:text="#{profile.validation.firstName}">Enter a valid first name.</small>
+                </div>
+                <div class="field">
+                    <label for="lastName" th:text="#{profile.lastName}">Last name</label>
+                    <input id="lastName" name="lastName" type="text" maxlength="50" required
+                           th:value="${lastName}"
+                           th:attr="aria-invalid=${lastNameError != null ? 'true' : null}">
+                    <small class="field-error" th:if="${lastNameError}" th:text="#{profile.validation.lastName}">Enter a valid last name.</small>
+                </div>
+                <div class="field">
+                    <label for="phone" th:text="#{profile.phone}">Phone</label>
+                    <input id="phone" name="phone" type="tel" maxlength="20" required
+                           th:value="${phone}"
+                           th:attr="aria-invalid=${phoneError != null ? 'true' : null}">
+                    <small class="field-error" th:if="${phoneError}" th:text="#{profile.validation.phone}">Enter a valid phone number.</small>
+                </div>
+                <div class="field">
+                    <label for="address" th:text="#{profile.address}">Address</label>
+                    <textarea id="address" name="address" rows="3" maxlength="150" required
+                              th:text="${address}"
+                              th:attr="aria-invalid=${addressError != null ? 'true' : null}"></textarea>
+                    <small class="field-error" th:if="${addressError}" th:text="#{profile.validation.address}">Enter a valid address.</small>
+                </div>
+                <div class="field">
+                    <label for="email" th:text="#{profile.email}">Email address</label>
+                    <input id="email" name="email" type="email" maxlength="100" required
+                           th:value="${email}"
+                           th:attr="aria-invalid=${emailError != null ? 'true' : null}">
+                    <small class="field-error" th:if="${emailError}" th:text="#{profile.validation.email}">Enter a valid email address.</small>
+                </div>
+                <button class="button button-full" type="submit" th:text="#{profile.submit}">Save changes</button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

@@ -64,6 +64,10 @@ button:disabled { cursor: not-allowed; opacity: .45; }
 .page-content h1 { margin: 8px 0 6px; font-size: clamp(35px, 5vw, 48px); }
 .page-intro { margin: 0 0 32px; color: var(--muted); }
 .checkout-grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(280px, .9fr); gap: 24px; align-items: start; }
+.narrow-card { max-width: 480px; margin: 0 auto; }
+.form-note { border-radius: 12px; background: #eef7f1; color: #205943; font-size: 13px; padding: 14px 16px; margin: 0 0 20px; }
+.form-note.form-note-success { background: #e4f7ea; color: #1c6b41; font-weight: 700; }
+.form-note.form-note-error { background: #fbeceb; color: #a23b35; font-weight: 700; }
 .surface { background: #fff; border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 8px 25px #2445320a; }
 .cart-items { padding: 4px 24px; }
 .cart-row { display: flex; gap: 16px; align-items: center; padding: 22px 0; border-bottom: 1px solid var(--line); }
