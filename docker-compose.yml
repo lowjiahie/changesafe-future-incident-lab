@@ -9,7 +9,7 @@ services:
       MYSQL_USER: ${MYSQL_USER:-changesafe}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:-changesafe}
     ports:
-      - "3306:3306"
+      - "3310:3306"
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_0900_ai_ci
