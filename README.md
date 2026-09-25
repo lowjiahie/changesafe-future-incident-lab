@@ -1,4 +1,18 @@
-# DDD Example Project in Java: eCommerce
+# ChangeSafe: Future Incident Lab
+
+This repository uses a Java e-commerce application as the sample project for **ChangeSafe**, an experimental prototype for the **IBM Bob 2.0 Hackathon**. ChangeSafe explores how IBM Bob can help developers understand a proposed change, anticipate failure scenarios, turn risks into executable tests, and collect evidence before release. The application below provides a realistic order, billing, warehouse, and shipping workflow for that experiment.
+
+## Original project and attribution
+
+The sample application was created by **Tomas Tulka** in [ttulka/ddd-example-ecommerce](https://github.com/ttulka/ddd-example-ecommerce). We are using and adapting his work for this hackathon experiment. The original project is licensed under the **MIT License**; its copyright notice and license terms are retained in [LICENSE](LICENSE). Credit for the original application and its architecture belongs to the original author. ChangeSafe-specific experiments and changes in this repository are our team's work and are not an official version of the upstream project.
+
+All orders and failure scenarios prepared for the hackathon demonstration should use synthetic data. No customer records or personal information are needed.
+
+The sections below describe the original sample application's design and how to run it. They are preserved as a reference while the ChangeSafe experiment is developed.
+
+---
+
+## Original sample application: DDD Example Project in Java: eCommerce
 
 The purpose of this project is to provide a sample implementation of an e-commerce product following **Domain-Driven Design (DDD)** and **Service-Oriented Architecture (SOA)** principles.
 
