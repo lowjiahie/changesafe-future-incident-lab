@@ -13,7 +13,8 @@ import lombok.ToString;
 @ToString
 public final class Person {
 
-    private static final String PATTERN = "([A-Z][a-zA-Z]+)( [a-zA-Z]+)?( [A-Z][']?[a-zA-Z]+)+";
+    // Names do not have a universal capitalization or word-count rule.
+    private static final String PATTERN = "[\\p{L}]+(?:[ '\\-][\\p{L}]+)*";
 
     private final @NonNull String name;
 
@@ -22,7 +23,7 @@ public final class Person {
         if (nameVal.isBlank()) {
             throw new IllegalArgumentException("Person cannot be empty!");
         }
-        if (!Pattern.matches(PATTERN, nameVal)) {
+        if (nameVal.length() > 50 || !Pattern.matches(PATTERN, nameVal)) {
             throw new IllegalArgumentException("Person value is invalid!");
         }
         this.name = nameVal;

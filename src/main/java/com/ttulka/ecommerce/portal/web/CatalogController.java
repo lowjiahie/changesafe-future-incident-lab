@@ -42,6 +42,7 @@ class CatalogController {
 
     @GetMapping("/category/{categoryUri}")
     public String category(@PathVariable @NonNull String categoryUri, Model model) {
+        model.addAttribute("selectedCategory", categoryUri);
         model.addAttribute("products", fromCategory.byUri(new Uri(categoryUri))
                 .range(MAX_RESULTS).stream()
                 .map(this::toData)

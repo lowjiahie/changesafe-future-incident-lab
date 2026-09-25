@@ -9,7 +9,6 @@ import com.ttulka.ecommerce.sales.order.PlaceOrder;
 import com.ttulka.ecommerce.sales.order.item.OrderItem;
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.NonNull;
@@ -26,7 +25,7 @@ class PlaceOrderJdbc implements PlaceOrder {
     private final @NonNull JdbcTemplate jdbcTemplate;
     private final @NonNull EventPublisher eventPublisher;
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     @Override
     public void place(@NonNull OrderId orderId, @NonNull Collection<OrderItem> items, @NonNull Money total) {
         new OrderJdbc(orderId, total, items, jdbcTemplate, eventPublisher)

@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS categories (
 CREATE TABLE IF NOT EXISTS products (
     id VARCHAR(64) NOT NULL PRIMARY KEY,
     title VARCHAR(20) NOT NULL,
-    description VARCHAR(50) NOT NULL DEFAULT(''),
+    description VARCHAR(50) NOT NULL DEFAULT '',
     price DECIMAL(10,2)
 );
 
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS cart_items (
     product_id VARCHAR(64) NOT NULL,
     title VARCHAR(20) NOT NULL,
     price DECIMAL(10,2),
-    quantity INT NOT NULL DEFAULT(0),
+    quantity INT NOT NULL DEFAULT 0,
     cart_id VARCHAR(64) NOT NULL,
     PRIMARY KEY (cart_id, product_id, title, price)
 );
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS orders (
 
 CREATE TABLE IF NOT EXISTS order_items (
     product_id VARCHAR(50) NOT NULL,
-    quantity INT NOT NULL DEFAULT(0),
+    quantity INT NOT NULL DEFAULT 0,
     order_id VARCHAR(64) NOT NULL,
     PRIMARY KEY (order_id, product_id)
 );
@@ -78,12 +78,12 @@ CREATE TABLE IF NOT EXISTS dispatching_saga (
 
 CREATE TABLE IF NOT EXISTS products_in_stock (
     product_id VARCHAR(64) NOT NULL PRIMARY KEY,
-    amount INT NOT NULL DEFAULT(0)
+    amount INT NOT NULL DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS fetched_products (
     product_id VARCHAR(64) NOT NULL,
-    amount INT NOT NULL DEFAULT(0),
+    amount INT NOT NULL DEFAULT 0,
     order_id VARCHAR(64) NOT NULL,
     PRIMARY KEY (order_id, product_id)
 );

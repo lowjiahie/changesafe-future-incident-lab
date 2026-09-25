@@ -8,6 +8,34 @@ The sample application was created by **Tomas Tulka** in [ttulka/ddd-example-eco
 
 All orders and failure scenarios prepared for the hackathon demonstration should use synthetic data. No customer records or personal information are needed.
 
+## Run with MySQL
+
+The application uses MySQL by default. It creates missing tables on startup and inserts missing sample catalog and stock rows without deleting existing orders. Create an empty database first (for example, in MySQL Workbench):
+
+```sql
+CREATE DATABASE IF NOT EXISTS changesafe CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+Install a JDK 17 and set `JAVA_HOME` to its actual installation directory. The project is compiled for Java 17. In PowerShell on Windows, replace the example path below with your JDK 17 path, then start the application:
+
+```powershell
+$env:JAVA_HOME = 'C:\path\to\your\jdk-17'
+$env:Path = "$env:JAVA_HOME\bin;$env:Path"
+java -version  # Confirm this reports Java 17
+$env:DB_USERNAME = 'root'
+$env:DB_PASSWORD = Read-Host 'MySQL password'
+.\mvnw.cmd clean test
+.\mvnw.cmd spring-boot:run
+```
+
+Open <http://localhost:8080>. The default connection is `jdbc:mysql://localhost:3306/changesafe`. If your MySQL server uses another host, port, or database name, set `DB_URL` in the same terminal before starting, for example:
+
+```powershell
+$env:DB_URL = 'jdbc:mysql://localhost:3307/changesafe?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC'
+```
+
+The connection settings are in [`application-mysql.properties`](src/main/resources/application-mysql.properties). Do not commit credentials. Tests use an H2 database through the `test` profile. To run the sample application without MySQL, pass `-Dspring-boot.run.profiles=h2-demo` to `mvnw.cmd spring-boot:run`; this creates an in-memory database that resets when the application stops.
+
 The sections below describe the original sample application's design and how to run it. They are preserved as a reference while the ChangeSafe experiment is developed.
 
 ---

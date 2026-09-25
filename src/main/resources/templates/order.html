@@ -2,31 +2,41 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/default}">
 <body>
-    <section layout:fragment="content">
-
-        <h1 th:text="#{order.title}">Place Order</h1>
-
-        <div class="order">
-
-            <form th:action="@{/order}" method="post" class="form">
-                <table>
-                    <tr>
-                        <td th:text="#{delivery.address.person}">Name</td>
-                        <td><input name="name" size="30"></td>
-                    </tr>
-                    <tr>
-                        <td th:text="#{delivery.address.place}">Address</td>
-                        <td><input name="address" size="50"></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td><button th:text="#{order.submit}" type="submit">Submit</button></td>
-                    </tr>
-                </table>
-            </form>
-
+    <main layout:fragment="content" class="shell page-content">
+        <span class="eyebrow" th:text="#{order.eyebrow}">FINAL STEP</span>
+        <h1 th:text="#{order.title}">Checkout</h1>
+        <p class="page-intro" th:text="#{order.intro}">Tell us where your sample order should go.</p>
+        <div class="checkout-grid">
+            <section class="surface form-card">
+                <h2 th:text="#{order.delivery}">Delivery details</h2>
+                <p th:text="#{order.delivery.note}">All fields are required. Use sample information only.</p>
+                <form th:action="@{/order}" method="post" class="checkout-form">
+                    <div class="field">
+                        <label for="name" th:text="#{delivery.address.person}">Full name</label>
+                        <input id="name" name="name" type="text" autocomplete="name" maxlength="50" required
+                               th:value="${name}" th:attr="aria-invalid=${nameError != null ? 'true' : null},aria-describedby=${nameError != null ? 'name-error' : 'name-help'}"
+                               th:placeholder="#{order.name.placeholder}">
+                        <small id="name-help" th:unless="${nameError}" th:text="#{order.name.help}">Use letters, spaces, apostrophes or hyphens.</small>
+                        <small id="name-error" class="field-error" th:if="${nameError}" th:text="#{order.validation.name}">Enter a valid name.</small>
+                    </div>
+                    <div class="field">
+                        <label for="address" th:text="#{delivery.address.place}">Delivery address</label>
+                        <textarea id="address" name="address" rows="3" maxlength="100" required
+                                  th:text="${address}" th:attr="aria-invalid=${addressError != null ? 'true' : null},aria-describedby=${addressError != null ? 'address-error' : 'address-help'}"
+                                  th:placeholder="#{order.address.placeholder}"></textarea>
+                        <small id="address-help" th:unless="${addressError}" th:text="#{order.address.help}">Street, city and postal code.</small>
+                        <small id="address-error" class="field-error" th:if="${addressError}" th:text="#{order.validation.address}">Enter an address.</small>
+                    </div>
+                    <button class="button button-full" type="submit" th:text="#{order.submit}">Place order</button>
+                </form>
+            </section>
+            <aside class="surface reassurance">
+                <div class="reassurance-icon" aria-hidden="true">✓</div>
+                <h2 th:text="#{order.aside.title}">A safer checkout</h2>
+                <p th:text="#{order.aside.text}">We check your delivery details before creating an order.</p>
+                <a class="subtle-link" th:href="@{/cart}" th:text="#{order.back}">← Back to cart</a>
+            </aside>
         </div>
-
-    </section>
+    </main>
 </body>
 </html>

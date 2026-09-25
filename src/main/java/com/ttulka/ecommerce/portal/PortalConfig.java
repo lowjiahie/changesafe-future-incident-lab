@@ -21,4 +21,10 @@ class PortalConfig {
     PrepareOrderDelivery prepareOrderDelivery(PrepareDelivery prepareDelivery) {
         return new PrepareOrderDelivery(prepareDelivery);
     }
+
+    @Bean
+    CheckoutOrder checkoutOrder(PlaceOrderFromCart placeOrderFromCart,
+                                PrepareOrderDelivery prepareOrderDelivery) {
+        return new CheckoutOrder(placeOrderFromCart, prepareOrderDelivery);
+    }
 }

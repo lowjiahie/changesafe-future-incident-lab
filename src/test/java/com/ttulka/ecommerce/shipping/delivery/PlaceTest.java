@@ -28,4 +28,9 @@ class PlaceTest {
     void place_fails_for_an_empty_string() {
         assertThrows(IllegalArgumentException.class, () -> new Place(""));
     }
+
+    @Test
+    void place_fails_when_longer_than_database_column() {
+        assertThrows(IllegalArgumentException.class, () -> new Place("A".repeat(101)));
+    }
 }

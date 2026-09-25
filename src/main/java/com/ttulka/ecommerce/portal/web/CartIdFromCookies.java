@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 final class CartIdFromCookies {
 
     private final static String COOKIE_NAME = "CART_ID";
+    private final static String REQUEST_CART_ID = CartIdFromCookies.class.getName() + ".cartId";
 
     private final @NonNull HttpServletRequest request;
     private final @NonNull HttpServletResponse response;
@@ -27,6 +28,11 @@ final class CartIdFromCookies {
 
     public CartId cartId() {
         if (cartId == null) {
+            Object existing = request.getAttribute(REQUEST_CART_ID);
+            if (existing instanceof CartId) {
+                cartId = (CartId) existing;
+                return cartId;
+            }
             cartId = new CartId(
                     request.getCookies() != null ?
                     Arrays.stream(request.getCookies())
@@ -36,6 +42,7 @@ final class CartIdFromCookies {
                             .orElseGet(() -> UUID.randomUUID().toString())
                     : UUID.randomUUID().toString());
 
+            request.setAttribute(REQUEST_CART_ID, cartId);
             saveCookie(cartId.value());
         }
         return cartId;

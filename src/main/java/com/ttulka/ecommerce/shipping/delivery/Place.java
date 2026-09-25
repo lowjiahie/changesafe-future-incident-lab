@@ -18,6 +18,9 @@ public final class Place {
         if (placeVal.isBlank()) {
             throw new IllegalArgumentException("Place cannot be empty!");
         }
+        if (placeVal.length() > 100) {
+            throw new IllegalArgumentException("Place is too long!");
+        }
         this.place = placeVal;
     }
 

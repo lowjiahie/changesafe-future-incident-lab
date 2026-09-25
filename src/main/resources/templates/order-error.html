@@ -2,14 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/default}">
 <body>
-    <section layout:fragment="content">
-
-        <h1 th:text="#{order.error.title}">Order Error</h1>
-
-        <div class="error">
-            <p class="message" th:text="#{order.error.msg.__${messageCode}__}">Unexpected error.</p>
+    <main layout:fragment="content" class="shell page-content">
+        <div class="result-card">
+            <div class="result-icon error-icon" aria-hidden="true">!</div>
+            <span class="eyebrow" th:text="#{order.error.eyebrow}">CHECKOUT NEEDS ATTENTION</span>
+            <h1 th:text="#{order.error.title}">Could not complete checkout</h1>
+            <p th:text="#{order.error.msg.__${messageCode}__}">Something went wrong.</p>
+            <a class="button" th:href="@{/cart}" th:text="#{order.error.action}">Return to cart</a>
         </div>
-
-    </section>
+    </main>
 </body>
 </html>

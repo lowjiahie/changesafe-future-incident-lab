@@ -1,24 +1,37 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <title th:text="#{layout.title}">DDD Example E-Commerce</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta charset="utf-8">
-    <link rel="stylesheet" th:href="@{/layout.css}"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#102d2a">
+    <title th:text="#{layout.title}">ChangeSafe Shop</title>
+    <link rel="stylesheet" th:href="@{/layout.css}">
 </head>
 <body>
-    <header id="header" layout:fragment="header">
-        <nav th:if="${categories}" class="categories">
-            <a th:href="@{/}" class="home">&#127968;</a>
-            <a th:each="category: ${categories}" th:href="'/category/' + ${category.uri}" th:text="${category.title}"></a>
-            <a th:href="@{/cart}" class="cart">&#x1F6D2;</a>
-        </nav>
+    <header class="site-header">
+        <div class="shell header-inner">
+            <a class="brand" th:href="@{/}" aria-label="ChangeSafe Shop home">
+                <span class="brand-mark" aria-hidden="true">C</span>
+                <span>ChangeSafe <small>Shop</small></span>
+            </a>
+            <nav class="main-nav" aria-label="Main navigation">
+                <a th:href="@{/}" th:text="#{nav.catalog}">Catalog</a>
+            </nav>
+            <a class="cart-link" th:href="@{/cart}">
+                <span th:text="#{nav.cart}">View cart</span>
+                <span class="cart-count" data-cart-count th:text="${cartCount}">0</span>
+            </a>
+        </div>
     </header>
-    <section id="content" layout:fragment="content">
-        <!-- page content goes here -->
-    </section>
-    <footer id="footer" layout:fragment="footer" th:text="#{layout.footer}">
-        DDD Example E-Commerce &copy; 2020
+    <main id="content" class="shell" layout:fragment="content"></main>
+    <footer class="site-footer">
+        <div class="shell footer-inner">
+            <span th:text="#{layout.footer}">ChangeSafe hackathon demo</span>
+            <span th:text="#{layout.demo}">Sample data only</span>
+        </div>
     </footer>
+    <div id="cart-feedback" class="toast" role="status" aria-live="polite" hidden
+         th:data-success="#{catalog.added}" th:data-error="#{catalog.addFailed}"></div>
+    <script th:src="@{/cart.js}" defer></script>
 </body>
 </html>

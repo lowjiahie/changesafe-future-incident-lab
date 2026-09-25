@@ -1,7 +1,14 @@
 package com.ttulka.ecommerce.portal.web;
 
 import java.util.stream.Stream;
+import java.util.List;
 
+import com.ttulka.ecommerce.common.primitives.Money;
+import com.ttulka.ecommerce.common.primitives.Quantity;
+import com.ttulka.ecommerce.sales.cart.Cart;
+import com.ttulka.ecommerce.sales.cart.RetrieveCart;
+import com.ttulka.ecommerce.sales.cart.item.CartItem;
+import com.ttulka.ecommerce.sales.cart.item.ProductId;
 import com.ttulka.ecommerce.sales.catalog.FindCategories;
 import com.ttulka.ecommerce.sales.catalog.FindProducts;
 import com.ttulka.ecommerce.sales.catalog.FindProductsFromCategory;
@@ -42,6 +49,8 @@ class WebLayoutAdviceTest {
     private FindProductsFromCategory findProductsFromCategory;
     @MockBean
     private Warehouse warehouse;
+    @MockBean
+    private RetrieveCart retrieveCart;
 
     @Test
     void categories_are_on_every_page() throws Exception {
@@ -49,10 +58,16 @@ class WebLayoutAdviceTest {
         when(findCategories.all()).thenReturn(categories);
         Products products = testProducts();
         when(findProducts.all()).thenReturn(products);
+        Cart cart = mock(Cart.class);
+        when(retrieveCart.byId(org.mockito.ArgumentMatchers.any())).thenReturn(cart);
+        when(cart.items()).thenReturn(List.of(new CartItem(new ProductId("test-1"),
+                new com.ttulka.ecommerce.sales.cart.item.Title("Test"),
+                new Money(5), new Quantity(3))));
 
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
-                .andExpect(model().attribute("categories", arrayWithSize(2)));
+                .andExpect(model().attribute("categories", arrayWithSize(2)))
+                .andExpect(model().attribute("cartCount", 3));
     }
 
     private Categories testCategories() {

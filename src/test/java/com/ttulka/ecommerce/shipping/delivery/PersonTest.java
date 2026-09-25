@@ -34,14 +34,12 @@ class PersonTest {
     @Test
     void person_fails_for_invalid_values() {
         assertAll(
-                () -> assertThrows(IllegalArgumentException.class, () -> new Person("test")),
-                () -> assertThrows(IllegalArgumentException.class, () -> new Person("test test")),
-                () -> assertThrows(IllegalArgumentException.class, () -> new Person("test Test")),
-                () -> assertThrows(IllegalArgumentException.class, () -> new Person("Test test")),
                 () -> assertThrows(IllegalArgumentException.class, () -> new Person("Test Test!")),
                 () -> assertThrows(IllegalArgumentException.class, () -> new Person("Test Test@")),
                 () -> assertThrows(IllegalArgumentException.class, () -> new Person("Test Test+")),
                 () -> assertThrows(IllegalArgumentException.class, () -> new Person("Test Test'")),
+                () -> assertThrows(IllegalArgumentException.class, () -> new Person("Test  Test")),
+                () -> assertThrows(IllegalArgumentException.class, () -> new Person("A".repeat(51))),
                 () -> assertThrows(IllegalArgumentException.class, () -> new Person("Test0 Test")),
                 () -> assertThrows(IllegalArgumentException.class, () -> new Person("Test Test0")),
                 () -> assertThrows(IllegalArgumentException.class, () -> new Person("Test Test0")),
@@ -57,7 +55,10 @@ class PersonTest {
                 () -> assertDoesNotThrow(() -> new Person("John von Neumann")),
                 () -> assertDoesNotThrow(() -> new Person("Old McDonald")),
                 () -> assertDoesNotThrow(() -> new Person("Jacob O'harra")),
-                () -> assertDoesNotThrow(() -> new Person("Ji Lu"))
+                () -> assertDoesNotThrow(() -> new Person("Ji Lu")),
+                () -> assertDoesNotThrow(() -> new Person("test test")),
+                () -> assertDoesNotThrow(() -> new Person("张三")),
+                () -> assertDoesNotThrow(() -> new Person("Anne-Marie O'Neill"))
         );
     }
 }
