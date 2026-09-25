@@ -178,6 +178,31 @@ class CleanModulesArchTest {
     }
 
     @Test
+    void identity_user_service_has_no_dependencies_on_others_except_events() {
+        JavaClasses importedClasses = new ClassFileImporter().importPackages(
+                "com.ttulka.ecommerce.identity.user");
+        ArchRule rule = classes().should().onlyDependOnClassesThat(
+                resideOutsideOfPackages(
+                        "com.ttulka.ecommerce.."
+                ).or(resideInAPackage("com.ttulka.ecommerce.identity.user.."
+                ).or(resideInAPackage("com.ttulka.ecommerce.common..")
+                ).or(assignableTo(DomainEvent.class).or(NESTED_CLASSES))));
+        rule.check(importedClasses);
+    }
+
+    @Test
+    void identity_user_domain_has_no_dependency_to_its_implementation() {
+        JavaClasses importedClasses = new ClassFileImporter().importPackages(
+                "com.ttulka.ecommerce.identity.user");
+        ArchRule rule = classes()
+                .that().resideOutsideOfPackages(
+                        "com.ttulka.ecommerce.identity.user.jdbc..")
+                .should().onlyDependOnClassesThat().resideOutsideOfPackages(
+                        "com.ttulka.ecommerce.identity.user.jdbc..");
+        rule.check(importedClasses);
+    }
+
+    @Test
     void catalog_service_has_no_dependencies_on_billing() {
         JavaClasses importedClasses = new ClassFileImporter().importPackages("com.ttulka.ecommerce.portal");
         ArchRule rule = classes()

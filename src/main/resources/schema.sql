@@ -74,6 +74,18 @@ CREATE TABLE IF NOT EXISTS dispatching_saga (
     PRIMARY KEY (order_id, state)
 );
 
+-- ------ IDENTITY ------
+
+CREATE TABLE IF NOT EXISTS users (
+    username VARCHAR(30) NOT NULL PRIMARY KEY,
+    password_hash VARCHAR(100) NOT NULL,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    phone VARCHAR(20) NOT NULL DEFAULT '',
+    address VARCHAR(150) NOT NULL DEFAULT '',
+    email VARCHAR(100) NOT NULL DEFAULT ''
+);
+
 -- ------ WAREHOUSE ------
 
 CREATE TABLE IF NOT EXISTS products_in_stock (
