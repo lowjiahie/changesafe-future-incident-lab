@@ -15,12 +15,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.offset;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @JdbcTest
@@ -33,11 +37,14 @@ class PlaceOrderTest {
     @MockBean
     private EventPublisher eventPublisher;
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
     @Test
     void order_placed_raises_an_event() {
         placeOrder.place(new OrderId("TEST123"), List.of(
                 new OrderItem(new ProductId("PTEST"), new Quantity(123))),
-                new Money(123.5f * 123));
+                new Money(123.5f * 123), null);
 
         verify(eventPublisher).raise(argThat(
                 event -> {
@@ -52,5 +59,24 @@ class PlaceOrderTest {
                     );
                     return true;
                 }));
+    }
+
+    @Test
+    void duplicate_idempotency_key_throws_exception() {
+        List<OrderItem> items = List.of(new OrderItem(new ProductId("PDUP"), new Quantity(1)));
+        Money total = new Money(10.0f);
+
+        placeOrder.place(new OrderId("DUP-ORDER-1"), items, total, "test-key-123");
+
+        assertThatThrownBy(() ->
+                placeOrder.place(new OrderId("DUP-ORDER-2"), items, total, "test-key-123"))
+                .isInstanceOf(PlaceOrder.DuplicateOrderException.class);
+
+        assertAll(
+                () -> verify(eventPublisher, times(1)).raise(any(OrderPlaced.class)),
+                () -> assertThat(jdbcTemplate.queryForObject(
+                        "SELECT COUNT(*) FROM orders WHERE idempotency_key = 'test-key-123'",
+                        Integer.class)).isEqualTo(1)
+        );
     }
 }

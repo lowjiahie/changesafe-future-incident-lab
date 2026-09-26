@@ -34,10 +34,10 @@ class CheckoutOrderTest {
 
     @Test
     void order_delivery_and_cart_clear_happen_in_sequence() {
-        UUID orderId = checkoutOrder.checkout(cart, address);
+        UUID orderId = checkoutOrder.checkout(cart, address, null);
 
         InOrder steps = inOrder(placeOrder, prepareDelivery, cart);
-        steps.verify(placeOrder).placeOrder(orderId, cart);
+        steps.verify(placeOrder).placeOrder(orderId, cart, null);
         steps.verify(prepareDelivery).prepareDelivery(orderId, address);
         steps.verify(cart).empty();
     }
@@ -47,13 +47,13 @@ class CheckoutOrderTest {
         doThrow(new IllegalStateException("Delivery unavailable"))
                 .when(prepareDelivery).prepareDelivery(any(UUID.class), eq(address));
 
-        assertThrows(IllegalStateException.class, () -> checkoutOrder.checkout(cart, address));
+        assertThrows(IllegalStateException.class, () -> checkoutOrder.checkout(cart, address, null));
         verify(cart, never()).empty();
     }
 
     @Test
     void guest_checkout_is_not_assigned_to_a_customer() {
-        checkoutOrder.checkout(cart, address);
+        checkoutOrder.checkout(cart, address, null);
 
         verifyNoInteractions(assignToCustomer);
     }
@@ -62,10 +62,10 @@ class CheckoutOrderTest {
     void customer_order_is_assigned_between_placing_and_delivery() {
         Customer customer = new Customer("ami");
 
-        UUID orderId = checkoutOrder.checkout(cart, address, customer);
+        UUID orderId = checkoutOrder.checkout(cart, address, customer, null);
 
         InOrder steps = inOrder(placeOrder, assignToCustomer, prepareDelivery, cart);
-        steps.verify(placeOrder).placeOrder(orderId, cart);
+        steps.verify(placeOrder).placeOrder(orderId, cart, null);
         steps.verify(assignToCustomer).assign(new OrderId(orderId), customer);
         steps.verify(prepareDelivery).prepareDelivery(orderId, address);
         steps.verify(cart).empty();
@@ -76,7 +76,7 @@ class CheckoutOrderTest {
         doThrow(new IllegalStateException("Assignment failed"))
                 .when(assignToCustomer).assign(any(OrderId.class), eq(new Customer("ami")));
 
-        assertThrows(IllegalStateException.class, () -> checkoutOrder.checkout(cart, address, new Customer("ami")));
+        assertThrows(IllegalStateException.class, () -> checkoutOrder.checkout(cart, address, new Customer("ami"), null));
         verify(cart, never()).empty();
         verifyNoInteractions(prepareDelivery);
     }

@@ -41,13 +41,13 @@ class PlaceOrderFromCartTest {
         when(cart.hasItems()).thenReturn(true);
         when(cart.items()).thenReturn(List.of(cartItem));
 
-        placeOrderFromCart.placeOrder(UUID.randomUUID(), cart);
+        placeOrderFromCart.placeOrder(UUID.randomUUID(), cart, null);
     }
 
     @Test
     void empty_cart_throws_an_exception() {
         assertThrows(PlaceOrderFromCart.NoItemsToOrderException.class,
-                     () -> placeOrderFromCart.placeOrder(UUID.randomUUID(), mock(Cart.class)));
+                     () -> placeOrderFromCart.placeOrder(UUID.randomUUID(), mock(Cart.class), null));
     }
 
     @Configuration

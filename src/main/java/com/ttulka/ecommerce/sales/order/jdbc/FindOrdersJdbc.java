@@ -82,6 +82,7 @@ final class FindOrdersJdbc implements FindOrders {
                 new OrderId(order.get("id")),
                 new Money(((BigDecimal) order.get("total")).floatValue()),
                 items,
+                null,
                 jdbcTemplate,
                 eventPublisher);
     }

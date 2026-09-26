@@ -42,11 +42,17 @@
 
 ## 4. Future incidents
 
-| Risk ID | Trigger and incident | User / system impact | Evidence | Confidence | Status |
-| --- | --- | --- | --- | --- | --- |
-| R-01 | <specific failure chain> | <impact> | <links or NOT VERIFIED> | HIGH / MEDIUM / LOW | HYPOTHESIS / EVIDENCE-BACKED / REPRODUCED / PREVENTED / CONTAINED / UNRESOLVED |
+All risks identified across the affected flow are listed here, regardless of whether they are
+fixed in this run. Severity and fix decision are recorded for every risk.
 
-**Selection rationale:** <why the highest-value risk was selected; N/A if none>
+| Risk ID | Severity | Trigger and incident | User / system impact | Evidence | Confidence | Fix decision | Status |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| R-01 | CRITICAL / HIGH / MEDIUM / LOW | <specific failure chain> | <impact> | <links or NOT VERIFIED> | HIGH / MEDIUM / LOW | YES / DEFER / WONT-FIX | HYPOTHESIS / EVIDENCE-BACKED / REPRODUCED / PREVENTED / CONTAINED / UNRESOLVED / DEFERRED / WONT-FIX |
+
+**Risks fixed in this run:** <R-IDs, or N/A — none>
+**Risks deferred to backlog:** <R-IDs, or N/A — none>
+**Risks marked WONT-FIX:** <R-IDs with reason, or N/A — none>
+**Selection rationale:** <why the highest-value YES risk was selected for the safety contract; N/A if none>
 
 ## 5. Selected safety contract
 
@@ -80,11 +86,20 @@
 | --- | --- | --- | --- |
 | AC-01 | <same text as section 1> | MET / NOT MET / NOT VERIFIED | <actual result and link> |
 
-**Overall goal:** MET / NOT MET / NOT VERIFIED — <one-sentence rule-based explanation>  
-**Remaining risk:** <what is still unknown or N/A — none identified within scope>  
+**Overall goal:** MET / NOT MET / NOT VERIFIED — <one-sentence rule-based explanation>
+**Remaining risk (in-scope, not fixed):** <what is still unknown within this run's scope, or N/A — none>
 **Bob advisory recommendation:** <proceed / investigate / do not proceed, with reason; advisory only>
 
-**Human go/no-go decision:** ____________________  
+### Deferred risk backlog
+
+Risks identified during this run but deferred for a future run. Each should become a tracked
+follow-on task before production release.
+
+| Risk ID | Severity | Summary | Reason deferred | Suggested follow-on run ID |
+| --- | --- | --- | --- | --- |
+| <R-ID> | <severity> | <one-line summary> | <capacity / scope / dependency / requester decision> | <suggested-run-id or TBD> |
+
+**Human go/no-go decision:** ____________________
 **Reviewer and date:** ____________________
 
 ## 8. Evidence provenance

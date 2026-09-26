@@ -28,9 +28,9 @@ public class CheckoutOrder {
      * Checks out a guest order that is not linked to any customer.
      */
     @Transactional
-    public UUID checkout(@NonNull Cart cart, @NonNull Address deliveryAddress) {
+    public UUID checkout(@NonNull Cart cart, @NonNull Address deliveryAddress, String idempotencyKey) {
         UUID orderId = UUID.randomUUID();
-        placeOrderFromCart.placeOrder(orderId, cart);
+        placeOrderFromCart.placeOrder(orderId, cart, idempotencyKey);
         prepareOrderDelivery.prepareDelivery(orderId, deliveryAddress);
         cart.empty();
         return orderId;
@@ -40,9 +40,9 @@ public class CheckoutOrder {
      * Checks out an order and links it to the customer so it shows up in their order history.
      */
     @Transactional
-    public UUID checkout(@NonNull Cart cart, @NonNull Address deliveryAddress, @NonNull Customer customer) {
+    public UUID checkout(@NonNull Cart cart, @NonNull Address deliveryAddress, @NonNull Customer customer, String idempotencyKey) {
         UUID orderId = UUID.randomUUID();
-        placeOrderFromCart.placeOrder(orderId, cart);
+        placeOrderFromCart.placeOrder(orderId, cart, idempotencyKey);
         assignOrderToCustomer.assign(new OrderId(orderId), customer);
         prepareOrderDelivery.prepareDelivery(orderId, deliveryAddress);
         cart.empty();

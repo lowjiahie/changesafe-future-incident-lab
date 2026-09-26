@@ -34,7 +34,8 @@ CREATE TABLE IF NOT EXISTS cart_items (
 
 CREATE TABLE IF NOT EXISTS orders (
     id VARCHAR(64) NOT NULL PRIMARY KEY,
-    total DECIMAL(10,2)
+    total DECIMAL(10,2),
+    idempotency_key VARCHAR(64) UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS order_items (

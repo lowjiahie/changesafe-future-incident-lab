@@ -30,7 +30,7 @@ public class PlaceOrderFromCart {
      * @param orderId the order ID value
      * @param cart    the cart
      */
-    public void placeOrder(@NonNull UUID orderId, @NonNull Cart cart) {
+    public void placeOrder(@NonNull UUID orderId, @NonNull Cart cart, String idempotencyKey) {
         if (!cart.hasItems()) {
             throw new PlaceOrderFromCart.NoItemsToOrderException();
         }
@@ -42,7 +42,8 @@ public class PlaceOrderFromCart {
                          cart.items().stream()
                                  .map(CartItem::total)
                                  .reduce(Money::add)
-                                 .orElse(Money.ZERO));
+                                 .orElse(Money.ZERO),
+                         idempotencyKey);
     }
 
     private OrderItem toOrderItem(CartItem cartItem) {

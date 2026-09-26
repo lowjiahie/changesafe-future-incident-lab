@@ -3,8 +3,10 @@ package com.ttulka.ecommerce;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -22,6 +24,9 @@ class OrderWorkFlowTest {
 
     @LocalServerPort
     private int port;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Test
     void order_is_shipped() throws Exception {
@@ -148,5 +153,52 @@ class OrderWorkFlowTest {
         assertAll(
                 () -> assertThat(payment.get("collected")).isEqualTo(true).as("Payment is not collected."),
                 () -> assertThat(payment.get("total")).isEqualTo(10.5f).as("Payment does not match."));
+    }
+
+    @Test
+    void duplicate_order_submission_does_not_create_a_second_order() {
+        CookieFilter cookieFilter = new CookieFilter(); // share cookies among requests
+
+        with() // add a cart item
+                .filter(cookieFilter)
+                .port(port)
+                .basePath("/cart")
+                .param("productId", "p-1")
+                .param("title", "Prod 1")
+                .param("price", 1.f)
+                .param("quantity", 1)
+                .post()
+                .andReturn();
+
+        with() // place the order for the first time
+                .filter(cookieFilter)
+                .port(port)
+                .basePath("/order")
+                .formParam("name", "Test Name")
+                .formParam("address", "Test Address 123")
+                .formParam("idempotencyKey", "idem-key-test-001")
+                .post()
+                .andReturn();
+
+        int response = with() // submit the same idempotency key a second time
+                .filter(cookieFilter)
+                .port(port)
+                .basePath("/order")
+                .formParam("name", "Test Name")
+                .formParam("address", "Test Address 123")
+                .formParam("idempotencyKey", "idem-key-test-001")
+                .redirects().follow(false)
+                .post()
+                .andReturn()
+                .statusCode();
+
+        Integer orderCount = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM orders WHERE idempotency_key = 'idem-key-test-001'",
+                Integer.class);
+
+        assertAll(
+                () -> assertThat(response).isEqualTo(302).as("Second submission should redirect (302), not cause a 500."),
+                () -> assertThat(orderCount).isEqualTo(1).as("Exactly one order row should exist for the idempotency key.")
+        );
     }
 }

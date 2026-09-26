@@ -2,7 +2,7 @@ TRUNCATE TABLE orders;
 TRUNCATE TABLE order_items;
 TRUNCATE TABLE customer_orders;
 
-INSERT INTO orders VALUES
+INSERT INTO orders (id, total) VALUES
     ('1', 1000.00),
     ('2', 2000.00),
     ('3', 300.00),

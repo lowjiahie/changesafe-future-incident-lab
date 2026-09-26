@@ -29,8 +29,8 @@ Pause dependent implementation while answers are pending; safe independent analy
   relevant file paths/diff. Do not pass full conversation history.
 - **Conditional parallelism.** Zero subagents for a simple change; one explore subagent for a
   focused cross-module question; two only when questions are truly independent.
-- **Bound outputs.** At most three risk hypotheses. Select the highest-value one for an
-  executable check. Run targeted Maven tests before the full suite.
+- **Bound outputs.** Enumerate all risks from code evidence (no cap). Select the highest-value
+  YES risk for an executable check. Run targeted Maven tests before the full suite.
 - **Meter Bobcoins.** Check remaining budget at intake, post-investigation, and pre-fix.
   If low, stop after an honest report.
 
@@ -99,21 +99,54 @@ Pause dependent implementation while answers are pending; safe independent analy
 
 ---
 
-## Phase 6 — Predict potential failures and select safety contracts
+## Phase 6 — Predict potential failures, enumerate all risks, and select safety contracts
 
-1. Identify at most three concrete risk hypotheses grounded in code evidence, not generic advice.
-   Use R-01, R-02, R-03 IDs.
-2. For each hypothesis: state the trigger and failure chain, user/system impact, evidence links,
-   confidence (HIGH/MEDIUM/LOW), and initial status (HYPOTHESIS or EVIDENCE-BACKED).
+### 6a — Exhaustive risk enumeration (mandatory)
+
+1. Enumerate **all** concrete risks identifiable in the affected flow from code evidence.
+   Do not cap the list. Use sequential IDs: R-01, R-02, R-03, R-04, … as needed.
+2. For each risk state:
+   - **Trigger and failure chain** — the exact code path or condition that causes it.
+   - **User / system impact** — what the user or operator experiences.
+   - **Evidence** — specific file, line, or test reference; never generic advice.
+   - **Confidence** — HIGH / MEDIUM / LOW based on code evidence, not intuition.
+   - **Initial status** — HYPOTHESIS (inferred) or EVIDENCE-BACKED (confirmed by test or log).
+   - **Severity** — CRITICAL / HIGH / MEDIUM / LOW using the scale below.
+
+   | Severity | Meaning |
+   | --- | --- |
+   | CRITICAL | Data loss, double-charge, security breach, or irreversible production damage |
+   | HIGH | Visible user error, broken workflow, significant data inconsistency |
+   | MEDIUM | Degraded experience, edge-case failure, recoverable inconsistency |
+   | LOW | Minor UX issue, cosmetic defect, unlikely edge case |
+
 3. If test coverage gaps are unclear AND this question is independent of the impact exploration,
    spawn a second read-only `explore` subagent using the guardian spec at
    `.bob/skills/changesafe/guardians/test-gap-explorer/GUARDIAN.md`.
    Pass only the fields defined in that spec's **Input packet** table.
    Maximum two guardians per run total.
-4. Select the single highest-value hypothesis for the safety contract. Document the selection
-   rationale.
-5. Define the safety invariant: one precise, testable condition (e.g., "the same checkout
-   attempt creates no more than one order under any retry scenario").
+
+### 6b — User selection gate (mandatory human checkpoint)
+
+4. Present the complete risk table to the requester. For each risk ask:
+   - **Fix in this run?** (YES / DEFER / WONT-FIX)
+   - **Why deferred?** (optional note — capacity, scope, dependency, etc.)
+
+   Do not select risks on behalf of the user. Do not proceed to 6c until the user has
+   responded with explicit per-risk decisions.
+
+5. Record the user's decisions in the change-brief and in the risk table:
+   - Risks marked YES → enter Phase 7–11 workflow for this run.
+   - Risks marked DEFER → status set to DEFERRED; carried to the risk backlog in the report
+     (Section 7, "Deferred risk backlog") and to `changesafe/business-rules.md` as open questions.
+   - Risks marked WONT-FIX → status set to WONT-FIX with the stated reason.
+
+### 6c — Safety contract selection
+
+6. From the YES risks only, select the single highest-value risk for the safety contract.
+   Document the selection rationale (why this risk over the others being fixed in this run).
+7. Define the safety invariant: one precise, testable condition that must hold after the fix
+   (e.g., "the same checkout attempt creates no more than one order under any retry scenario").
 
 ---
 
@@ -140,7 +173,8 @@ Pause dependent implementation while answers are pending; safe independent analy
 
 This is a mandatory human checkpoint. Do not edit application code before this step completes.
 
-1. Present: the change-brief, impact map, risk hypotheses, selected safety invariant, proposed
+1. Present: the change-brief, impact map, the **complete risk table** (all risks with Severity,
+   Confidence, and user decisions YES/DEFER/WONT-FIX), selected safety invariant, proposed
    test additions, and proposed application code changes (if any).
 2. Await an explicit approval, revision request, or rejection.
 
@@ -216,7 +250,8 @@ If rework requires a scope change, return to Phase 4 and revise the change brief
    `bob_sessions/NN-<task-purpose>-consumption.png`. Update `bob_sessions/INDEX.md`.
 
 **If no PR authorization:** Hand off locally with remaining risks clearly documented in the
-report's "Remaining risk" and "Human go/no-go decision" fields. This is the normal outcome.
+report's "Remaining risk (in-scope, not fixed)" field and the "Deferred risk backlog" table in
+Section 7. This is the normal outcome. Each deferred risk must have a suggested follow-on run ID.
 
 **If explicit PR authorization was granted:** Proceed to Phase 12.
 

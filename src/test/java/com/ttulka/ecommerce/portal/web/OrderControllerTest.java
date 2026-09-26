@@ -5,6 +5,7 @@ import com.ttulka.ecommerce.portal.PlaceOrderFromCart;
 import com.ttulka.ecommerce.sales.cart.Cart;
 import com.ttulka.ecommerce.sales.cart.RetrieveCart;
 import com.ttulka.ecommerce.sales.order.Customer;
+import com.ttulka.ecommerce.sales.order.PlaceOrder;
 import com.ttulka.ecommerce.shipping.delivery.Address;
 import com.ttulka.ecommerce.shipping.delivery.Person;
 import com.ttulka.ecommerce.shipping.delivery.Place;
@@ -68,7 +69,8 @@ class OrderControllerTest {
                 .andExpect(redirectedUrl("/order/success"));
 
         verify(checkoutOrder).checkout(eq(cart),
-                eq(new Address(new Person("Test Name"), new Place("Test Address 123"))));
+                eq(new Address(new Person("Test Name"), new Place("Test Address 123"))),
+                (String) eq(null));
     }
 
     @Test
@@ -87,7 +89,8 @@ class OrderControllerTest {
 
         verify(checkoutOrder).checkout(eq(cart),
                 eq(new Address(new Person("Test Name"), new Place("Test Address 123"))),
-                eq(new Customer("ami")));
+                eq(new Customer("ami")),
+                (String) eq(null));
     }
 
     @Test
@@ -104,7 +107,8 @@ class OrderControllerTest {
                 .andExpect(redirectedUrl("/order/success"));
 
         verify(checkoutOrder).checkout(eq(cart),
-                eq(new Address(new Person("张三"), new Place("Test Address 123"))));
+                eq(new Address(new Person("张三"), new Place("Test Address 123"))),
+                (String) eq(null));
     }
 
     @Test
@@ -151,7 +155,7 @@ class OrderControllerTest {
         when(retrieveCart.byId(any())).thenReturn(cart);
 
         doThrow(mock(PlaceOrderFromCart.NoItemsToOrderException.class))
-                .when(checkoutOrder).checkout(any(Cart.class), any(Address.class));
+                .when(checkoutOrder).checkout(any(Cart.class), any(Address.class), any());
 
         mockMvc.perform(
                 post("/order")
@@ -160,5 +164,42 @@ class OrderControllerTest {
                         .param("address", "Test Address 123"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/order/error?message=noitems"));
+    }
+
+    @Test
+    void duplicate_order_redirects_to_error_page_with_duplicate_message() throws Exception {
+        Cart cart = mock(Cart.class);
+        when(retrieveCart.byId(any())).thenReturn(cart);
+
+        doThrow(new PlaceOrder.DuplicateOrderException())
+                .when(checkoutOrder).checkout(any(Cart.class), any(Address.class), any());
+
+        mockMvc.perform(
+                post("/order")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                        .param("name", "Test Name")
+                        .param("address", "Test Address 123")
+                        .param("idempotencyKey", "test-key-123"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/order/error?message=duplicate"));
+    }
+
+    @Test
+    void idempotency_key_is_passed_to_checkout() throws Exception {
+        Cart cart = mock(Cart.class);
+        when(retrieveCart.byId(any())).thenReturn(cart);
+
+        mockMvc.perform(
+                post("/order")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                        .param("name", "Test Name")
+                        .param("address", "Test Address 123")
+                        .param("idempotencyKey", "my-key-abc"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/order/success"));
+
+        verify(checkoutOrder).checkout(eq(cart),
+                eq(new Address(new Person("Test Name"), new Place("Test Address 123"))),
+                eq("my-key-abc"));
     }
 }

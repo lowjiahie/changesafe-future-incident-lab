@@ -42,7 +42,7 @@ class OrderTest {
         Order order = new OrderJdbc(new OrderId("TEST123"), new Money(3.f), List.of(
                 new OrderItem(new ProductId("test-1"), new Quantity(1)),
                 new OrderItem(new ProductId("test-2"), new Quantity(2))),
-                jdbcTemplate, eventPublisher);
+                null, jdbcTemplate, eventPublisher);
         assertAll(
                 () -> assertThat(order.items()).hasSize(2),
                 () -> assertThat(order.items().get(0).quantity()).isEqualTo(new Quantity(1)),
@@ -54,14 +54,14 @@ class OrderTest {
     void order_contains_at_least_one_item() {
         assertThrows(Order.OrderHasNoItemsException.class,
                      () -> new OrderJdbc(new OrderId("TEST123"), Money.ZERO, Collections.emptyList(),
-                                         jdbcTemplate, eventPublisher));
+                                         null, jdbcTemplate, eventPublisher));
     }
 
     @Test
     void placed_order_raises_an_event() {
         PlaceableOrder order = new OrderJdbc(new OrderId("TEST123"), new Money(12.34f * 123), List.of(
                 new OrderItem(new ProductId("test-1"), new Quantity(123))),
-                jdbcTemplate, eventPublisher);
+                null, jdbcTemplate, eventPublisher);
         order.place();
 
         verify(eventPublisher).raise(argThat(
@@ -84,7 +84,7 @@ class OrderTest {
         PlaceableOrder order = new OrderJdbc(
                 new OrderId("TEST123"), new Money(12.34f),
                 List.of(new OrderItem(new ProductId("test-1"), new Quantity(123))),
-                jdbcTemplate, eventPublisher);
+                null, jdbcTemplate, eventPublisher);
         order.place();
 
         assertAll(

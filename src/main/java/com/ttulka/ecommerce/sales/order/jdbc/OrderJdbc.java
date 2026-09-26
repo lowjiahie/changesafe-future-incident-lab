@@ -34,6 +34,7 @@ final class OrderJdbc implements PlaceableOrder {
     private final @NonNull OrderId id;
     private final @NonNull Money total;
     private final @NonNull Collection<OrderItem> items;
+    private final String idempotencyKey;
 
     private final @NonNull JdbcTemplate jdbcTemplate;
     private final @NonNull EventPublisher eventPublisher;
@@ -41,6 +42,7 @@ final class OrderJdbc implements PlaceableOrder {
     private boolean placed = false;
 
     public OrderJdbc(@NonNull OrderId id, @NonNull Money total, @NonNull Collection<OrderItem> items,
+                     String idempotencyKey,
                      @NonNull JdbcTemplate jdbcTemplate, @NonNull EventPublisher eventPublisher) {
         if (items.isEmpty()) {
             throw new OrderHasNoItemsException();
@@ -48,6 +50,7 @@ final class OrderJdbc implements PlaceableOrder {
         this.id = id;
         this.items = items;
         this.total = total;
+        this.idempotencyKey = idempotencyKey;
         this.jdbcTemplate = jdbcTemplate;
         this.eventPublisher = eventPublisher;
     }
@@ -72,7 +75,8 @@ final class OrderJdbc implements PlaceableOrder {
         if (placed) {
             throw new OrderAlreadyPlacedException();
         }
-        jdbcTemplate.update("INSERT INTO orders VALUES (?, ?)", id.value(), total.value());
+        jdbcTemplate.update("INSERT INTO orders (id, total, idempotency_key) VALUES (?, ?, ?)",
+                id.value(), total.value(), idempotencyKey);
 
         items.forEach(item -> jdbcTemplate.update(
                 "INSERT INTO order_items VALUES (?, ?, ?)",

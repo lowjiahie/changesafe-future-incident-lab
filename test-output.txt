@@ -1,0 +1,682 @@
+﻿[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------< com.ttulka.samples:changesafe-future-incident-lab >----------
+[INFO] Building changesafe-future-incident-lab 1.0-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:3.3.2:clean (default-clean) @ changesafe-future-incident-lab ---
+[INFO] Deleting C:\Users\admin\IdeaProjects\changesafe-future-incident-lab\target
+[INFO] 
+[INFO] --- maven-resources-plugin:3.3.1:resources (default-resources) @ changesafe-future-incident-lab ---
+[INFO] Copying 3 resources from src\main\resources to target\classes
+[INFO] Copying 15 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.11.0:compile (default-compile) @ changesafe-future-incident-lab ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 144 source files with javac [debug release 17] to target\classes
+[INFO] Annotation processing is enabled because one or more processors were found
+  on the class path. A future release of javac may disable annotation processing
+  unless at least one processor is specified by name (-processor), or a search
+  path is specified (--processor-path, --processor-module-path), or annotation
+  processing is enabled explicitly (-proc:only, -proc:full).
+  Use -Xlint:-options to suppress this message.
+  Use -proc:none to disable annotation processing.
+[INFO] 
+[INFO] --- maven-resources-plugin:3.3.1:testResources (default-testResources) @ changesafe-future-incident-lab ---
+[INFO] Copying 6 resources from src\test\resources to target\test-classes
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.11.0:testCompile (default-testCompile) @ changesafe-future-incident-lab ---
+[INFO] Changes detected - recompiling the module! :dependency
+[INFO] Compiling 87 source files with javac [debug release 17] to target\test-classes
+[INFO] Annotation processing is enabled because one or more processors were found
+  on the class path. A future release of javac may disable annotation processing
+  unless at least one processor is specified by name (-processor), or a search
+  path is specified (--processor-path, --processor-module-path), or annotation
+  processing is enabled explicitly (-proc:only, -proc:full).
+  Use -Xlint:-options to suppress this message.
+  Use -proc:none to disable annotation processing.
+[INFO] 
+[INFO] --- maven-surefire-plugin:3.1.2:test (default-test) @ changesafe-future-incident-lab ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.ttulka.ecommerce.billing.payment.jdbc.CollectPaymentTest
+17:25:20.794 [main] INFO org.springframework.boot.devtools.restart.RestartApplicationListener -- Restart disabled due to context in which it is running
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.0)
+
+2026-09-26T17:25:21.512+08:00  INFO 17148 --- [           main] c.t.e.b.payment.jdbc.CollectPaymentTest  : Starting CollectPaymentTest using Java 21.0.7 with PID 17148 (started by admin in C:\Users\admin\IdeaProjects\changesafe-future-incident-lab)
+2026-09-26T17:25:21.514+08:00  INFO 17148 --- [           main] c.t.e.b.payment.jdbc.CollectPaymentTest  : No active profile set, falling back to 1 default profile: "test"
+2026-09-26T17:25:22.501+08:00  INFO 17148 --- [           main] beddedDataSourceBeanFactoryPostProcessor : Replacing 'dataSource' DataSource bean with embedded version
+.\mvnw.cmd : WARNING: A Java agent has been loaded dynamically 
+(C:\Users\admin\.m2\repository\net\bytebuddy\byte-buddy-agent\1.14.10\byte-buddy-agent-1.14.10.jar)
+At line:1 char:1
++ .\mvnw.cmd clean test 2>&1 | Out-File -FilePath ".\test-output.txt" - ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (WARNING: A Java...nt-1.14.10.jar):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has 
+been appended
+2026-09-26T17:25:24.596+08:00  INFO 17148 --- [           main] o.s.j.d.e.EmbeddedDatabaseFactory        : Starting embedded database: url='jdbc:h2:mem:a7f5288d-6b1a-47f1-a12d-bd68845b8544;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2026-09-26T17:25:25.422+08:00  INFO 17148 --- [           main] c.t.e.b.payment.jdbc.CollectPaymentTest  : Started CollectPaymentTest in 4.659 seconds (process running for 6.939)
+2026-09-26T17:25:25.627+08:00  INFO 17148 --- [           main] c.t.e.billing.payment.jdbc.PaymentJdbc   : Payment requested: PaymentJdbc(ReferenceId(TEST123), Money(123.5))
+2026-09-26T17:25:25.702+08:00  INFO 17148 --- [           main] c.t.e.billing.payment.jdbc.PaymentJdbc   : Payment collected: PaymentJdbc(ReferenceId(TEST123), Money(123.5))
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.805 s -- in com.ttulka.ecommerce.billing.payment.jdbc.CollectPaymentTest
+[INFO] Running com.ttulka.ecommerce.billing.payment.jdbc.FindPaymentsTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.140 s -- in com.ttulka.ecommerce.billing.payment.jdbc.FindPaymentsTest
+[INFO] Running com.ttulka.ecommerce.billing.payment.jdbc.PaymentsTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.140 s -- in com.ttulka.ecommerce.billing.payment.jdbc.PaymentsTest
+[INFO] Running com.ttulka.ecommerce.billing.payment.jdbc.PaymentTest
+2026-09-26T17:25:26.227+08:00  INFO 17148 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.ttulka.ecommerce.billing.payment.jdbc.PaymentTest]: PaymentTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-26T17:25:26.367+08:00  INFO 17148 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.ttulka.ecommerce.ECommerceApplication for test class com.ttulka.ecommerce.billing.payment.jdbc.PaymentTest
+2026-09-26T17:25:26.375+08:00  INFO 17148 --- [           main] o.s.b.d.r.RestartApplicationListener     : Restart disabled due to context in which it is running
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.0)
+
+2026-09-26T17:25:26.440+08:00  INFO 17148 --- [           main] c.t.e.billing.payment.jdbc.PaymentTest   : Starting PaymentTest using Java 21.0.7 with PID 17148 (started by admin in C:\Users\admin\IdeaProjects\changesafe-future-incident-lab)
+2026-09-26T17:25:26.441+08:00  INFO 17148 --- [           main] c.t.e.billing.payment.jdbc.PaymentTest   : No active profile set, falling back to 1 default profile: "test"
+2026-09-26T17:25:26.881+08:00  INFO 17148 --- [           main] beddedDataSourceBeanFactoryPostProcessor : Replacing 'dataSource' DataSource bean with embedded version
+2026-09-26T17:25:26.973+08:00  INFO 17148 --- [           main] o.s.j.d.e.EmbeddedDatabaseFactory        : Starting embedded database: url='jdbc:h2:mem:c5215ef0-3dfc-43e1-be8b-d1b47710b0dc;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2026-09-26T17:25:27.039+08:00  INFO 17148 --- [           main] c.t.e.billing.payment.jdbc.PaymentTest   : Started PaymentTest in 0.665 seconds (process running for 8.557)
+2026-09-26T17:25:27.056+08:00  INFO 17148 --- [           main] c.t.e.billing.payment.jdbc.PaymentJdbc   : Payment requested: PaymentJdbc(ReferenceId(123), Money(123.5))
+2026-09-26T17:25:27.057+08:00  INFO 17148 --- [           main] c.t.e.billing.payment.jdbc.PaymentJdbc   : Payment collected: PaymentJdbc(ReferenceId(123), Money(123.5))
+2026-09-26T17:25:27.070+08:00  INFO 17148 --- [           main] c.t.e.billing.payment.jdbc.PaymentJdbc   : Payment requested: PaymentJdbc(ReferenceId(123), Money(123.5))
+2026-09-26T17:25:27.095+08:00  INFO 17148 --- [           main] c.t.e.billing.payment.jdbc.PaymentJdbc   : Payment requested: PaymentJdbc(ReferenceId(123), Money(123.5))
+2026-09-26T17:25:27.104+08:00  INFO 17148 --- [           main] c.t.e.billing.payment.jdbc.PaymentJdbc   : Payment requested: PaymentJdbc(ReferenceId(123), Money(123.5))
+2026-09-26T17:25:27.106+08:00  INFO 17148 --- [           main] c.t.e.billing.payment.jdbc.PaymentJdbc   : Payment collected: PaymentJdbc(ReferenceId(123), Money(123.5))
+2026-09-26T17:25:27.117+08:00  INFO 17148 --- [           main] c.t.e.billing.payment.jdbc.PaymentJdbc   : Payment requested: PaymentJdbc(ReferenceId(TEST123), Money(123.5))
+2026-09-26T17:25:27.118+08:00  INFO 17148 --- [           main] c.t.e.billing.payment.jdbc.PaymentJdbc   : Payment collected: PaymentJdbc(ReferenceId(TEST123), Money(123.5))
+2026-09-26T17:25:27.134+08:00  INFO 17148 --- [           main] c.t.e.billing.payment.jdbc.PaymentJdbc   : Payment requested: PaymentJdbc(ReferenceId(123), Money(123.5))
+2026-09-26T17:25:27.136+08:00  INFO 17148 --- [           main] c.t.e.billing.payment.jdbc.PaymentJdbc   : Payment collected: PaymentJdbc(ReferenceId(123), Money(123.5))
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.932 s -- in com.ttulka.ecommerce.billing.payment.jdbc.PaymentTest
+[INFO] Running com.ttulka.ecommerce.billing.payment.listeners.PaymentListenersTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.124 s -- in com.ttulka.ecommerce.billing.payment.listeners.PaymentListenersTest
+[INFO] Running com.ttulka.ecommerce.billing.payment.PaymentIdTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s -- in com.ttulka.ecommerce.billing.payment.PaymentIdTest
+[INFO] Running com.ttulka.ecommerce.billing.payment.ReferenceIdTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s -- in com.ttulka.ecommerce.billing.payment.ReferenceIdTest
+[INFO] Running com.ttulka.ecommerce.billing.payment.rest.PaymentControllerTest
+2026-09-26T17:25:27.321+08:00  INFO 17148 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.ttulka.ecommerce.billing.payment.rest.PaymentControllerTest]: PaymentControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-26T17:25:27.393+08:00  INFO 17148 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.ttulka.ecommerce.ECommerceApplication for test class com.ttulka.ecommerce.billing.payment.rest.PaymentControllerTest
+2026-09-26T17:25:27.415+08:00  INFO 17148 --- [           main] o.s.b.d.r.RestartApplicationListener     : Restart disabled due to context in which it is running
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.0)
+
+2026-09-26T17:25:27.482+08:00  INFO 17148 --- [           main] c.t.e.b.p.rest.PaymentControllerTest     : Starting PaymentControllerTest using Java 21.0.7 with PID 17148 (started by admin in C:\Users\admin\IdeaProjects\changesafe-future-incident-lab)
+2026-09-26T17:25:27.483+08:00  INFO 17148 --- [           main] c.t.e.b.p.rest.PaymentControllerTest     : No active profile set, falling back to 1 default profile: "test"
+2026-09-26T17:25:29.158+08:00  INFO 17148 --- [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-26T17:25:29.160+08:00  INFO 17148 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-26T17:25:29.164+08:00  INFO 17148 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 2 ms
+2026-09-26T17:25:29.187+08:00  INFO 17148 --- [           main] c.t.e.b.p.rest.PaymentControllerTest     : Started PaymentControllerTest in 1.774 seconds (process running for 10.705)
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.257 s -- in com.ttulka.ecommerce.billing.payment.rest.PaymentControllerTest
+[INFO] Running com.ttulka.ecommerce.CleanCodeArchTest
+2026-09-26T17:25:29.612+08:00  INFO 17148 --- [           main] com.tngtech.archunit.core.PluginLoader   : Detected Java version 21.0.7
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.30 s -- in com.ttulka.ecommerce.CleanCodeArchTest
+[INFO] Running com.ttulka.ecommerce.CleanModulesArchTest
+[INFO] Tests run: 17, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.892 s -- in com.ttulka.ecommerce.CleanModulesArchTest
+[INFO] Running com.ttulka.ecommerce.common.primitives.MoneyTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.019 s -- in com.ttulka.ecommerce.common.primitives.MoneyTest
+[INFO] Running com.ttulka.ecommerce.common.primitives.QuantityTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.015 s -- in com.ttulka.ecommerce.common.primitives.QuantityTest
+[INFO] Running com.ttulka.ecommerce.identity.user.AddressTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.013 s -- in com.ttulka.ecommerce.identity.user.AddressTest
+[INFO] Running com.ttulka.ecommerce.identity.user.EmailTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.019 s -- in com.ttulka.ecommerce.identity.user.EmailTest
+[INFO] Running com.ttulka.ecommerce.identity.user.FirstNameTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.020 s -- in com.ttulka.ecommerce.identity.user.FirstNameTest
+[INFO] Running com.ttulka.ecommerce.identity.user.jdbc.AuthenticateUserJdbcTest
+2026-09-26T17:25:46.891+08:00  INFO 17148 --- [           main] o.s.b.d.r.RestartApplicationListener     : Restart disabled due to context in which it is running
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.0)
+
+2026-09-26T17:25:46.936+08:00  INFO 17148 --- [           main] c.t.e.i.u.jdbc.AuthenticateUserJdbcTest  : Starting AuthenticateUserJdbcTest using Java 21.0.7 with PID 17148 (started by admin in C:\Users\admin\IdeaProjects\changesafe-future-incident-lab)
+2026-09-26T17:25:46.936+08:00  INFO 17148 --- [           main] c.t.e.i.u.jdbc.AuthenticateUserJdbcTest  : No active profile set, falling back to 1 default profile: "test"
+2026-09-26T17:25:47.102+08:00  INFO 17148 --- [           main] beddedDataSourceBeanFactoryPostProcessor : Replacing 'dataSource' DataSource bean with embedded version
+2026-09-26T17:25:47.161+08:00  INFO 17148 --- [           main] o.s.j.d.e.EmbeddedDatabaseFactory        : Starting embedded database: url='jdbc:h2:mem:eb7de5f7-826b-4058-b0ca-ed745043fd07;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2026-09-26T17:25:47.247+08:00  INFO 17148 --- [           main] c.t.e.i.u.jdbc.AuthenticateUserJdbcTest  : Started AuthenticateUserJdbcTest in 0.356 seconds (process running for 28.764)
+2026-09-26T17:25:47.551+08:00  INFO 17148 --- [           main] c.t.e.i.user.jdbc.AuthenticateUserJdbc   : Failed login attempt for username: Username(testuser)
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.696 s -- in com.ttulka.ecommerce.identity.user.jdbc.AuthenticateUserJdbcTest
+[INFO] Running com.ttulka.ecommerce.identity.user.jdbc.FindUserJdbcTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.043 s -- in com.ttulka.ecommerce.identity.user.jdbc.FindUserJdbcTest
+[INFO] Running com.ttulka.ecommerce.identity.user.jdbc.UpdateUserProfileJdbcTest
+2026-09-26T17:25:47.633+08:00  INFO 17148 --- [           main] c.t.e.identity.user.jdbc.UserJdbc        : User profile updated: Username(testuser)
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.032 s -- in com.ttulka.ecommerce.identity.user.jdbc.UpdateUserProfileJdbcTest
+[INFO] Running com.ttulka.ecommerce.identity.user.LastNameTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.010 s -- in com.ttulka.ecommerce.identity.user.LastNameTest
+[INFO] Running com.ttulka.ecommerce.identity.user.PhoneTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.010 s -- in com.ttulka.ecommerce.identity.user.PhoneTest
+[INFO] Running com.ttulka.ecommerce.identity.user.RawPasswordTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s -- in com.ttulka.ecommerce.identity.user.RawPasswordTest
+[INFO] Running com.ttulka.ecommerce.identity.user.UsernameTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.017 s -- in com.ttulka.ecommerce.identity.user.UsernameTest
+[INFO] Running com.ttulka.ecommerce.OrderWorkFlowTest
+2026-09-26T17:25:47.697+08:00  INFO 17148 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.ttulka.ecommerce.OrderWorkFlowTest]: OrderWorkFlowTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-26T17:25:47.722+08:00  INFO 17148 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.ttulka.ecommerce.ECommerceApplication for test class com.ttulka.ecommerce.OrderWorkFlowTest
+2026-09-26T17:25:47.736+08:00  INFO 17148 --- [           main] o.s.b.d.r.RestartApplicationListener     : Restart disabled due to context in which it is running
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.0)
+
+2026-09-26T17:25:47.799+08:00  INFO 17148 --- [           main] com.ttulka.ecommerce.OrderWorkFlowTest   : Starting OrderWorkFlowTest using Java 21.0.7 with PID 17148 (started by admin in C:\Users\admin\IdeaProjects\changesafe-future-incident-lab)
+2026-09-26T17:25:47.800+08:00  INFO 17148 --- [           main] com.ttulka.ecommerce.OrderWorkFlowTest   : The following 1 profile is active: "test"
+2026-09-26T17:25:49.067+08:00  INFO 17148 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 0 (http)
+2026-09-26T17:25:49.091+08:00  INFO 17148 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-09-26T17:25:49.092+08:00  INFO 17148 --- [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.16]
+2026-09-26T17:25:49.188+08:00  INFO 17148 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-09-26T17:25:49.190+08:00  INFO 17148 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1386 ms
+2026-09-26T17:25:49.328+08:00  INFO 17148 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-09-26T17:25:49.364+08:00  INFO 17148 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn27: url=jdbc:h2:mem:changesafe-test user=SA
+2026-09-26T17:25:49.368+08:00  INFO 17148 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-09-26T17:25:50.038+08:00  INFO 17148 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 56632 (http) with context path ''
+2026-09-26T17:25:50.045+08:00  INFO 17148 --- [           main] com.ttulka.ecommerce.OrderWorkFlowTest   : Started OrderWorkFlowTest in 2.31 seconds (process running for 31.562)
+2026-09-26T17:25:52.047+08:00  INFO 17148 --- [o-auto-1-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-09-26T17:25:52.047+08:00  INFO 17148 --- [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-09-26T17:25:52.048+08:00  INFO 17148 --- [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2026-09-26T17:25:52.257+08:00  INFO 17148 --- [o-auto-1-exec-2] c.t.e.sales.order.jdbc.OrderJdbc         : Order placed: OrderJdbc(OrderId(df329c92-f929-465c-b40a-1b062a75b0ee), Money(1.0), [OrderItem(ProductId(p-1), Quantity(1))])
+2026-09-26T17:25:52.261+08:00  INFO 17148 --- [o-auto-1-exec-2] c.t.e.s.delivery.jdbc.DeliveryJdbc       : Delivery prepared: DeliveryJdbc(DeliveryId(6b97a831-6365-4586-a21b-fe54f65834e1), OrderId(df329c92-f929-465c-b40a-1b062a75b0ee), Address(Person(Test Name), Place(Test Address 123)))
+2026-09-26T17:25:52.268+08:00  INFO 17148 --- [         task-1] c.t.e.billing.payment.jdbc.PaymentJdbc   : Payment requested: PaymentJdbc(ReferenceId(df329c92-f929-465c-b40a-1b062a75b0ee), Money(1.0))
+2026-09-26T17:25:52.271+08:00  INFO 17148 --- [         task-1] c.t.e.billing.payment.jdbc.PaymentJdbc   : Payment collected: PaymentJdbc(ReferenceId(df329c92-f929-465c-b40a-1b062a75b0ee), Money(1.0))
+2026-09-26T17:25:52.281+08:00  INFO 17148 --- [         task-3] c.t.e.warehouse.jdbc.GoodsFetchingJdbc   : Goods fetched: [ToFetch(ProductId(p-1), Amount(1))]
+2026-09-26T17:25:52.287+08:00  INFO 17148 --- [         task-6] c.t.e.s.d.jdbc.DispatchingJdbc           : Order OrderId(df329c92-f929-465c-b40a-1b062a75b0ee) is being dispatched.
+2026-09-26T17:25:52.295+08:00  INFO 17148 --- [         task-8] c.t.e.warehouse.jdbc.GoodsFetchingJdbc   : Fetched goods removed: OrderId(df329c92-f929-465c-b40a-1b062a75b0ee)
+2026-09-26T17:25:52.299+08:00  INFO 17148 --- [         task-7] c.t.e.s.delivery.jdbc.DeliveryJdbc       : Delivery dispatched: DeliveryJdbc(DeliveryId(6b97a831-6365-4586-a21b-fe54f65834e1), OrderId(df329c92-f929-465c-b40a-1b062a75b0ee), Address(Person(Test Name), Place(Test Address 123)))
+2026-09-26T17:25:52.422+08:00  INFO 17148 --- [o-auto-1-exec-8] c.t.e.sales.order.jdbc.OrderJdbc         : Order placed: OrderJdbc(OrderId(b0208c84-c675-4edc-b059-6cd4c840c00b), Money(1.0), [OrderItem(ProductId(p-1), Quantity(1))])
+2026-09-26T17:25:52.423+08:00  INFO 17148 --- [o-auto-1-exec-8] c.t.e.s.delivery.jdbc.DeliveryJdbc       : Delivery prepared: DeliveryJdbc(DeliveryId(85329572-2f1f-466c-922c-5afbc5281687), OrderId(b0208c84-c675-4edc-b059-6cd4c840c00b), Address(Person(Test Name), Place(Test Address 123)))
+2026-09-26T17:25:52.426+08:00  INFO 17148 --- [         task-1] c.t.e.billing.payment.jdbc.PaymentJdbc   : Payment requested: PaymentJdbc(ReferenceId(b0208c84-c675-4edc-b059-6cd4c840c00b), Money(1.0))
+2026-09-26T17:25:52.426+08:00  INFO 17148 --- [         task-4] c.t.e.warehouse.jdbc.GoodsFetchingJdbc   : Goods fetched: [ToFetch(ProductId(p-1), Amount(1))]
+2026-09-26T17:25:52.427+08:00  INFO 17148 --- [         task-1] c.t.e.billing.payment.jdbc.PaymentJdbc   : Payment collected: PaymentJdbc(ReferenceId(b0208c84-c675-4edc-b059-6cd4c840c00b), Money(1.0))
+2026-09-26T17:25:52.429+08:00  INFO 17148 --- [         task-6] c.t.e.s.d.jdbc.DispatchingJdbc           : Order OrderId(b0208c84-c675-4edc-b059-6cd4c840c00b) is being dispatched.
+2026-09-26T17:25:52.430+08:00  INFO 17148 --- [         task-7] c.t.e.warehouse.jdbc.GoodsFetchingJdbc   : Fetched goods removed: OrderId(b0208c84-c675-4edc-b059-6cd4c840c00b)
+2026-09-26T17:25:52.431+08:00  INFO 17148 --- [         task-8] c.t.e.s.delivery.jdbc.DeliveryJdbc       : Delivery dispatched: DeliveryJdbc(DeliveryId(85329572-2f1f-466c-922c-5afbc5281687), OrderId(b0208c84-c675-4edc-b059-6cd4c840c00b), Address(Person(Test Name), Place(Test Address 123)))
+2026-09-26T17:25:53.617+08:00  INFO 17148 --- [o-auto-1-exec-9] c.t.e.sales.order.jdbc.OrderJdbc         : Order placed: OrderJdbc(OrderId(abc29819-3a12-470d-bb47-fe51d4fa2d25), Money(10.5), [OrderItem(ProductId(p-3), Quantity(3))])
+2026-09-26T17:25:53.617+08:00  INFO 17148 --- [o-auto-1-exec-9] c.t.e.s.delivery.jdbc.DeliveryJdbc       : Delivery prepared: DeliveryJdbc(DeliveryId(5258ef95-2e5f-4384-9ac8-b4e4b186ed3b), OrderId(abc29819-3a12-470d-bb47-fe51d4fa2d25), Address(Person(Test Name), Place(Test Address 123)))
+2026-09-26T17:25:53.620+08:00  INFO 17148 --- [         task-4] c.t.e.warehouse.jdbc.GoodsFetchingJdbc   : Goods fetched: [ToFetch(ProductId(p-3), Amount(3))]
+2026-09-26T17:25:53.620+08:00  INFO 17148 --- [         task-2] c.t.e.billing.payment.jdbc.PaymentJdbc   : Payment requested: PaymentJdbc(ReferenceId(abc29819-3a12-470d-bb47-fe51d4fa2d25), Money(10.5))
+2026-09-26T17:25:53.622+08:00  INFO 17148 --- [         task-2] c.t.e.billing.payment.jdbc.PaymentJdbc   : Payment collected: PaymentJdbc(ReferenceId(abc29819-3a12-470d-bb47-fe51d4fa2d25), Money(10.5))
+2026-09-26T17:25:53.624+08:00  INFO 17148 --- [         task-7] c.t.e.s.d.jdbc.DispatchingJdbc           : Order OrderId(abc29819-3a12-470d-bb47-fe51d4fa2d25) is being dispatched.
+2026-09-26T17:25:53.626+08:00  INFO 17148 --- [         task-3] c.t.e.warehouse.jdbc.GoodsFetchingJdbc   : Fetched goods removed: OrderId(abc29819-3a12-470d-bb47-fe51d4fa2d25)
+2026-09-26T17:25:53.626+08:00  INFO 17148 --- [         task-8] c.t.e.s.delivery.jdbc.DeliveryJdbc       : Delivery dispatched: DeliveryJdbc(DeliveryId(5258ef95-2e5f-4384-9ac8-b4e4b186ed3b), OrderId(abc29819-3a12-470d-bb47-fe51d4fa2d25), Address(Person(Test Name), Place(Test Address 123)))
+2026-09-26T17:25:53.856+08:00  INFO 17148 --- [o-auto-1-exec-2] c.t.e.sales.order.jdbc.OrderJdbc         : Order placed: OrderJdbc(OrderId(dfb2c038-1404-4e86-a992-a0a0ca375b49), Money(246.0), [OrderItem(ProductId(p-2), Quantity(123))])
+2026-09-26T17:25:53.857+08:00  INFO 17148 --- [o-auto-1-exec-2] c.t.e.s.delivery.jdbc.DeliveryJdbc       : Delivery prepared: DeliveryJdbc(DeliveryId(631c7c84-62b2-412f-9237-a0ed163edf6c), OrderId(dfb2c038-1404-4e86-a992-a0a0ca375b49), Address(Person(Test Name), Place(Test Address 123)))
+2026-09-26T17:25:53.859+08:00  INFO 17148 --- [         task-5] c.t.e.billing.payment.jdbc.PaymentJdbc   : Payment requested: PaymentJdbc(ReferenceId(dfb2c038-1404-4e86-a992-a0a0ca375b49), Money(246.0))
+2026-09-26T17:25:53.860+08:00  INFO 17148 --- [         task-4] c.t.e.warehouse.jdbc.GoodsFetchingJdbc   : Goods fetched: [ToFetch(ProductId(p-2), Amount(123))]
+2026-09-26T17:25:53.860+08:00  INFO 17148 --- [         task-5] c.t.e.billing.payment.jdbc.PaymentJdbc   : Payment collected: PaymentJdbc(ReferenceId(dfb2c038-1404-4e86-a992-a0a0ca375b49), Money(246.0))
+2026-09-26T17:25:53.862+08:00  INFO 17148 --- [         task-7] c.t.e.s.d.jdbc.DispatchingJdbc           : Order OrderId(dfb2c038-1404-4e86-a992-a0a0ca375b49) is being dispatched.
+2026-09-26T17:25:53.862+08:00  INFO 17148 --- [         task-8] c.t.e.warehouse.jdbc.GoodsFetchingJdbc   : Fetched goods removed: OrderId(dfb2c038-1404-4e86-a992-a0a0ca375b49)
+2026-09-26T17:25:53.863+08:00  INFO 17148 --- [         task-3] c.t.e.s.delivery.jdbc.DeliveryJdbc       : Delivery dispatched: DeliveryJdbc(DeliveryId(631c7c84-62b2-412f-9237-a0ed163edf6c), OrderId(dfb2c038-1404-4e86-a992-a0a0ca375b49), Address(Person(Test Name), Place(Test Address 123)))
+877
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.321 s -- in com.ttulka.ecommerce.OrderWorkFlowTest
+[INFO] Running com.ttulka.ecommerce.portal.CheckoutOrderTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.515 s -- in com.ttulka.ecommerce.portal.CheckoutOrderTest
+[INFO] Running com.ttulka.ecommerce.portal.PlaceOrderFromCartTest
+2026-09-26T17:25:54.588+08:00  INFO 17148 --- [           main] o.s.b.d.r.RestartApplicationListener     : Restart disabled due to context in which it is running
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.0)
+
+2026-09-26T17:25:54.654+08:00  INFO 17148 --- [           main] c.t.e.portal.PlaceOrderFromCartTest      : Starting PlaceOrderFromCartTest using Java 21.0.7 with PID 17148 (started by admin in C:\Users\admin\IdeaProjects\changesafe-future-incident-lab)
+2026-09-26T17:25:54.654+08:00  INFO 17148 --- [           main] c.t.e.portal.PlaceOrderFromCartTest      : No active profile set, falling back to 1 default profile: "test"
+2026-09-26T17:25:54.882+08:00  INFO 17148 --- [           main] beddedDataSourceBeanFactoryPostProcessor : Replacing 'dataSource' DataSource bean with embedded version
+2026-09-26T17:25:55.141+08:00  INFO 17148 --- [           main] o.s.j.d.e.EmbeddedDatabaseFactory        : Starting embedded database: url='jdbc:h2:mem:1de531d8-b36d-4cdf-b761-21f2c17181e7;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2026-09-26T17:25:55.244+08:00  INFO 17148 --- [           main] c.t.e.portal.PlaceOrderFromCartTest      : Started PlaceOrderFromCartTest in 0.656 seconds (process running for 36.761)
+2026-09-26T17:25:55.285+08:00  INFO 17148 --- [           main] c.t.e.sales.order.jdbc.OrderJdbc         : Order placed: OrderJdbc(OrderId(a3bee4cf-815a-4ed7-9d74-4ca03355d9f4), Money(1.0), [OrderItem(ProductId(TEST), Quantity(1))])
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.764 s -- in com.ttulka.ecommerce.portal.PlaceOrderFromCartTest
+[INFO] Running com.ttulka.ecommerce.portal.web.CartControllerTest
+2026-09-26T17:25:55.312+08:00  INFO 17148 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.ttulka.ecommerce.portal.web.CartControllerTest]: CartControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-26T17:25:55.390+08:00  INFO 17148 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.ttulka.ecommerce.ECommerceApplication for test class com.ttulka.ecommerce.portal.web.CartControllerTest
+2026-09-26T17:25:55.396+08:00  INFO 17148 --- [           main] o.s.b.d.r.RestartApplicationListener     : Restart disabled due to context in which it is running
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.0)
+
+2026-09-26T17:25:55.440+08:00  INFO 17148 --- [           main] c.t.e.portal.web.CartControllerTest      : Starting CartControllerTest using Java 21.0.7 with PID 17148 (started by admin in C:\Users\admin\IdeaProjects\changesafe-future-incident-lab)
+2026-09-26T17:25:55.442+08:00  INFO 17148 --- [           main] c.t.e.portal.web.CartControllerTest      : No active profile set, falling back to 1 default profile: "test"
+2026-09-26T17:25:56.310+08:00  INFO 17148 --- [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-26T17:25:56.310+08:00  INFO 17148 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-26T17:25:56.311+08:00  INFO 17148 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-26T17:25:56.325+08:00  INFO 17148 --- [           main] c.t.e.portal.web.CartControllerTest      : Started CartControllerTest in 0.931 seconds (process running for 37.842)
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.899 s -- in com.ttulka.ecommerce.portal.web.CartControllerTest
+[INFO] Running com.ttulka.ecommerce.portal.web.CatalogControllerTest
+2026-09-26T17:25:58.212+08:00  INFO 17148 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.ttulka.ecommerce.portal.web.CatalogControllerTest]: CatalogControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-26T17:25:58.229+08:00  INFO 17148 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.ttulka.ecommerce.ECommerceApplication for test class com.ttulka.ecommerce.portal.web.CatalogControllerTest
+2026-09-26T17:25:58.237+08:00  INFO 17148 --- [           main] o.s.b.d.r.RestartApplicationListener     : Restart disabled due to context in which it is running
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.0)
+
+2026-09-26T17:25:58.276+08:00  INFO 17148 --- [           main] c.t.e.portal.web.CatalogControllerTest   : Starting CatalogControllerTest using Java 21.0.7 with PID 17148 (started by admin in C:\Users\admin\IdeaProjects\changesafe-future-incident-lab)
+2026-09-26T17:25:58.276+08:00  INFO 17148 --- [           main] c.t.e.portal.web.CatalogControllerTest   : No active profile set, falling back to 1 default profile: "test"
+2026-09-26T17:25:58.796+08:00  INFO 17148 --- [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-26T17:25:58.796+08:00  INFO 17148 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-26T17:25:58.797+08:00  INFO 17148 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-26T17:25:58.804+08:00  INFO 17148 --- [           main] c.t.e.portal.web.CatalogControllerTest   : Started CatalogControllerTest in 0.568 seconds (process running for 40.322)
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.906 s -- in com.ttulka.ecommerce.portal.web.CatalogControllerTest
+[INFO] Running com.ttulka.ecommerce.portal.web.LoginControllerTest
+2026-09-26T17:25:59.123+08:00  INFO 17148 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.ttulka.ecommerce.portal.web.LoginControllerTest]: LoginControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-26T17:25:59.136+08:00  INFO 17148 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.ttulka.ecommerce.ECommerceApplication for test class com.ttulka.ecommerce.portal.web.LoginControllerTest
+2026-09-26T17:25:59.141+08:00  INFO 17148 --- [           main] o.s.b.d.r.RestartApplicationListener     : Restart disabled due to context in which it is running
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.0)
+
+2026-09-26T17:25:59.176+08:00  INFO 17148 --- [           main] c.t.e.portal.web.LoginControllerTest     : Starting LoginControllerTest using Java 21.0.7 with PID 17148 (started by admin in C:\Users\admin\IdeaProjects\changesafe-future-incident-lab)
+2026-09-26T17:25:59.176+08:00  INFO 17148 --- [           main] c.t.e.portal.web.LoginControllerTest     : No active profile set, falling back to 1 default profile: "test"
+2026-09-26T17:25:59.660+08:00  INFO 17148 --- [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-26T17:25:59.660+08:00  INFO 17148 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-26T17:25:59.661+08:00  INFO 17148 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-26T17:25:59.667+08:00  INFO 17148 --- [           main] c.t.e.portal.web.LoginControllerTest     : Started LoginControllerTest in 0.527 seconds (process running for 41.185)
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.847 s -- in com.ttulka.ecommerce.portal.web.LoginControllerTest
+[INFO] Running com.ttulka.ecommerce.portal.web.OrderControllerTest
+2026-09-26T17:25:59.969+08:00  INFO 17148 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.ttulka.ecommerce.portal.web.OrderControllerTest]: OrderControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-26T17:25:59.980+08:00  INFO 17148 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.ttulka.ecommerce.ECommerceApplication for test class com.ttulka.ecommerce.portal.web.OrderControllerTest
+2026-09-26T17:25:59.987+08:00  INFO 17148 --- [           main] o.s.b.d.r.RestartApplicationListener     : Restart disabled due to context in which it is running
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.0)
+
+2026-09-26T17:26:00.021+08:00  INFO 17148 --- [           main] c.t.e.portal.web.OrderControllerTest     : Starting OrderControllerTest using Java 21.0.7 with PID 17148 (started by admin in C:\Users\admin\IdeaProjects\changesafe-future-incident-lab)
+2026-09-26T17:26:00.022+08:00  INFO 17148 --- [           main] c.t.e.portal.web.OrderControllerTest     : No active profile set, falling back to 1 default profile: "test"
+2026-09-26T17:26:00.506+08:00  INFO 17148 --- [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-26T17:26:00.506+08:00  INFO 17148 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-26T17:26:00.507+08:00  INFO 17148 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-26T17:26:00.513+08:00  INFO 17148 --- [           main] c.t.e.portal.web.OrderControllerTest     : Started OrderControllerTest in 0.528 seconds (process running for 42.031)
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.059 s -- in com.ttulka.ecommerce.portal.web.OrderControllerTest
+[INFO] Running com.ttulka.ecommerce.portal.web.OrderHistoryControllerTest
+2026-09-26T17:26:01.033+08:00  INFO 17148 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.ttulka.ecommerce.portal.web.OrderHistoryControllerTest]: OrderHistoryControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-26T17:26:01.045+08:00  INFO 17148 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.ttulka.ecommerce.ECommerceApplication for test class com.ttulka.ecommerce.portal.web.OrderHistoryControllerTest
+2026-09-26T17:26:01.052+08:00  INFO 17148 --- [           main] o.s.b.d.r.RestartApplicationListener     : Restart disabled due to context in which it is running
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.0)
+
+2026-09-26T17:26:01.084+08:00  INFO 17148 --- [           main] c.t.e.p.web.OrderHistoryControllerTest   : Starting OrderHistoryControllerTest using Java 21.0.7 with PID 17148 (started by admin in C:\Users\admin\IdeaProjects\changesafe-future-incident-lab)
+2026-09-26T17:26:01.084+08:00  INFO 17148 --- [           main] c.t.e.p.web.OrderHistoryControllerTest   : No active profile set, falling back to 1 default profile: "test"
+2026-09-26T17:26:01.726+08:00  INFO 17148 --- [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-26T17:26:01.726+08:00  INFO 17148 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-26T17:26:01.727+08:00  INFO 17148 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-26T17:26:01.737+08:00  INFO 17148 --- [           main] c.t.e.p.web.OrderHistoryControllerTest   : Started OrderHistoryControllerTest in 0.685 seconds (process running for 43.254)
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.253 s -- in com.ttulka.ecommerce.portal.web.OrderHistoryControllerTest
+[INFO] Running com.ttulka.ecommerce.portal.web.ProfileControllerTest
+2026-09-26T17:26:02.288+08:00  INFO 17148 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.ttulka.ecommerce.portal.web.ProfileControllerTest]: ProfileControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-26T17:26:02.298+08:00  INFO 17148 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.ttulka.ecommerce.ECommerceApplication for test class com.ttulka.ecommerce.portal.web.ProfileControllerTest
+2026-09-26T17:26:02.304+08:00  INFO 17148 --- [           main] o.s.b.d.r.RestartApplicationListener     : Restart disabled due to context in which it is running
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.0)
+
+2026-09-26T17:26:02.340+08:00  INFO 17148 --- [           main] c.t.e.portal.web.ProfileControllerTest   : Starting ProfileControllerTest using Java 21.0.7 with PID 17148 (started by admin in C:\Users\admin\IdeaProjects\changesafe-future-incident-lab)
+2026-09-26T17:26:02.340+08:00  INFO 17148 --- [           main] c.t.e.portal.web.ProfileControllerTest   : No active profile set, falling back to 1 default profile: "test"
+2026-09-26T17:26:02.910+08:00  INFO 17148 --- [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-26T17:26:02.911+08:00  INFO 17148 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-26T17:26:02.911+08:00  INFO 17148 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-09-26T17:26:02.917+08:00  INFO 17148 --- [           main] c.t.e.portal.web.ProfileControllerTest   : Started ProfileControllerTest in 0.613 seconds (process running for 44.435)
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.801 s -- in com.ttulka.ecommerce.portal.web.ProfileControllerTest
+[INFO] Running com.ttulka.ecommerce.portal.web.WebLayoutAdviceTest
+2026-09-26T17:26:03.092+08:00  INFO 17148 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.ttulka.ecommerce.portal.web.WebLayoutAdviceTest]: WebLayoutAdviceTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-26T17:26:03.106+08:00  INFO 17148 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.ttulka.ecommerce.ECommerceApplication for test class com.ttulka.ecommerce.portal.web.WebLayoutAdviceTest
+2026-09-26T17:26:03.111+08:00  INFO 17148 --- [           main] o.s.b.d.r.RestartApplicationListener     : Restart disabled due to context in which it is running
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.0)
+
+2026-09-26T17:26:03.149+08:00  INFO 17148 --- [           main] c.t.e.portal.web.WebLayoutAdviceTest     : Starting WebLayoutAdviceTest using Java 21.0.7 with PID 17148 (started by admin in C:\Users\admin\IdeaProjects\changesafe-future-incident-lab)
+2026-09-26T17:26:03.149+08:00  INFO 17148 --- [           main] c.t.e.portal.web.WebLayoutAdviceTest     : No active profile set, falling back to 1 default profile: "test"
+2026-09-26T17:26:03.733+08:00  INFO 17148 --- [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-26T17:26:03.733+08:00  INFO 17148 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-26T17:26:03.735+08:00  INFO 17148 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-26T17:26:03.742+08:00  INFO 17148 --- [           main] c.t.e.portal.web.WebLayoutAdviceTest     : Started WebLayoutAdviceTest in 0.631 seconds (process running for 45.26)
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.972 s -- in com.ttulka.ecommerce.portal.web.WebLayoutAdviceTest
+[INFO] Running com.ttulka.ecommerce.sales.cart.item.ProductIdTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s -- in com.ttulka.ecommerce.sales.cart.item.ProductIdTest
+[INFO] Running com.ttulka.ecommerce.sales.cart.item.TitleTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s -- in com.ttulka.ecommerce.sales.cart.item.TitleTest
+[INFO] Running com.ttulka.ecommerce.sales.cart.jdbc.CartTest
+2026-09-26T17:26:04.101+08:00  INFO 17148 --- [           main] o.s.b.d.r.RestartApplicationListener     : Restart disabled due to context in which it is running
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.0)
+
+2026-09-26T17:26:04.137+08:00  INFO 17148 --- [           main] c.t.ecommerce.sales.cart.jdbc.CartTest   : Starting CartTest using Java 21.0.7 with PID 17148 (started by admin in C:\Users\admin\IdeaProjects\changesafe-future-incident-lab)
+2026-09-26T17:26:04.137+08:00  INFO 17148 --- [           main] c.t.ecommerce.sales.cart.jdbc.CartTest   : No active profile set, falling back to 1 default profile: "test"
+2026-09-26T17:26:04.234+08:00  INFO 17148 --- [           main] beddedDataSourceBeanFactoryPostProcessor : Replacing 'dataSource' DataSource bean with embedded version
+2026-09-26T17:26:04.251+08:00  INFO 17148 --- [           main] o.s.j.d.e.EmbeddedDatabaseFactory        : Starting embedded database: url='jdbc:h2:mem:0627a6ed-9866-4e3b-8b89-3d77517f97c9;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2026-09-26T17:26:04.314+08:00  INFO 17148 --- [           main] c.t.ecommerce.sales.cart.jdbc.CartTest   : Started CartTest in 0.212 seconds (process running for 45.83)
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.421 s -- in com.ttulka.ecommerce.sales.cart.jdbc.CartTest
+[INFO] Running com.ttulka.ecommerce.sales.cart.jdbc.RetrieveCartTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.032 s -- in com.ttulka.ecommerce.sales.cart.jdbc.RetrieveCartTest
+[INFO] Running com.ttulka.ecommerce.sales.catalog.category.CategoryIdTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s -- in com.ttulka.ecommerce.sales.catalog.category.CategoryIdTest
+[INFO] Running com.ttulka.ecommerce.sales.catalog.category.TitleTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.013 s -- in com.ttulka.ecommerce.sales.catalog.category.TitleTest
+[INFO] Running com.ttulka.ecommerce.sales.catalog.category.UriTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.036 s -- in com.ttulka.ecommerce.sales.catalog.category.UriTest
+[INFO] Running com.ttulka.ecommerce.sales.catalog.jdbc.CategorizeProductTest
+2026-09-26T17:26:04.624+08:00  INFO 17148 --- [           main] o.s.b.d.r.RestartApplicationListener     : Restart disabled due to context in which it is running
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.0)
+
+2026-09-26T17:26:04.670+08:00  INFO 17148 --- [           main] c.t.e.s.c.jdbc.CategorizeProductTest     : Starting CategorizeProductTest using Java 21.0.7 with PID 17148 (started by admin in C:\Users\admin\IdeaProjects\changesafe-future-incident-lab)
+2026-09-26T17:26:04.670+08:00  INFO 17148 --- [           main] c.t.e.s.c.jdbc.CategorizeProductTest     : No active profile set, falling back to 1 default profile: "test"
+2026-09-26T17:26:04.807+08:00  INFO 17148 --- [           main] beddedDataSourceBeanFactoryPostProcessor : Replacing 'dataSource' DataSource bean with embedded version
+2026-09-26T17:26:04.826+08:00  INFO 17148 --- [           main] o.s.j.d.e.EmbeddedDatabaseFactory        : Starting embedded database: url='jdbc:h2:mem:e4bcde44-2ce2-43a7-92a9-fe9f296680f2;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2026-09-26T17:26:04.884+08:00  INFO 17148 --- [           main] c.t.e.s.c.jdbc.CategorizeProductTest     : Started CategorizeProductTest in 0.26 seconds (process running for 46.402)
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.316 s -- in com.ttulka.ecommerce.sales.catalog.jdbc.CategorizeProductTest
+[INFO] Running com.ttulka.ecommerce.sales.catalog.jdbc.ChangeCategoryTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.031 s -- in com.ttulka.ecommerce.sales.catalog.jdbc.ChangeCategoryTest
+[INFO] Running com.ttulka.ecommerce.sales.catalog.jdbc.ChangeProductTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.046 s -- in com.ttulka.ecommerce.sales.catalog.jdbc.ChangeProductTest
+[INFO] Running com.ttulka.ecommerce.sales.catalog.jdbc.FindCategoriesTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.051 s -- in com.ttulka.ecommerce.sales.catalog.jdbc.FindCategoriesTest
+[INFO] Running com.ttulka.ecommerce.sales.catalog.jdbc.FindProductsFromCategoryTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.034 s -- in com.ttulka.ecommerce.sales.catalog.jdbc.FindProductsFromCategoryTest
+[INFO] Running com.ttulka.ecommerce.sales.catalog.jdbc.FindProductsTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.058 s -- in com.ttulka.ecommerce.sales.catalog.jdbc.FindProductsTest
+[INFO] Running com.ttulka.ecommerce.sales.catalog.jdbc.ProductsTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.068 s -- in com.ttulka.ecommerce.sales.catalog.jdbc.ProductsTest
+[INFO] Running com.ttulka.ecommerce.sales.catalog.jdbc.PutProductForSaleTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.030 s -- in com.ttulka.ecommerce.sales.catalog.jdbc.PutProductForSaleTest
+[INFO] Running com.ttulka.ecommerce.sales.catalog.jdbc.UnknownCategoryTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s -- in com.ttulka.ecommerce.sales.catalog.jdbc.UnknownCategoryTest
+[INFO] Running com.ttulka.ecommerce.sales.catalog.jdbc.UnknownProductTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s -- in com.ttulka.ecommerce.sales.catalog.jdbc.UnknownProductTest
+[INFO] Running com.ttulka.ecommerce.sales.catalog.product.DescriptionTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s -- in com.ttulka.ecommerce.sales.catalog.product.DescriptionTest
+[INFO] Running com.ttulka.ecommerce.sales.catalog.product.ProductIdTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s -- in com.ttulka.ecommerce.sales.catalog.product.ProductIdTest
+[INFO] Running com.ttulka.ecommerce.sales.catalog.product.TitleTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.009 s -- in com.ttulka.ecommerce.sales.catalog.product.TitleTest
+[INFO] Running com.ttulka.ecommerce.sales.order.CustomerTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s -- in com.ttulka.ecommerce.sales.order.CustomerTest
+[INFO] Running com.ttulka.ecommerce.sales.order.jdbc.AssignOrderToCustomerTest
+2026-09-26T17:26:05.328+08:00  INFO 17148 --- [           main] o.s.b.d.r.RestartApplicationListener     : Restart disabled due to context in which it is running
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.0)
+
+2026-09-26T17:26:05.359+08:00  INFO 17148 --- [           main] c.t.e.s.o.j.AssignOrderToCustomerTest    : Starting AssignOrderToCustomerTest using Java 21.0.7 with PID 17148 (started by admin in C:\Users\admin\IdeaProjects\changesafe-future-incident-lab)
+2026-09-26T17:26:05.359+08:00  INFO 17148 --- [           main] c.t.e.s.o.j.AssignOrderToCustomerTest    : No active profile set, falling back to 1 default profile: "test"
+2026-09-26T17:26:05.467+08:00  INFO 17148 --- [           main] beddedDataSourceBeanFactoryPostProcessor : Replacing 'dataSource' DataSource bean with embedded version
+2026-09-26T17:26:05.485+08:00  INFO 17148 --- [           main] o.s.j.d.e.EmbeddedDatabaseFactory        : Starting embedded database: url='jdbc:h2:mem:09dbd086-d1c3-48d7-a751-a69e80960792;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2026-09-26T17:26:05.537+08:00  INFO 17148 --- [           main] c.t.e.s.o.j.AssignOrderToCustomerTest    : Started AssignOrderToCustomerTest in 0.21 seconds (process running for 47.054)
+2026-09-26T17:26:05.557+08:00  INFO 17148 --- [           main] c.t.e.s.o.j.AssignOrderToCustomerJdbc    : Order OrderId(4) assigned to customer Customer(ami)
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.273 s -- in com.ttulka.ecommerce.sales.order.jdbc.AssignOrderToCustomerTest
+[INFO] Running com.ttulka.ecommerce.sales.order.jdbc.FindOrdersTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.101 s -- in com.ttulka.ecommerce.sales.order.jdbc.FindOrdersTest
+[INFO] Running com.ttulka.ecommerce.sales.order.jdbc.OrderTest
+2026-09-26T17:26:05.696+08:00  INFO 17148 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.ttulka.ecommerce.sales.order.jdbc.OrderTest]: OrderTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-26T17:26:05.755+08:00  INFO 17148 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.ttulka.ecommerce.ECommerceApplication for test class com.ttulka.ecommerce.sales.order.jdbc.OrderTest
+2026-09-26T17:26:05.772+08:00  INFO 17148 --- [           main] c.t.e.sales.order.jdbc.OrderJdbc         : Order placed: OrderJdbc(OrderId(TEST123), Money(1517.8201), [OrderItem(ProductId(test-1), Quantity(123))])
+2026-09-26T17:26:05.812+08:00  INFO 17148 --- [           main] c.t.e.sales.order.jdbc.OrderJdbc         : Order placed: OrderJdbc(OrderId(TEST123), Money(12.34), [OrderItem(ProductId(test-1), Quantity(123))])
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.126 s -- in com.ttulka.ecommerce.sales.order.jdbc.OrderTest
+[INFO] Running com.ttulka.ecommerce.sales.order.jdbc.PlaceOrderTest
+2026-09-26T17:26:05.850+08:00  INFO 17148 --- [           main] c.t.e.sales.order.jdbc.OrderJdbc         : Order placed: OrderJdbc(OrderId(TEST123), Money(15190.5), [OrderItem(ProductId(PTEST), Quantity(123))])
+2026-09-26T17:26:05.864+08:00  INFO 17148 --- [           main] c.t.e.sales.order.jdbc.OrderJdbc         : Order placed: OrderJdbc(OrderId(DUP-ORDER-1), Money(10.0), [OrderItem(ProductId(PDUP), Quantity(1))])
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.054 s -- in com.ttulka.ecommerce.sales.order.jdbc.PlaceOrderTest
+[INFO] Running com.ttulka.ecommerce.sales.order.jdbc.UnknownOrderTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s -- in com.ttulka.ecommerce.sales.order.jdbc.UnknownOrderTest
+[INFO] Running com.ttulka.ecommerce.sales.order.OrderIdTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s -- in com.ttulka.ecommerce.sales.order.OrderIdTest
+[INFO] Running com.ttulka.ecommerce.sales.order.OrderItemTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s -- in com.ttulka.ecommerce.sales.order.OrderItemTest
+[INFO] Running com.ttulka.ecommerce.sales.order.OrderPlacedTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s -- in com.ttulka.ecommerce.sales.order.OrderPlacedTest
+[INFO] Running com.ttulka.ecommerce.shipping.delivery.AddressTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s -- in com.ttulka.ecommerce.shipping.delivery.AddressTest
+[INFO] Running com.ttulka.ecommerce.shipping.delivery.DeliveryIdTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s -- in com.ttulka.ecommerce.shipping.delivery.DeliveryIdTest
+[INFO] Running com.ttulka.ecommerce.shipping.delivery.DeliveryInfoTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s -- in com.ttulka.ecommerce.shipping.delivery.DeliveryInfoTest
+[INFO] Running com.ttulka.ecommerce.shipping.delivery.jdbc.DeliveryTest
+2026-09-26T17:26:05.947+08:00  INFO 17148 --- [           main] o.s.b.d.r.RestartApplicationListener     : Restart disabled due to context in which it is running
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.0)
+
+2026-09-26T17:26:05.987+08:00  INFO 17148 --- [           main] c.t.e.s.delivery.jdbc.DeliveryTest       : Starting DeliveryTest using Java 21.0.7 with PID 17148 (started by admin in C:\Users\admin\IdeaProjects\changesafe-future-incident-lab)
+2026-09-26T17:26:05.987+08:00  INFO 17148 --- [           main] c.t.e.s.delivery.jdbc.DeliveryTest       : No active profile set, falling back to 1 default profile: "test"
+2026-09-26T17:26:06.081+08:00  INFO 17148 --- [           main] beddedDataSourceBeanFactoryPostProcessor : Replacing 'dataSource' DataSource bean with embedded version
+2026-09-26T17:26:06.103+08:00  INFO 17148 --- [           main] o.s.j.d.e.EmbeddedDatabaseFactory        : Starting embedded database: url='jdbc:h2:mem:2ceae7b6-8332-4682-b31f-7870e4109c94;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2026-09-26T17:26:06.154+08:00  INFO 17148 --- [           main] c.t.e.s.delivery.jdbc.DeliveryTest       : Started DeliveryTest in 0.206 seconds (process running for 47.671)
+2026-09-26T17:26:06.182+08:00  INFO 17148 --- [           main] c.t.e.s.delivery.jdbc.DeliveryJdbc       : Delivery dispatched: DeliveryJdbc(DeliveryId(101), OrderId(1001), Address(Person(Test PersonA), Place(Test Place 1)))
+2026-09-26T17:26:06.210+08:00  INFO 17148 --- [           main] c.t.e.s.delivery.jdbc.DeliveryJdbc       : Delivery prepared: DeliveryJdbc(DeliveryId(556c001d-281d-4f77-98de-a9f8e8409cde), OrderId(556c001d-281d-4f77-98de-a9f8e8409cde), Address(Person(Test Test), Place(test)))
+2026-09-26T17:26:06.237+08:00  INFO 17148 --- [           main] c.t.e.s.delivery.jdbc.DeliveryJdbc       : Delivery dispatched: DeliveryJdbc(DeliveryId(101), OrderId(1001), Address(Person(Test PersonA), Place(Test Place 1)))
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.334 s -- in com.ttulka.ecommerce.shipping.delivery.jdbc.DeliveryTest
+[INFO] Running com.ttulka.ecommerce.shipping.delivery.jdbc.DispatchDeliveryTest
+2026-09-26T17:26:06.290+08:00  INFO 17148 --- [           main] c.t.e.s.delivery.jdbc.DeliveryJdbc       : Delivery prepared: DeliveryJdbc(DeliveryId(49ffd39f-8e46-4ab8-a7c2-6e7a08619628), OrderId(9564115c-f95b-4648-8e18-c5dc01b26824), Address(Person(Test Test), Place(Test Test 123)))
+2026-09-26T17:26:06.291+08:00  INFO 17148 --- [           main] c.t.e.s.delivery.jdbc.DeliveryJdbc       : Delivery dispatched: DeliveryJdbc(DeliveryId(49ffd39f-8e46-4ab8-a7c2-6e7a08619628), OrderId(9564115c-f95b-4648-8e18-c5dc01b26824), Address(Person(Test Test), Place(Test Test 123)))
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.028 s -- in com.ttulka.ecommerce.shipping.delivery.jdbc.DispatchDeliveryTest
+[INFO] Running com.ttulka.ecommerce.shipping.delivery.jdbc.FindDeliveriesTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.097 s -- in com.ttulka.ecommerce.shipping.delivery.jdbc.FindDeliveriesTest
+[INFO] Running com.ttulka.ecommerce.shipping.delivery.jdbc.PrepareDeliveryTest
+2026-09-26T17:26:06.412+08:00  INFO 17148 --- [           main] c.t.e.s.delivery.jdbc.DeliveryJdbc       : Delivery prepared: DeliveryJdbc(DeliveryId(7501fc7b-d4c9-4b8b-bc39-1f35991d18ca), OrderId(TEST123), Address(Person(Test Person), Place(Test Address 123)))
+2026-09-26T17:26:06.425+08:00  INFO 17148 --- [           main] c.t.e.s.delivery.jdbc.DeliveryJdbc       : Delivery prepared: DeliveryJdbc(DeliveryId(ee38524c-0676-4986-9c00-5a68635ca207), OrderId(TEST123), Address(Person(Test Person), Place(Test Address 123)))
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.032 s -- in com.ttulka.ecommerce.shipping.delivery.jdbc.PrepareDeliveryTest
+[INFO] Running com.ttulka.ecommerce.shipping.delivery.jdbc.UnknownDeliveryTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s -- in com.ttulka.ecommerce.shipping.delivery.jdbc.UnknownDeliveryTest
+[INFO] Running com.ttulka.ecommerce.shipping.delivery.OrderIdTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s -- in com.ttulka.ecommerce.shipping.delivery.OrderIdTest
+[INFO] Running com.ttulka.ecommerce.shipping.delivery.PersonTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.029 s -- in com.ttulka.ecommerce.shipping.delivery.PersonTest
+[INFO] Running com.ttulka.ecommerce.shipping.delivery.PlaceTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s -- in com.ttulka.ecommerce.shipping.delivery.PlaceTest
+[INFO] Running com.ttulka.ecommerce.shipping.delivery.rest.DeliveryControllerTest
+2026-09-26T17:26:06.491+08:00  INFO 17148 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.ttulka.ecommerce.shipping.delivery.rest.DeliveryControllerTest]: DeliveryControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-26T17:26:06.539+08:00  INFO 17148 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.ttulka.ecommerce.ECommerceApplication for test class com.ttulka.ecommerce.shipping.delivery.rest.DeliveryControllerTest
+2026-09-26T17:26:06.546+08:00  INFO 17148 --- [           main] o.s.b.d.r.RestartApplicationListener     : Restart disabled due to context in which it is running
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.0)
+
+2026-09-26T17:26:06.584+08:00  INFO 17148 --- [           main] c.t.e.s.d.rest.DeliveryControllerTest    : Starting DeliveryControllerTest using Java 21.0.7 with PID 17148 (started by admin in C:\Users\admin\IdeaProjects\changesafe-future-incident-lab)
+2026-09-26T17:26:06.584+08:00  INFO 17148 --- [           main] c.t.e.s.d.rest.DeliveryControllerTest    : No active profile set, falling back to 1 default profile: "test"
+2026-09-26T17:26:07.004+08:00  INFO 17148 --- [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-26T17:26:07.005+08:00  INFO 17148 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-26T17:26:07.005+08:00  INFO 17148 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-09-26T17:26:07.011+08:00  INFO 17148 --- [           main] c.t.e.s.d.rest.DeliveryControllerTest    : Started DeliveryControllerTest in 0.466 seconds (process running for 48.529)
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.668 s -- in com.ttulka.ecommerce.shipping.delivery.rest.DeliveryControllerTest
+[INFO] Running com.ttulka.ecommerce.shipping.dispatching.jdbc.DispatchingSagaTest
+2026-09-26T17:26:07.177+08:00  INFO 17148 --- [           main] o.s.b.d.r.RestartApplicationListener     : Restart disabled due to context in which it is running
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.0)
+
+2026-09-26T17:26:07.208+08:00  INFO 17148 --- [           main] c.t.e.s.d.jdbc.DispatchingSagaTest       : Starting DispatchingSagaTest using Java 21.0.7 with PID 17148 (started by admin in C:\Users\admin\IdeaProjects\changesafe-future-incident-lab)
+2026-09-26T17:26:07.208+08:00  INFO 17148 --- [           main] c.t.e.s.d.jdbc.DispatchingSagaTest       : No active profile set, falling back to 1 default profile: "test"
+2026-09-26T17:26:07.311+08:00  INFO 17148 --- [           main] beddedDataSourceBeanFactoryPostProcessor : Replacing 'dataSource' DataSource bean with embedded version
+2026-09-26T17:26:07.434+08:00  INFO 17148 --- [           main] o.s.j.d.e.EmbeddedDatabaseFactory        : Starting embedded database: url='jdbc:h2:mem:fc776eeb-7635-4216-bcbe-453d77e3cb19;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2026-09-26T17:26:07.478+08:00  INFO 17148 --- [           main] c.t.e.s.d.jdbc.DispatchingSagaTest       : Started DispatchingSagaTest in 0.301 seconds (process running for 48.995)
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.368 s -- in com.ttulka.ecommerce.shipping.dispatching.jdbc.DispatchingSagaTest
+[INFO] Running com.ttulka.ecommerce.shipping.dispatching.jdbc.DispatchingTest
+2026-09-26T17:26:07.549+08:00  INFO 17148 --- [           main] o.s.b.d.r.RestartApplicationListener     : Restart disabled due to context in which it is running
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.0)
+
+2026-09-26T17:26:07.577+08:00  INFO 17148 --- [           main] c.t.e.s.d.jdbc.DispatchingTest           : Starting DispatchingTest using Java 21.0.7 with PID 17148 (started by admin in C:\Users\admin\IdeaProjects\changesafe-future-incident-lab)
+2026-09-26T17:26:07.578+08:00  INFO 17148 --- [           main] c.t.e.s.d.jdbc.DispatchingTest           : No active profile set, falling back to 1 default profile: "test"
+2026-09-26T17:26:07.672+08:00  INFO 17148 --- [           main] beddedDataSourceBeanFactoryPostProcessor : Replacing 'dataSource' DataSource bean with embedded version
+2026-09-26T17:26:07.690+08:00  INFO 17148 --- [           main] o.s.j.d.e.EmbeddedDatabaseFactory        : Starting embedded database: url='jdbc:h2:mem:5f999bae-8d4a-4b0f-8553-b7d5fe3f7ead;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2026-09-26T17:26:07.728+08:00  INFO 17148 --- [           main] c.t.e.s.d.jdbc.DispatchingTest           : Started DispatchingTest in 0.18 seconds (process running for 49.246)
+2026-09-26T17:26:07.735+08:00  INFO 17148 --- [           main] c.t.e.s.d.jdbc.DispatchingJdbc           : Order OrderId(DispatchingTest) is being dispatched.
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.210 s -- in com.ttulka.ecommerce.shipping.dispatching.jdbc.DispatchingTest
+[INFO] Running com.ttulka.ecommerce.shipping.dispatching.listeners.DispatchingListenersTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.121 s -- in com.ttulka.ecommerce.shipping.dispatching.listeners.DispatchingListenersTest
+[INFO] Running com.ttulka.ecommerce.shipping.dispatching.OrderIdTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s -- in com.ttulka.ecommerce.shipping.dispatching.OrderIdTest
+[INFO] Running com.ttulka.ecommerce.warehouse.AmountTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s -- in com.ttulka.ecommerce.warehouse.AmountTest
+[INFO] Running com.ttulka.ecommerce.warehouse.InStockTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s -- in com.ttulka.ecommerce.warehouse.InStockTest
+[INFO] Running com.ttulka.ecommerce.warehouse.jdbc.FetchGoodsTest
+2026-09-26T17:26:07.904+08:00  INFO 17148 --- [           main] o.s.b.d.r.RestartApplicationListener     : Restart disabled due to context in which it is running
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.0)
+
+2026-09-26T17:26:07.934+08:00  INFO 17148 --- [           main] c.t.e.warehouse.jdbc.FetchGoodsTest      : Starting FetchGoodsTest using Java 21.0.7 with PID 17148 (started by admin in C:\Users\admin\IdeaProjects\changesafe-future-incident-lab)
+2026-09-26T17:26:07.935+08:00  INFO 17148 --- [           main] c.t.e.warehouse.jdbc.FetchGoodsTest      : No active profile set, falling back to 1 default profile: "test"
+2026-09-26T17:26:08.032+08:00  INFO 17148 --- [           main] beddedDataSourceBeanFactoryPostProcessor : Replacing 'dataSource' DataSource bean with embedded version
+2026-09-26T17:26:08.050+08:00  INFO 17148 --- [           main] o.s.j.d.e.EmbeddedDatabaseFactory        : Starting embedded database: url='jdbc:h2:mem:968f9034-aea2-44e8-bbb8-c3b55ee3df70;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2026-09-26T17:26:08.098+08:00  INFO 17148 --- [           main] c.t.e.warehouse.jdbc.FetchGoodsTest      : Started FetchGoodsTest in 0.193 seconds (process running for 49.615)
+2026-09-26T17:26:08.106+08:00  INFO 17148 --- [           main] c.t.e.warehouse.jdbc.GoodsFetchingJdbc   : Goods fetched: [ToFetch(ProductId(e53a2a0f-0316-466c-aa73-ebce3d57693d), Amount(1))]
+2026-09-26T17:26:08.117+08:00  INFO 17148 --- [           main] c.t.e.warehouse.jdbc.GoodsFetchingJdbc   : Goods fetched: [ToFetch(ProductId(13e1fc5c-8ae7-4a97-84fd-788dde299102), Amount(1))]
+2026-09-26T17:26:08.128+08:00  INFO 17148 --- [           main] c.t.e.warehouse.jdbc.GoodsFetchingJdbc   : Goods fetched: [ToFetch(ProductId(9e308b58-bbfd-4dad-8b16-aa884d047282), Amount(2))]
+2026-09-26T17:26:08.136+08:00  INFO 17148 --- [           main] c.t.e.warehouse.jdbc.GoodsFetchingJdbc   : Goods fetched: [ToFetch(ProductId(d90d4956-65cc-4813-92cd-26218fa1a017), Amount(99))]
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.254 s -- in com.ttulka.ecommerce.warehouse.jdbc.FetchGoodsTest
+[INFO] Running com.ttulka.ecommerce.warehouse.jdbc.WarehouseTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.043 s -- in com.ttulka.ecommerce.warehouse.jdbc.WarehouseTest
+[INFO] Running com.ttulka.ecommerce.warehouse.listeners.WarehouseListenersTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.221 s -- in com.ttulka.ecommerce.warehouse.listeners.WarehouseListenersTest
+[INFO] Running com.ttulka.ecommerce.warehouse.OrderIdTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s -- in com.ttulka.ecommerce.warehouse.OrderIdTest
+[INFO] Running com.ttulka.ecommerce.warehouse.ProductIdTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s -- in com.ttulka.ecommerce.warehouse.ProductIdTest
+[INFO] Running com.ttulka.ecommerce.warehouse.rest.WarehouseControllerTest
+2026-09-26T17:26:08.429+08:00  INFO 17148 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.ttulka.ecommerce.warehouse.rest.WarehouseControllerTest]: WarehouseControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-26T17:26:08.466+08:00  INFO 17148 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.ttulka.ecommerce.ECommerceApplication for test class com.ttulka.ecommerce.warehouse.rest.WarehouseControllerTest
+2026-09-26T17:26:08.470+08:00  INFO 17148 --- [           main] o.s.b.d.r.RestartApplicationListener     : Restart disabled due to context in which it is running
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.0)
+
+2026-09-26T17:26:08.501+08:00  INFO 17148 --- [           main] c.t.e.w.rest.WarehouseControllerTest     : Starting WarehouseControllerTest using Java 21.0.7 with PID 17148 (started by admin in C:\Users\admin\IdeaProjects\changesafe-future-incident-lab)
+2026-09-26T17:26:08.501+08:00  INFO 17148 --- [           main] c.t.e.w.rest.WarehouseControllerTest     : No active profile set, falling back to 1 default profile: "test"
+2026-09-26T17:26:08.822+08:00  INFO 17148 --- [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-09-26T17:26:08.822+08:00  INFO 17148 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-09-26T17:26:08.823+08:00  INFO 17148 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-09-26T17:26:08.827+08:00  INFO 17148 --- [           main] c.t.e.w.rest.WarehouseControllerTest     : Started WarehouseControllerTest in 0.357 seconds (process running for 50.344)
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.413 s -- in com.ttulka.ecommerce.warehouse.rest.WarehouseControllerTest
+[INFO] Running com.ttulka.ecommerce.warehouse.ToFetchTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s -- in com.ttulka.ecommerce.warehouse.ToFetchTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 307, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  01:07 min
+[INFO] Finished at: 2026-09-26T17:26:09+08:00
+[INFO] ------------------------------------------------------------------------

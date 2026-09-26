@@ -1,7 +1,10 @@
 package com.ttulka.ecommerce.portal.web;
 
+import java.util.UUID;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import com.ttulka.ecommerce.portal.CheckoutOrder;
 import com.ttulka.ecommerce.portal.PlaceOrderFromCart;
@@ -9,6 +12,7 @@ import com.ttulka.ecommerce.sales.cart.Cart;
 import com.ttulka.ecommerce.identity.user.Username;
 import com.ttulka.ecommerce.sales.cart.RetrieveCart;
 import com.ttulka.ecommerce.sales.order.Customer;
+import com.ttulka.ecommerce.sales.order.PlaceOrder;
 import com.ttulka.ecommerce.shipping.delivery.Address;
 import com.ttulka.ecommerce.shipping.delivery.Person;
 import com.ttulka.ecommerce.shipping.delivery.Place;
@@ -33,17 +37,27 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 class OrderController {
 
+    private static final String SESSION_CHECKOUT_TOKEN = "checkoutToken";
+
     private final @NonNull RetrieveCart retrieveCart;
     private final @NonNull CheckoutOrder checkoutOrder;
 
     @GetMapping
-    public String index() {
+    public String index(HttpServletRequest request, Model model) {
+        HttpSession session = request.getSession();
+        String token = (String) session.getAttribute(SESSION_CHECKOUT_TOKEN);
+        if (token == null) {
+            token = UUID.randomUUID().toString();
+            session.setAttribute(SESSION_CHECKOUT_TOKEN, token);
+        }
+        model.addAttribute("checkoutToken", token);
         return "order";
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String place(@RequestParam(required = false) String name,
                         @RequestParam(required = false) String address,
+                        @RequestParam(required = false) String idempotencyKey,
                         HttpServletRequest request, HttpServletResponse response, Model model) {
         model.addAttribute("name", name == null ? "" : name);
         model.addAttribute("address", address == null ? "" : address);
@@ -70,12 +84,16 @@ class OrderController {
         Cart cart = retrieveCart.byId(new CartIdFromCookies(request, response).cartId());
         Address deliveryAddress = new Address(person, place);
         Username username = LoggedInUserFromSession.username(request);
-        if (username == null) {
-            checkoutOrder.checkout(cart, deliveryAddress);
-        } else {
-            checkoutOrder.checkout(cart, deliveryAddress, new Customer(username.value()));
+        try {
+            if (username == null) {
+                checkoutOrder.checkout(cart, deliveryAddress, idempotencyKey);
+            } else {
+                checkoutOrder.checkout(cart, deliveryAddress, new Customer(username.value()), idempotencyKey);
+            }
+        } catch (PlaceOrder.DuplicateOrderException e) {
+            return "redirect:/order/error?message=duplicate";
         }
-
+        request.getSession().removeAttribute(SESSION_CHECKOUT_TOKEN);
         return "redirect:/order/success";
     }
 

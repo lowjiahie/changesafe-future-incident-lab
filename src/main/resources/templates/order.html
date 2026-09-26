@@ -11,6 +11,7 @@
                 <h2 th:text="#{order.delivery}">Delivery details</h2>
                 <p th:text="#{order.delivery.note}">All fields are required. Use sample information only.</p>
                 <form th:action="@{/order}" method="post" class="checkout-form">
+                    <input type="hidden" name="idempotencyKey" th:value="${checkoutToken}">
                     <div class="field">
                         <label for="name" th:text="#{delivery.address.person}">Full name</label>
                         <input id="name" name="name" type="text" autocomplete="name" maxlength="50" required

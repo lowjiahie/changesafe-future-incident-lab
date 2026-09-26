@@ -27,8 +27,17 @@ class PlaceOrderJdbc implements PlaceOrder {
 
     @Transactional
     @Override
-    public void place(@NonNull OrderId orderId, @NonNull Collection<OrderItem> items, @NonNull Money total) {
-        new OrderJdbc(orderId, total, items, jdbcTemplate, eventPublisher)
+    public void place(@NonNull OrderId orderId, @NonNull Collection<OrderItem> items, @NonNull Money total,
+                      String idempotencyKey) {
+        if (idempotencyKey != null) {
+            Integer count = jdbcTemplate.queryForObject(
+                    "SELECT COUNT(*) FROM orders WHERE idempotency_key = ?",
+                    Integer.class, idempotencyKey);
+            if (count != null && count > 0) {
+                throw new PlaceOrder.DuplicateOrderException();
+            }
+        }
+        new OrderJdbc(orderId, total, items, idempotencyKey, jdbcTemplate, eventPublisher)
                 .place();
     }
 }
