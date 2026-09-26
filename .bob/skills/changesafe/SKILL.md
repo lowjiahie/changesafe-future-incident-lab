@@ -92,9 +92,9 @@ Pause dependent implementation while answers are pending; safe independent analy
 2. Trace the call chain, event flow, persistence, and downstream components -- including unedited
    code that may be affected.
 3. If the change crosses module boundaries and the question is non-trivial, spawn one read-only
-   `explore` subagent with a minimal context packet: change summary, bounded question, relevant
-   file paths. The subagent must return: relevant file paths, event sequence, one concrete failure
-   possibility, and unknowns. It must not edit.
+   `explore` subagent using the guardian spec at
+   `.bob/skills/changesafe/guardians/impact-explorer/GUARDIAN.md`.
+   Pass only the fields defined in that spec's **Input packet** table.
 4. Populate the impact map table in the risk report (section 3).
 
 ---
@@ -106,7 +106,10 @@ Pause dependent implementation while answers are pending; safe independent analy
 2. For each hypothesis: state the trigger and failure chain, user/system impact, evidence links,
    confidence (HIGH/MEDIUM/LOW), and initial status (HYPOTHESIS or EVIDENCE-BACKED).
 3. If test coverage gaps are unclear AND this question is independent of the impact exploration,
-   spawn a second read-only `explore` subagent. Maximum two subagents per run total.
+   spawn a second read-only `explore` subagent using the guardian spec at
+   `.bob/skills/changesafe/guardians/test-gap-explorer/GUARDIAN.md`.
+   Pass only the fields defined in that spec's **Input packet** table.
+   Maximum two guardians per run total.
 4. Select the single highest-value hypothesis for the safety contract. Document the selection
    rationale.
 5. Define the safety invariant: one precise, testable condition (e.g., "the same checkout
