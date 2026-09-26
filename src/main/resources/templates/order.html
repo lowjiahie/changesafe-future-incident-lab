@@ -10,7 +10,8 @@
             <section class="surface form-card">
                 <h2 th:text="#{order.delivery}">Delivery details</h2>
                 <p th:text="#{order.delivery.note}">All fields are required. Use sample information only.</p>
-                <form th:action="@{/order}" method="post" class="checkout-form">
+                <form th:action="@{/order}" method="post" class="checkout-form" data-checkout-form
+                      th:data-loading-text="#{order.submitting}">
                     <div class="field">
                         <label for="name" th:text="#{delivery.address.person}">Full name</label>
                         <input id="name" name="name" type="text" autocomplete="name" maxlength="50" required
@@ -27,7 +28,10 @@
                         <small id="address-help" th:unless="${addressError}" th:text="#{order.address.help}">Street, city and postal code.</small>
                         <small id="address-error" class="field-error" th:if="${addressError}" th:text="#{order.validation.address}">Enter an address.</small>
                     </div>
-                    <button class="button button-full" type="submit" th:text="#{order.submit}">Place order</button>
+                    <button class="button button-full" type="submit">
+                        <span class="button-spinner" aria-hidden="true" hidden></span>
+                        <span class="button-label" th:text="#{order.submit}">Place order</span>
+                    </button>
                 </form>
             </section>
             <aside class="surface reassurance">

@@ -8,6 +8,11 @@ a { color: inherit; }
 button, input, textarea { font: inherit; }
 button, .button { cursor: pointer; }
 button:disabled { cursor: not-allowed; opacity: .45; }
+button[aria-busy="true"]:disabled { cursor: progress; opacity: .8; }
+.button-spinner { width: 16px; height: 16px; margin-right: 10px; border: 2px solid #ffffff59; border-top-color: #fff; border-radius: 50%; animation: button-spin .7s linear infinite; }
+.button-spinner[hidden] { display: none; }
+@keyframes button-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .button-spinner { animation-duration: 1.6s; } }
 :focus-visible { outline: 3px solid #a2dcae; outline-offset: 3px; }
 .shell { width: min(1180px, calc(100% - 48px)); margin-inline: auto; }
 .site-header { background: #102d2a; color: #fff; }
