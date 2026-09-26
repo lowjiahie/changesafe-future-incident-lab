@@ -10,8 +10,10 @@ import com.ttulka.ecommerce.shipping.delivery.Address;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 /**
  * Coordinates the synchronous checkout writes as one unit of work.
@@ -25,6 +27,13 @@ public class CheckoutOrder {
     private final @NonNull AssignOrderToCustomer assignOrderToCustomer;
 
     /**
+     * Demo-only: simulates slow downstream work (payment, delivery preparation) so a double click
+     * in the browser reliably overlaps. Zero (the default) disables it.
+     */
+    @Setter(AccessLevel.PACKAGE)
+    private long simulatedLatencyMillis;
+
+    /**
      * Checks out a guest order that is not linked to any customer.
      */
     @Transactional
@@ -32,6 +41,7 @@ public class CheckoutOrder {
         UUID orderId = UUID.randomUUID();
         placeOrderFromCart.placeOrder(orderId, cart);
         prepareOrderDelivery.prepareDelivery(orderId, deliveryAddress);
+        simulateSlowCheckout();
         cart.empty();
         return orderId;
     }
@@ -45,7 +55,19 @@ public class CheckoutOrder {
         placeOrderFromCart.placeOrder(orderId, cart);
         assignOrderToCustomer.assign(new OrderId(orderId), customer);
         prepareOrderDelivery.prepareDelivery(orderId, deliveryAddress);
+        simulateSlowCheckout();
         cart.empty();
         return orderId;
+    }
+
+    private void simulateSlowCheckout() {
+        if (simulatedLatencyMillis <= 0) {
+            return;
+        }
+        try {
+            Thread.sleep(simulatedLatencyMillis);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 }
