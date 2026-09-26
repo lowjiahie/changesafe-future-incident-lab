@@ -1,0 +1,47 @@
+﻿# Bob ignore rules for changesafe-future-incident-lab
+#
+# Rationale for each group is documented inline.
+# Direct @file mentions in Bob tasks can bypass these rules -- never mention a secret file by path.
+# Source code, tests, ChangeSafe artifacts, and evidence needed for the demo are NOT ignored.
+
+# -- Build output --------------------------------------------------------------
+# Maven build output -- large, regenerated on every build, not source.
+target/
+
+# Compiled Java bytecode (may appear outside target/ in some IDE configs)
+**/*.class
+
+# Packaged JARs and WARs (build artifacts, not source)
+**/*.jar
+**/*.war
+
+# -- IDE and editor metadata ---------------------------------------------------
+# IntelliJ IDEA project files -- local IDE state, not project conventions.
+.idea/
+
+# Maven wrapper binary cache -- not source.
+.mvn/wrapper/maven-wrapper.jar
+
+# -- Log noise -----------------------------------------------------------------
+# Log files in the project root or build directories -- these are runtime noise.
+# EXCEPTION: changesafe/evidence/**/logs/*.log files are RETAINED (evidence artifacts).
+*.log
+!changesafe/evidence/**/*.log
+
+# -- Docker / runtime only -----------------------------------------------------
+# docker-compose.yml is runtime infrastructure, not application logic.
+# Ignore to prevent Bob from loading it as application context.
+docker-compose.yml
+
+# -- Explicit retains (documentation) -----------------------------------------
+# The following are NOT ignored -- listed here as documentation only.
+# src/                          retained: application source and tests
+# .bob/                         retained: Bob configuration (modes, skills, rules)
+# changesafe/                   retained: templates, scripts, evidence, README
+# bob_sessions/                 retained: hackathon consumption screenshots
+# CHANGESAFE_BOB_BUILD_BRIEF.md retained: build specification
+# CHANGESAFE_OUTPUT_CONTRACT.md retained: output format specification
+# pom.xml                       retained: build definition
+# README.md                     retained: project documentation
+# LICENSE                       retained: MIT license attribution (required)
+# lombok.config                 retained: Lombok configuration
