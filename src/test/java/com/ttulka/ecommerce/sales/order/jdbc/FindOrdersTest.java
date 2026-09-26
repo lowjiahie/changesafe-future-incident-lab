@@ -3,6 +3,7 @@ package com.ttulka.ecommerce.sales.order.jdbc;
 import com.ttulka.ecommerce.common.events.EventPublisher;
 import com.ttulka.ecommerce.common.primitives.Money;
 import com.ttulka.ecommerce.common.primitives.Quantity;
+import com.ttulka.ecommerce.sales.order.Customer;
 import com.ttulka.ecommerce.sales.order.FindOrders;
 import com.ttulka.ecommerce.sales.order.Order;
 import com.ttulka.ecommerce.sales.order.OrderId;
@@ -45,5 +46,29 @@ class FindOrdersTest {
         Order order = findOrders.byId(new OrderId(123));
 
         assertThat(order.id()).isEqualTo(new OrderId(0));
+    }
+
+    @Test
+    void orders_of_a_customer_are_found_newest_first() {
+        var orders = findOrders.byCustomer(new Customer("ami"));
+
+        assertAll(
+                () -> assertThat(orders).extracting(Order::id)
+                        .containsExactly(new OrderId(2), new OrderId(1)),
+                () -> assertThat(orders.get(0).items()).hasSize(1),
+                () -> assertThat(orders.get(0).total()).isEqualTo(new Money(2000.f)),
+                () -> assertThat(orders.get(1).items()).hasSize(2)
+        );
+    }
+
+    @Test
+    void orders_of_a_customer_do_not_include_orders_of_others() {
+        assertThat(findOrders.byCustomer(new Customer("jason")))
+                .extracting(Order::id).containsExactly(new OrderId(3));
+    }
+
+    @Test
+    void no_orders_found_for_a_customer_without_orders() {
+        assertThat(findOrders.byCustomer(new Customer("nobody"))).isEmpty();
     }
 }

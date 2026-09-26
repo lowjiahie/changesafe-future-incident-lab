@@ -21,7 +21,7 @@
                     </div>
                     <div class="field">
                         <label for="address" th:text="#{delivery.address.place}">Delivery address</label>
-                        <textarea id="address" name="address" rows="3" maxlength="100" required
+                        <textarea id="address" name="address" rows="3" maxlength="100"
                                   th:text="${address}" th:attr="aria-invalid=${addressError != null ? 'true' : null},aria-describedby=${addressError != null ? 'address-error' : 'address-help'}"
                                   th:placeholder="#{order.address.placeholder}"></textarea>
                         <small id="address-help" th:unless="${addressError}" th:text="#{order.address.help}">Street, city and postal code.</small>

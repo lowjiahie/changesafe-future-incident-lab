@@ -4,6 +4,7 @@ import com.ttulka.ecommerce.portal.CheckoutOrder;
 import com.ttulka.ecommerce.portal.PlaceOrderFromCart;
 import com.ttulka.ecommerce.sales.cart.Cart;
 import com.ttulka.ecommerce.sales.cart.RetrieveCart;
+import com.ttulka.ecommerce.sales.order.Customer;
 import com.ttulka.ecommerce.shipping.delivery.Address;
 import com.ttulka.ecommerce.shipping.delivery.Person;
 import com.ttulka.ecommerce.shipping.delivery.Place;
@@ -68,6 +69,25 @@ class OrderControllerTest {
 
         verify(checkoutOrder).checkout(eq(cart),
                 eq(new Address(new Person("Test Name"), new Place("Test Address 123"))));
+    }
+
+    @Test
+    void order_of_a_logged_in_user_is_linked_to_them() throws Exception {
+        Cart cart = mock(Cart.class);
+        when(retrieveCart.byId(any())).thenReturn(cart);
+
+        mockMvc.perform(
+                post("/order")
+                        .sessionAttr("LOGGED_IN_USERNAME", "ami")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                        .param("name", "Test Name")
+                        .param("address", "Test Address 123"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/order/success"));
+
+        verify(checkoutOrder).checkout(eq(cart),
+                eq(new Address(new Person("Test Name"), new Place("Test Address 123"))),
+                eq(new Customer("ami")));
     }
 
     @Test

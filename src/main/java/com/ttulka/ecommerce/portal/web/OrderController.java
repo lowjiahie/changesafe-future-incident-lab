@@ -6,7 +6,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import com.ttulka.ecommerce.portal.CheckoutOrder;
 import com.ttulka.ecommerce.portal.PlaceOrderFromCart;
 import com.ttulka.ecommerce.sales.cart.Cart;
+import com.ttulka.ecommerce.identity.user.Username;
 import com.ttulka.ecommerce.sales.cart.RetrieveCart;
+import com.ttulka.ecommerce.sales.order.Customer;
 import com.ttulka.ecommerce.shipping.delivery.Address;
 import com.ttulka.ecommerce.shipping.delivery.Person;
 import com.ttulka.ecommerce.shipping.delivery.Place;
@@ -66,7 +68,13 @@ class OrderController {
             return "order";
         }
         Cart cart = retrieveCart.byId(new CartIdFromCookies(request, response).cartId());
-        checkoutOrder.checkout(cart, new Address(person, place));
+        Address deliveryAddress = new Address(person, place);
+        Username username = LoggedInUserFromSession.username(request);
+        if (username == null) {
+            checkoutOrder.checkout(cart, deliveryAddress);
+        } else {
+            checkoutOrder.checkout(cart, deliveryAddress, new Customer(username.value()));
+        }
 
         return "redirect:/order/success";
     }

@@ -1,6 +1,7 @@
 package com.ttulka.ecommerce.sales.order.jdbc;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -8,6 +9,7 @@ import java.util.stream.Collectors;
 import com.ttulka.ecommerce.common.events.EventPublisher;
 import com.ttulka.ecommerce.common.primitives.Money;
 import com.ttulka.ecommerce.common.primitives.Quantity;
+import com.ttulka.ecommerce.sales.order.Customer;
 import com.ttulka.ecommerce.sales.order.FindOrders;
 import com.ttulka.ecommerce.sales.order.Order;
 import com.ttulka.ecommerce.sales.order.OrderId;
@@ -46,6 +48,33 @@ final class FindOrdersJdbc implements FindOrders {
                         .map(this::toOrderItem)
                         .collect(Collectors.toList())))
                 .orElseGet(UnknownOrder::new);
+    }
+
+    @Override
+    public List<Order> byCustomer(Customer customer) {
+        var orders = jdbcTemplate.queryForList(
+                "SELECT o.id, o.total FROM orders o " +
+                "JOIN customer_orders c ON c.order_id = o.id " +
+                "WHERE c.username = ? ORDER BY c.placed_at DESC, o.id",
+                customer.value());
+
+        var itemsByOrderId = jdbcTemplate.queryForList(
+                "SELECT i.order_id, i.product_id, i.quantity FROM order_items i " +
+                "JOIN customer_orders c ON c.order_id = i.order_id " +
+                "WHERE c.username = ?",
+                customer.value())
+                .stream().collect(Collectors.groupingBy(
+                        item -> (String) item.get("order_id"),
+                        Collectors.mapping(this::toOrderItem, Collectors.toList())));
+
+        var result = new ArrayList<Order>();
+        for (var order : orders) {
+            var items = itemsByOrderId.get((String) order.get("id"));
+            if (items != null) {
+                result.add(toOrder(order, items));
+            }
+        }
+        return result;
     }
 
     private Order toOrder(Map<String, Object> order, List<OrderItem> items) {
