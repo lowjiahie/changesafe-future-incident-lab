@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<body>
+    <main layout:fragment="content" class="shell page-content">
+        <span class="eyebrow" th:text="#{orders.eyebrow}">YOUR ACCOUNT</span>
+        <h1 th:text="#{orders.title}">Your orders</h1>
+        <p class="page-intro" th:text="#{orders.intro}">Orders you placed while logged in, newest first.</p>
+
+        <div th:unless="${#lists.isEmpty(orders)}" class="order-list">
+            <article class="surface order-card" th:each="order : ${orders}">
+                <header class="order-card-head">
+                    <div>
+                        <span class="order-label" th:text="#{orders.number}">Order</span>
+                        <code th:text="${order.id}">order-id</code>
+                    </div>
+                    <strong th:text="${'$' + #numbers.formatDecimal(order.total, 1, 2)}">$0.00</strong>
+                </header>
+                <ul class="order-lines">
+                    <li th:each="item : ${order.items}">
+                        <span th:text="${item.title}">Item</span>
+                        <span class="order-qty" th:text="'Qty ' + ${item.quantity}">Qty 1</span>
+                    </li>
+                </ul>
+                <dl class="order-delivery" th:if="${order.containsKey('recipient')}">
+                    <div>
+                        <dt th:text="#{orders.recipient}">Recipient</dt>
+                        <dd th:text="${order.recipient}">Alex Chen</dd>
+                    </div>
+                    <div>
+                        <dt th:text="#{orders.address}">Delivery address</dt>
+                        <dd class="order-address" th:text="${order.deliveryAddress}">Demo Street 1</dd>
+                    </div>
+                </dl>
+            </article>
+        </div>
+        <div class="empty-state" th:if="${#lists.isEmpty(orders)}">
+            <div class="empty-icon" aria-hidden="true">✦</div>
+            <h2 th:text="#{orders.empty.title}">No orders yet</h2>
+            <p th:text="#{orders.empty.text}">Orders you place while logged in will show up here.</p>
+            <a class="button" th:href="@{/}" th:text="#{orders.empty.action}">Browse products</a>
+        </div>
+    </main>
+</body>
+</html>

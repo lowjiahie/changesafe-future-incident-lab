@@ -1,5 +1,6 @@
 package com.ttulka.ecommerce.portal;
 
+import com.ttulka.ecommerce.sales.order.AssignOrderToCustomer;
 import com.ttulka.ecommerce.sales.order.PlaceOrder;
 import com.ttulka.ecommerce.shipping.delivery.PrepareDelivery;
 
@@ -24,7 +25,8 @@ class PortalConfig {
 
     @Bean
     CheckoutOrder checkoutOrder(PlaceOrderFromCart placeOrderFromCart,
-                                PrepareOrderDelivery prepareOrderDelivery) {
-        return new CheckoutOrder(placeOrderFromCart, prepareOrderDelivery);
+                                PrepareOrderDelivery prepareOrderDelivery,
+                                AssignOrderToCustomer assignOrderToCustomer) {
+        return new CheckoutOrder(placeOrderFromCart, prepareOrderDelivery, assignOrderToCustomer);
     }
 }

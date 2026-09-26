@@ -44,6 +44,12 @@ CREATE TABLE IF NOT EXISTS order_items (
     PRIMARY KEY (order_id, product_id)
 );
 
+CREATE TABLE IF NOT EXISTS customer_orders (
+    order_id VARCHAR(64) NOT NULL PRIMARY KEY,
+    username VARCHAR(30) NOT NULL,
+    placed_at TIMESTAMP NOT NULL
+);
+
 -- ------ PAYMENT ------
 
 CREATE TABLE IF NOT EXISTS payments (

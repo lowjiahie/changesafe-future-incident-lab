@@ -16,6 +16,7 @@
             </a>
             <nav class="main-nav" aria-label="Main navigation">
                 <a th:href="@{/}" th:text="#{nav.catalog}">Catalog</a>
+                <a th:if="${loggedInUsername != null}" th:href="@{/orders}" th:text="#{nav.orders}">My orders</a>
                 <a th:if="${loggedInUsername != null}" th:href="@{/profile}" th:text="#{nav.profile(${loggedInUsername})}">Profile</a>
                 <a th:if="${loggedInUsername != null}" th:href="@{/logout}" th:text="#{nav.logout}">Log out</a>
                 <a th:if="${loggedInUsername == null}" th:href="@{/login}" th:text="#{nav.login}">Log in</a>
