@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.ttulka.ecommerce.identity.user.Username;
 import com.ttulka.ecommerce.portal.CheckoutOrder;
 import com.ttulka.ecommerce.portal.PlaceOrderFromCart;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Web controller for Order use-cases.
@@ -36,13 +39,29 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequestMapping("/order")
 @RequiredArgsConstructor
+@Slf4j
 class OrderController {
 
+    /**
+     * Session attribute name for the checkout token.
+     *
+     * <p>This token is <strong>server-issued and session-bound</strong>. It serves two purposes:
+     * <ol>
+     *   <li><b>Idempotency key</b> — passed to {@link com.ttulka.ecommerce.sales.order.PlaceOrder}
+     *       so that a retry of the same checkout attempt cannot create a second order row.</li>
+     *   <li><b>Implicit CSRF mitigation</b> — because the token is generated server-side on
+     *       {@code GET /order} and tied to the session, a cross-site request forged without a
+     *       valid session cannot supply a matching token.</li>
+     * </ol>
+     * Do not remove or replace this token without preserving both properties (BR-007).
+     * If Spring Security CSRF protection is added later, verify that this mechanism is either
+     * retained or superseded before disabling it.
+     */
     private static final String SESSION_CHECKOUT_TOKEN = "checkoutToken";
 
     // R-10: only codes that map to real i18n keys are accepted; anything else falls back to default.
     private static final Set<String> KNOWN_ERROR_CODES =
-            Set.of("duplicate", "noitems", "requires", "outofstock", "default");
+            Set.of("duplicate", "noitems", "requires", "outofstock", "productnotfound", "default");
 
     private final @NonNull RetrieveCart retrieveCart;
     private final @NonNull CheckoutOrder checkoutOrder;
@@ -62,7 +81,8 @@ class OrderController {
     @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String place(@RequestParam(required = false) String name,
                         @RequestParam(required = false) String address,
-                        HttpServletRequest request, HttpServletResponse response, Model model) {
+                        HttpServletRequest request, HttpServletResponse response, Model model,
+                        RedirectAttributes redirectAttributes) {
         model.addAttribute("name", name == null ? "" : name);
         model.addAttribute("address", address == null ? "" : address);
 
@@ -88,6 +108,10 @@ class OrderController {
         Cart cart = retrieveCart.byId(new CartIdFromCookies(request, response).cartId());
         Address deliveryAddress = new Address(person, place);
         Username username = LoggedInUserFromSession.username(request);
+        log.info("Checkout attempt by {} from {} cart={}",
+                username != null ? username.value() : "guest",
+                request.getRemoteAddr(),
+                cart.id() != null ? cart.id().value() : "unknown");
 
         // R-02: use the server-issued session token as the idempotency key — the client-supplied
         // value is ignored so it cannot be tampered with or omitted to bypass duplicate protection.
@@ -95,10 +119,15 @@ class OrderController {
         String sessionToken = session != null ? (String) session.getAttribute(SESSION_CHECKOUT_TOKEN) : null;
 
         try {
+            UUID orderId;
             if (username == null) {
-                checkoutOrder.checkout(cart, deliveryAddress, sessionToken);
+                orderId = checkoutOrder.checkout(cart, deliveryAddress, sessionToken);
             } else {
-                checkoutOrder.checkout(cart, deliveryAddress, new Customer(username.value()), sessionToken);
+                orderId = checkoutOrder.checkout(cart, deliveryAddress, new Customer(username.value()), sessionToken);
+            }
+            // BR-010: pass the order reference to the success page so guests can note it down.
+            if (orderId != null) {
+                redirectAttributes.addFlashAttribute("orderId", orderId.toString());
             }
         } catch (PlaceOrder.DuplicateOrderException e) {
             // R-03: first order succeeded — clear the cart so it reflects reality.
@@ -113,7 +142,9 @@ class OrderController {
     }
 
     @GetMapping("/success")
-    public String success(HttpServletRequest request, HttpServletResponse response) {
+    public String success(Model model) {
+        // orderId flash attribute is populated by place() for BR-010 (guest order reference).
+        // If the page is reloaded directly, orderId will be absent — the template handles that gracefully.
         return "order-success";
     }
 
@@ -126,6 +157,7 @@ class OrderController {
     }
 
     @ExceptionHandler({PlaceOrderFromCart.NoItemsToOrderException.class,
+                        PlaceOrderFromCart.ProductNotFoundException.class,
                         CheckoutOrder.OutOfStockException.class,
                         IllegalArgumentException.class})
     String exception(Exception ex) {
@@ -135,6 +167,9 @@ class OrderController {
     private String errorCode(Exception e) {
         if (e instanceof PlaceOrderFromCart.NoItemsToOrderException) {
             return "noitems";
+        }
+        if (e instanceof PlaceOrderFromCart.ProductNotFoundException) {
+            return "productnotfound";
         }
         if (e instanceof CheckoutOrder.OutOfStockException) {
             return "outofstock";

@@ -8,6 +8,10 @@
             <span class="eyebrow" th:text="#{order.success.eyebrow}">ORDER RECEIVED</span>
             <h1 th:text="#{order.success.title}">Order placed</h1>
             <p th:text="#{order.success.text}">Your order has been created. Fulfillment continues in the background.</p>
+            <p th:if="${orderId != null}" class="order-reference">
+                <span th:text="#{order.success.reference.label}">Order reference:</span>
+                <strong th:text="${orderId}">—</strong>
+            </p>
             <a class="button" th:href="@{/}" th:text="#{order.success.action}">Continue shopping</a>
             <a class="subtle-link" th:if="${loggedInUsername != null}" th:href="@{/orders}" th:text="#{order.success.history}">View my orders</a>
         </div>

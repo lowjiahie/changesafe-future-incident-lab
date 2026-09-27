@@ -59,6 +59,17 @@ class PlaceOrderFromCartTest {
     }
 
     @Test
+    void checkout_fails_when_product_not_in_catalog() {
+        Cart cart = mock(Cart.class);
+        CartItem unknownItem = new CartItem(new ProductId("nonexistent-product"), new Title("Gone"), new Money(9.99f), new Quantity(1));
+        when(cart.hasItems()).thenReturn(true);
+        when(cart.items()).thenReturn(List.of(unknownItem));
+
+        assertThrows(PlaceOrderFromCart.ProductNotFoundException.class,
+                () -> placeOrderFromCart.placeOrder(UUID.randomUUID(), cart, null));
+    }
+
+    @Test
     void checkout_uses_catalog_price_not_cart_price() {
         // R-09 safety contract: catalog price for product "1" is 1.00; cart has a manipulated
         // price of 99.99. Order total must be catalogPrice(1.00) * qty(2) = 2.00, not 199.98.

@@ -29,6 +29,23 @@ final class WarehouseJdbc implements Warehouse {
                 .orElseGet(() -> new InStock(Amount.ZERO));
     }
 
+    /**
+     * BR-013: Uses SELECT ... FOR UPDATE to hold a row-level lock for the duration of the
+     * enclosing transaction, preventing two concurrent checkouts from both reading "in stock"
+     * for the last unit before either has committed.
+     * Must be called within an active {@code @Transactional} boundary.
+     */
+    @Override
+    public InStock leftInStockForUpdate(ProductId productId) {
+        return jdbcTemplate.queryForList(
+                "SELECT amount FROM products_in_stock WHERE product_id = ? FOR UPDATE",
+                Integer.class, productId.value())
+                .stream().findAny()
+                .map(Amount::new)
+                .map(InStock::new)
+                .orElseGet(() -> new InStock(Amount.ZERO));
+    }
+
     @Override
     public void putIntoStock(ProductId productId, Amount amount) {
         jdbcTemplate.update(

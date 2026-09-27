@@ -15,6 +15,9 @@ public final class Place {
 
     public Place(@NonNull String place) {
         var placeVal = place.strip();
+        if (placeVal.isBlank()) {
+            throw new IllegalArgumentException("Place must not be blank!");
+        }
         if (placeVal.length() > 100) {
             throw new IllegalArgumentException("Place is too long!");
         }

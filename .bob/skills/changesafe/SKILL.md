@@ -128,6 +128,16 @@ Phase 10). Do not assume the tool can read its own mid-task consumption automati
 4. Small changes require a short brief. Mark status DRAFT or AWAITING CLARIFICATION as appropriate.
 5. Draft ACs may remain provisional while clarification is pending. Do not mark APPROVED unless
    the requester explicitly approves the relevant scope.
+6. **The final step in every implementation plan table must be the evidence-pack step:**
+
+   | Step | Planned action | Dependency / checkpoint |
+   | --- | --- | --- |
+   | last | Generate evidence pack — fill `change-brief.md`, `risk-report.md`, `comparison.md`; update `plan.md` sub-task statuses; run `validate-output.ps1` | Phase 11; all prior steps complete |
+
+   This step is **mandatory on every run**, regardless of scope size. It is the only mechanism
+   that produces a verifiable, shareable record of what changed and why. Omitting it means the
+   run has no evidence pack and cannot be used as a baseline for future ChangeSafe runs.
+   Never mark a run COMPLETE until this step is done.
 
 ---
 
