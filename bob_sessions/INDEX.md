@@ -10,5 +10,6 @@
 | 01 | `d039ddb47b0a5f8e54a8b873c4b61b22` — Plan ChangeSafe scaffold | Plan the full ChangeSafe scaffold (Plan mode) | [TeamLTY_task02_test_changesafe_workflow_correction.png](TeamLTY_task02_test_changesafe_workflow_correction.png) | [changesafe-plan.md](../changesafe-plan.md) |
 | 02 | `12db0cbc1bb316fb0c06603e45d0f7ea` — Build ChangeSafe scaffold | Build all Bob config, templates, scripts, README (Agent mode) | [TeamLTY_task01_initial_changesafe_structure.png](TeamLTY_task01_initial_changesafe_structure.png) | [changesafe/README.md](../changesafe/README.md) |
 | 03 | `9b5771306d8cd2fdacf3c5b6880e5e99` — Checkout flow audit | Full ChangeSafe demo run on checkout flow (ChangeSafe mode) | [TeamLTY_task03_test_enhance_changesafe_workflow.png](TeamLTY_task03_test_enhance_changesafe_workflow.png) | [changesafe/evidence/checkout-flow-01/risk-report.md](../changesafe/evidence/checkout-flow-01/risk-report.md) |
+| 04 | `cart-qty-01` — Cart quantity update feature & flow audit | Add +/− quantity controls, BR-014 accumulated qty ceiling, BR-015 POST remove (Plan + Agent mode) | NOT VERIFIED — capture screenshot and save as `04-cart-qty-01-consumption.png` | [changesafe/evidence/cart-qty-01/risk-report.md](../changesafe/evidence/cart-qty-01/risk-report.md) |
 
-**Completeness check:** 3 task sessions / 3 consumption screenshots. Missing: none.
+**Completeness check:** 4 task sessions / 3 consumption screenshots. Missing: session 04 screenshot — capture manually and save as `bob_sessions/04-cart-qty-01-consumption.png`.
