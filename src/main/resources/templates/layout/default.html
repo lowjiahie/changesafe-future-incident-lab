@@ -37,5 +37,6 @@
     <div id="cart-feedback" class="toast" role="status" aria-live="polite" hidden
          th:data-success="#{catalog.added}" th:data-error="#{catalog.addFailed}"></div>
     <script th:src="@{/cart.js}" defer></script>
+    <th:block layout:fragment="scripts"></th:block>
 </body>
 </html>

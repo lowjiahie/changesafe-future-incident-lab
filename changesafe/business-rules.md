@@ -30,12 +30,15 @@ These rules govern how ChangeSafe runs are conducted. They are not subject to re
 | BR-011 | The delivery address must be non-blank after whitespace stripping and at most 100 characters; a whitespace-only submission is invalid | Checkout — address validation | checkout-gaps-02: GAP-01; Place.java missing blank check identified | CONFIRMED | User (chat), run checkout-gaps-02 | 2025-01-01 |
 | BR-012 | If any cart item references a product that no longer exists in the catalog, checkout must be rejected with a user-facing error message, not a 500 or a silent wrong total | Checkout — catalog integrity | checkout-gaps-02: GAP-03; PlaceOrderFromCart missing existence check identified | CONFIRMED | User (chat), run checkout-gaps-02 | 2025-01-01 |
 | BR-013 | Stock is checked under a pessimistic lock (SELECT ... FOR UPDATE) at checkout to prevent two concurrent sessions from both passing the stock check for the last unit | Checkout — stock safety | checkout-gaps-02: GAP-02; explicit user decision (Option B) at planning | CONFIRMED | User (chat), run checkout-gaps-02 | 2025-01-01 |
+| BR-014 | The accumulated quantity per cart item is capped at 1000; any add whose delta would push the stored quantity above 1000 is rejected with a validation error; the update form accepts 1–1000 absolute quantity; setting quantity to 0 removes the item | Cart — quantity validation | cart-qty-01: F-001, F-003; OQ-1 confirmed by user | CONFIRMED | User (chat), run cart-qty-01 | 2025-01-01 |
+| BR-015 | Item removal from the cart must use `POST /cart/remove` (not GET) to prevent CSRF and accidental browser-prefetch mutations | Cart — security | cart-qty-01: F-002; OQ-2 confirmed by user | CONFIRMED | User (chat), run cart-qty-01 | 2025-01-01 |
 
 ## 2. Open questions
 
 | Question ID | Question | Scope | Status | Answer / decision reference |
 | --- | --- | --- | --- | --- |
 | Q-01 | What is the async listener failure recovery strategy — retry policy, dead-letter queue, or alerting? | Post-checkout async fulfillment (R-07) | OPEN | Deferred; suggested follow-on run: checkout-async-resilience-01 |
+| Q-02 | Should abandoned cart_items rows be cleaned up (TTL, scheduled job, or session-expiry hook)? No cleanup mechanism exists today. | Cart — data retention (F-005) | OPEN | Deferred; suggested follow-on run: cart-expiry-01 |
 
 ## 3. Decision history
 

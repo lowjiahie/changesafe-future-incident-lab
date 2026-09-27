@@ -9,14 +9,40 @@
 
         <div th:unless="${#arrays.isEmpty(items)}" class="checkout-grid">
             <div class="surface cart-items">
-                <div class="cart-row" th:each="item: ${items}">
-                    <div class="cart-item-art" aria-hidden="true">✦</div>
-                    <div class="cart-item-info"><h2 th:text="${item.title}">Item</h2>
-                        <span th:text="'Qty ' + ${item.quantity}">Qty 1</span></div>
-                    <strong th:text="${'$' + #numbers.formatDecimal(item.price, 1, 2)}">$0.00</strong>
-                    <a class="remove-link" th:href="@{/cart/remove(productId=${item.id})}"
-                       th:aria-label="|Remove ${item.title} from cart|" th:text="#{cart.remove}">Remove</a>
-                </div>
+                <!-- Single form: quantity inputs submit to /cart/update;
+                     remove buttons use formaction to POST to /cart/remove (BR-015). -->
+                <form th:action="@{/cart/update}" method="post">
+                    <div class="cart-row" th:each="item: ${items}">
+                        <div class="cart-item-art" aria-hidden="true">✦</div>
+                        <div class="cart-item-info">
+                            <h2 th:text="${item.title}">Item</h2>
+                            <div class="qty-control">
+                                <button type="button" class="qty-btn" data-qty-dec
+                                        th:aria-label="|#{cart.qty.decrease} ${item.title}|"
+                                        th:text="#{cart.qty.decrease}">−</button>
+                                <input type="number"
+                                       th:name="'quantity_' + ${item.id}"
+                                       th:value="${item.quantity}"
+                                       min="0" max="1000" class="qty-input"
+                                       th:aria-label="|Quantity for ${item.title}|" />
+                                <button type="button" class="qty-btn" data-qty-inc
+                                        th:aria-label="|#{cart.qty.increase} ${item.title}|"
+                                        th:text="#{cart.qty.increase}">+</button>
+                            </div>
+                        </div>
+                        <strong th:text="${'$' + #numbers.formatDecimal(item.price, 1, 2)}">$0.00</strong>
+                        <!-- BR-015: formaction overrides the enclosing form's action for this button only -->
+                        <button type="submit"
+                                formaction="/cart/remove"
+                                th:name="productId" th:value="${item.id}"
+                                class="remove-link"
+                                th:aria-label="|Remove ${item.title} from cart|"
+                                th:text="#{cart.remove}">Remove</button>
+                    </div>
+                    <div class="cart-actions">
+                        <button type="submit" class="button button-secondary" th:text="#{cart.update}">Update cart</button>
+                    </div>
+                </form>
             </div>
             <aside class="surface summary">
                 <h2 th:text="#{cart.summary}">Order summary</h2>
@@ -34,5 +60,23 @@
             <a class="button" th:href="@{/}" th:text="#{cart.empty.action}">Browse products</a>
         </div>
     </main>
+
+    <th:block layout:fragment="scripts">
+        <script>
+            (function () {
+                document.querySelectorAll('.qty-control').forEach(function (ctrl) {
+                    var input = ctrl.querySelector('.qty-input');
+                    ctrl.querySelector('[data-qty-dec]').addEventListener('click', function () {
+                        var v = parseInt(input.value, 10);
+                        if (!isNaN(v) && v > 0) input.value = v - 1;
+                    });
+                    ctrl.querySelector('[data-qty-inc]').addEventListener('click', function () {
+                        var v = parseInt(input.value, 10);
+                        if (!isNaN(v) && v < 1000) input.value = v + 1;
+                    });
+                });
+            })();
+        </script>
+    </th:block>
 </body>
 </html>

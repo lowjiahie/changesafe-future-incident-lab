@@ -14,12 +14,16 @@ import com.ttulka.ecommerce.sales.cart.item.CartItem;
 import com.ttulka.ecommerce.sales.cart.item.ProductId;
 import com.ttulka.ecommerce.sales.cart.item.Title;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.NonNull;
@@ -81,6 +85,14 @@ class CartController {
         }
         CartId cartId = new CartIdFromCookies(request, response).cartId();
         Cart cart = retrieveCart.byId(cartId);
+        // BR-014: cap accumulated quantity per item at 1000
+        int existingQty = cart.items().stream()
+                .filter(i -> i.productId().value().equals(productId))
+                .mapToInt(i -> i.quantity().value())
+                .findFirst().orElse(0);
+        if (existingQty + quantity > 1000) {
+            throw new IllegalArgumentException("Cart quantity limit reached!");
+        }
         cart.add(new CartItem(
                 new ProductId(productId),
                 new Title(product.title().value()),
@@ -90,13 +102,52 @@ class CartController {
         return cart;
     }
 
-    @GetMapping("/remove")
+    // BR-015: remove uses POST to prevent CSRF / browser-prefetch mutations
+    @PostMapping("/remove")
     public String remove(@NonNull String productId,
                          HttpServletRequest request, HttpServletResponse response) {
         CartId cartId = new CartIdFromCookies(request, response).cartId();
         retrieveCart.byId(cartId).remove(new ProductId(productId));
 
         return "redirect:/cart";
+    }
+
+    // BR-014, BR-015: update absolute quantities per item; remove-then-add strategy (OQ-3)
+    @PostMapping("/update")
+    public String update(@RequestParam Map<String, String> params,
+                         HttpServletRequest request, HttpServletResponse response) {
+        CartId cartId = new CartIdFromCookies(request, response).cartId();
+        Cart cart = retrieveCart.byId(cartId);
+
+        params.forEach((key, value) -> {
+            if (!key.startsWith("quantity_")) return;
+            String productId = key.substring("quantity_".length());
+            int quantity;
+            try {
+                quantity = Integer.parseInt(value);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Invalid quantity for product " + productId);
+            }
+            if (quantity < 0 || quantity > 1000) {
+                throw new IllegalArgumentException("Quantity must be between 0 and 1000!");
+            }
+            ProductId pid = new ProductId(productId);
+            cart.remove(pid);
+            if (quantity > 0) {
+                // Re-fetch product to get current price (consistent with BR-006 spirit)
+                var product = findProducts.byId(new com.ttulka.ecommerce.sales.catalog.product.ProductId(productId));
+                cart.add(new CartItem(pid, new Title(product.title().value()),
+                        product.price(), new Quantity(quantity)));
+            }
+        });
+
+        return "redirect:/cart";
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseBody
+    public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
 }
