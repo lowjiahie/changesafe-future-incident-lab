@@ -108,6 +108,7 @@ follow-on task before production release.
 | --- | --- | --- |
 | Before-fix test log | <real path or NOT RUN — reason> | <timestamp or N/A> |
 | After-fix test log | <real path or NOT RUN — reason> | <timestamp or N/A> |
+| Migration check | <path to database-migration guardian section in change-impact map, or N/A — no schema change> | <timestamp or N/A> |
 | Before/after comparison | [comparison.md](comparison.md) | <timestamp> |
 | Change brief | [change-brief.md](change-brief.md) | <timestamp> |
 | Evaluation hints | <actual hints and task references, or N/A — no hints supplied; NOT VERIFIED if not recorded> | <timestamp or N/A> |

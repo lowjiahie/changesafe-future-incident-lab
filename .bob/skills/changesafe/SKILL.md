@@ -17,6 +17,19 @@ Pause dependent implementation while answers are pending; safe independent analy
 
 ## Token-efficiency rules (apply throughout)
 
+**Budget constants (configurable per-run):**
+- `RESERVE_THRESHOLD` — default **5 Bobcoins remaining**. At any budget checkpoint, if the
+  remaining balance falls at or below this value, deliver a minimal honest report and stop.
+  The requester may raise or lower this default at intake.
+- `RUN_CAP` — optional per-run spending cap in Bobcoins, set by the requester at intake.
+  If cumulative spend since Phase 1 reaches this cap, **pause and ask the requester** before
+  continuing. No default; if not set, only `RESERVE_THRESHOLD` is enforced.
+
+**There is no automatic Bobcoin meter.** The Bob IDE task consumption panel must be read
+manually. Record the reading in the change-brief header as `Budget at intake` at Phase 1,
+and re-read it at the three checkpoints below (end of Phase 5, end of Phase 7, end of
+Phase 10). Do not assume the tool can read its own mid-task consumption automatically.
+
 - **Cheap intake first.** Use `git diff --name-only`, targeted grep, and local tests to narrow
   scope before reading large files or spawning subagents.
 - **Test script before deep reasoning.** Run `changesafe/scripts/run-targeted-tests.ps1` as a
@@ -30,9 +43,10 @@ Pause dependent implementation while answers are pending; safe independent analy
 - **Conditional parallelism.** Zero subagents for a simple change; one explore subagent for a
   focused cross-module question; two only when questions are truly independent.
 - **Bound outputs.** Enumerate all risks from code evidence (no cap). Select the highest-value
-  YES risk for an executable check. Run targeted Maven tests before the full suite.
-- **Meter Bobcoins.** Check remaining budget at intake, post-investigation, and pre-fix.
-  If low, stop after an honest report.
+  YES risk for an executable check. Run targeted Maven tests before the full suite. Any risks
+  beyond the top 3 tracked actively are summarised as one-line backlog rows (see Phase 6a).
+- **Meter Bobcoins.** Read the Bob IDE panel at each checkpoint (Phase 5, Phase 7, Phase 10).
+  If balance ≤ `RESERVE_THRESHOLD` or `RUN_CAP` reached, stop after an honest report.
 
 ---
 
@@ -43,12 +57,29 @@ Pause dependent implementation while answers are pending; safe independent analy
 2. If the request is too broad, ask one focused clarifying question before continuing.
 3. Capture the source state: run `git rev-parse HEAD` and `git status --short`.
 
+**Budget intake checkpoint (mandatory — do before Phase 2):**
+1. Ask the requester: "What is your per-run spending cap for this ChangeSafe task?
+   (Optional — leave blank to use only the default reserve threshold of 5 Bobcoins.)"
+   Record the answer as `RUN_CAP` in the change-brief header (`N/A` if not set).
+2. Remind the requester to read the current Bobcoin balance from the Bob IDE task
+   consumption panel. Record the reading as `Budget at intake` in the change-brief header.
+3. If remaining balance ≤ `RESERVE_THRESHOLD` (default 5): deliver a one-paragraph scope
+   summary, mark the change-brief status `INCOMPLETE — BUDGET EXHAUSTED`, and stop.
+   This is a valid ChangeSafe result.
+
 ---
 
 ## Phase 2 — Understand project and conventions
 
 1. Check for `.bob/rules/01-project-conventions.md`.
-   - If it exists and is APPROVED: load it. Skip repeated repository-wide exploration.
+   - If it exists and is APPROVED: load it.
+     **Convention reuse gate:** If the rule's recorded source-state commit matches the
+     current HEAD (run `git rev-parse HEAD` and compare), and no convention-relevant file
+     has changed since that commit (check: `git diff <rule-commit> HEAD -- pom.xml README.md
+     src/main/java src/test/java`), skip all repository-wide exploration entirely. Record
+     "Conventions reused from commit `<hash>`" in the change-brief and proceed to Phase 3.
+     Do not re-read `README.md`, `pom.xml`, or representative source files during the
+     reuse path.
    - If it is DRAFT: remind the user it needs approval before app-code generation. Proceed with
      analysis; do not generate Java code yet.
    - If it does not exist: run the first-encounter onboarding pass (read README.md, pom.xml,
@@ -91,11 +122,26 @@ Pause dependent implementation while answers are pending; safe independent analy
    callers/dependencies.
 2. Trace the call chain, event flow, persistence, and downstream components -- including unedited
    code that may be affected.
-3. If the change crosses module boundaries and the question is non-trivial, spawn one read-only
-   `explore` subagent using the guardian spec at
+3. **Complexity gate:** If the proposed change touches ≤ 2 files AND a targeted grep finds no
+   references to those files from packages outside their bounded context, skip the
+   impact-explorer guardian. Record "Local change — no cross-module guardian spawned" in the
+   change-brief impact section and proceed to step 4.
+   Otherwise, if the change crosses module boundaries and the question is non-trivial, spawn
+   one read-only `explore` subagent using the guardian spec at
    `.bob/skills/changesafe/guardians/impact-explorer/GUARDIAN.md`.
    Pass only the fields defined in that spec's **Input packet** table.
-4. Populate the impact map table in the risk report (section 3).
+4. **Database-migration routing:** If the proposed change touches `schema.sql`, any
+   `application*.properties` datasource-init key (`spring.sql.init.*`, `spring.datasource.*`),
+   or any `src/main/resources/**/*.sql` file, activate the `database-migration` guardian using
+   the spec at `.bob/skills/changesafe/guardians/database-migration/GUARDIAN.md`.
+   Pass only the fields defined in that spec's **Input packet** table.
+   Record the guardian's output in the change-impact map under component "database schema".
+   This counts against the two-guardian-per-run limit.
+5. Populate the impact map table in the risk report (section 3).
+
+**Budget checkpoint:** Read the Bob IDE task consumption panel. If remaining balance ≤
+`RESERVE_THRESHOLD` or cumulative spend has reached `RUN_CAP`, pause and ask the requester
+for approval before continuing to Phase 6.
 
 ---
 
@@ -105,6 +151,13 @@ Pause dependent implementation while answers are pending; safe independent analy
 
 1. Enumerate **all** concrete risks identifiable in the affected flow from code evidence.
    Do not cap the list. Use sequential IDs: R-01, R-02, R-03, R-04, … as needed.
+
+   **Risk-count guard:** After enumeration, select the top 3 risks by severity for active
+   tracking in this run. Risks ranked 4 and below are recorded in the deferred risk backlog
+   (Section 7 of the risk report) as one-line summary rows only — they are not expanded to
+   full evidence rows in context. All risks remain visible in the report; the guard reduces
+   in-context token use for broad audits. If fewer than 4 risks are identified, the guard
+   does not apply.
 2. For each risk state:
    - **Trigger and failure chain** — the exact code path or condition that causes it.
    - **User / system impact** — what the user or operator experiences.
@@ -151,6 +204,10 @@ Pause dependent implementation while answers are pending; safe independent analy
 ---
 
 ## Phase 7 — Generate or reuse tests and run before-change baseline
+
+> **Budget checkpoint:** Read the Bob IDE task consumption panel before running tests.
+> If remaining balance ≤ `RESERVE_THRESHOLD` or `RUN_CAP` reached, pause and ask the
+> requester before continuing.
 
 1. Identify existing tests that cover the affected path. Reuse valid-behavior tests where possible.
 2. Propose acceptance and adverse-condition checks for the selected safety invariant.
@@ -234,9 +291,19 @@ Loop only for bounded, identifiable issues -- do not loop indefinitely.
 **Rework gate:** If rework is needed for a technical failure, return to development.
 If rework requires a scope change, return to Phase 4 and revise the change brief.
 
+**Budget checkpoint:** Read the Bob IDE task consumption panel. If remaining balance ≤
+`RESERVE_THRESHOLD` or `RUN_CAP` reached, pause and ask the requester before continuing
+to Phase 11.
+
 ---
 
 ## Phase 11 — Deliver evidence pack and summary
+
+**Regeneration guard:** If a prior run's `change-brief.md` or `risk-report.md` already exists
+in `changesafe/evidence/<run-id>/` and the relevant source files have not changed since that
+run's recorded source state, do not regenerate those files from scratch. Update only the
+sections that changed. If the validator passes on the existing files after updates, stop —
+do not re-render unchanged content.
 
 1. Fill `changesafe/evidence/<run-id>/risk-report.md` from `changesafe/templates/risk-report.md`.
    Keep all required headings in order. Use controlled vocabulary only.

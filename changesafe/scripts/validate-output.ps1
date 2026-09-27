@@ -422,6 +422,28 @@ if (-not $Template) {
         -Detail $(if (-not $HasPng) { "NOT VERIFIED -- no PNG files found in bob_sessions/; capture screenshots manually" } else { "$($PngFiles.Count) PNG file(s) found" })
 }
 
+# -- Check 10: Migration check row present when schema change is mentioned ------
+
+if (-not $Template) {
+    $RiskFile = Join-Path $RunDir "risk-report.md"
+    if (Test-Path $RiskFile) {
+        $RiskContent = Get-Content $RiskFile -Raw
+        # Detect whether the report mentions a schema change or migration.
+        $MentionsSchema = $RiskContent -match 'schema\.sql|ALTER TABLE|CREATE TABLE|idempotency_key|Migration check|migrations/'
+        if ($MentionsSchema) {
+            # Check that the evidence provenance section contains a "Migration check" row.
+            $HasMigrationRow = $RiskContent -match '\|\s*Migration check\s*\|'
+            Add-CheckResult `
+                -Check "Migration check row present when schema change mentioned" `
+                -Passed $HasMigrationRow `
+                -Detail $(if (-not $HasMigrationRow) {
+                    "Report mentions a schema change but has no 'Migration check' row in Section 8. " +
+                    "Add the row referencing the guardian output, or write 'N/A -- no schema change'."
+                } else { "" })
+        }
+    }
+}
+
 # -- Print results -------------------------------------------------------------
 
 $ModeLabel = if ($Template) { "TEMPLATE" } else { "COMPLETED-RUN" }

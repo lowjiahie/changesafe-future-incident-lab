@@ -114,6 +114,7 @@ IBM Bob should materialize this as `changesafe/templates/risk-report.md`, then c
 | --- | --- | --- |
 | Before-fix test log | <real path or NOT RUN — reason> | <timestamp or N/A> |
 | After-fix test log | <real path or NOT RUN — reason> | <timestamp or N/A> |
+| Migration check | <path to database-migration guardian output in change-impact map, or N/A — no schema change> | <timestamp or N/A> |
 | Before/after comparison | [comparison.md](comparison.md) | <timestamp> |
 | Change brief | [change-brief.md](change-brief.md) | <timestamp> |
 | Evaluation hints | <actual hints and task references, or N/A — no hints supplied; NOT VERIFIED if not recorded> | <timestamp or N/A> |
@@ -263,6 +264,8 @@ Bob should check that every required heading is present, AC IDs/text match acros
 
 Also check AC IDs/text against `change-brief.md`, trace business decisions to confirmed sources, and verify that unresolved material questions did not silently become assumptions. Record actual approval rather than inventing it. A deterministic validator checks structure, statuses, links, and artifact presence; it cannot certify business correctness, real human approval, or screenshot authenticity.
 
+If the risk report's change-impact map contains a `database schema` row from the database-migration guardian, verify that the guardian output includes a schema change classification (FRESH-INSTALL-ONLY / REQUIRES-MIGRATION / ADDITIVE-NEW-OBJECT / DATA-SEEDING-ONLY) and that any REQUIRES-MIGRATION finding is accompanied by either a migration SQL file reference (under `src/main/resources/migrations/`) or an explicit `N/A — not yet written` notation with a stated reason.
+
 ## 8. Exact `change-brief.md` template
 
 Materialize as `changesafe/templates/change-brief.md`, then fill `changesafe/evidence/<run-id>/change-brief.md` before implementation. Keep it concise. Draft ACs may remain provisional while clarification is pending; confirm them before dependent implementation. If approved criteria change, record the reason and retain the earlier version/source reference.
@@ -388,6 +391,7 @@ Verify link destinations for the PR's rendering context: repo-relative Markdown 
 
 ## 11. Execution grouping, retries, and scaffold validation
 
+- Migration files are not ChangeSafe run artifacts and must not be placed inside `changesafe/evidence/<run-id>/`. They belong in `src/main/resources/migrations/`. The risk report references them by repository-relative path only.
 - Each phase's primary JSON/log describes one actual selected-test invocation. Use a combined targeted command where suitable; never merge counts from different commands while presenting them as one execution.
 - Additional invocations use `executions/<execution-id>/test-summary.json` and `test.log`. The summary uses the same JSON keys and correct phase, command, source state and relative `logPath`. Reports link to the separate executions. Required primary files remain intact.
 - A retry or further fix must never overwrite earlier executions. Create a fresh run directory for a new before/after pair, or retain additional executions under unique IDs and explicitly identify which results the reports compare. Preserve evidence of changed ACs and source states.

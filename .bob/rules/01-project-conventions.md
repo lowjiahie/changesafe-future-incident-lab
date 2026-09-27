@@ -50,6 +50,51 @@
 - **Async test timing:** integration tests that wait for async events use `Thread.sleep(ms)` (e.g., 120 ms in `OrderWorkFlowTest`). This is the current project pattern — not ideal but established.
 - Sources: [`PlaceOrderTest.java`](../src/test/java/com/ttulka/ecommerce/sales/order/jdbc/PlaceOrderTest.java), [`OrderWorkFlowTest.java`](../src/test/java/com/ttulka/ecommerce/OrderWorkFlowTest.java).
 
+## Database and schema evolution
+
+- **Fresh install:** `schema.sql` uses `CREATE TABLE IF NOT EXISTS` for all 14 tables.
+  Spring Boot runs it on every startup via `spring.sql.init.mode=always` (configured in
+  `src/main/resources/application.properties`). Safe for a fresh database; silent no-op
+  on existing tables with missing columns — it does **not** add new columns to existing tables.
+- **Upgrade path — no migration tool in use:** No Flyway or Liquibase is present in `pom.xml`.
+  Schema changes to existing tables are applied via manually executed SQL migration files.
+  Do not add a migration tool without an explicit team decision and project rule update.
+- **Migration file convention:**
+  - File name: `migrate-YYYYMMDD-<description>.sql` (e.g. `migrate-20260926-orders-add-idempotency-key.sql`).
+  - Location: `src/main/resources/migrations/` (not on Spring Boot's auto-run classpath;
+    operator applies manually or via deployment tooling).
+  - Each file must include: (1) a header comment with description, affected tables, and prerequisites;
+    (2) a precondition check query; (3) the migration SQL; (4) a verification query; (5) an INSERT
+    into the `migrations_applied` table. See `src/main/resources/migrations/MIGRATION_TEMPLATE.sql`.
+- **Applied-migration record:** The `migrations_applied` table (created by the first migration that
+  runs against a given database) records which migrations have been applied. Operators must insert
+  a row after each successful migration.
+- **Editing `CREATE TABLE` is not a migration:** Editing an existing `CREATE TABLE IF NOT EXISTS`
+  statement in `schema.sql` only affects fresh installs. It is not a substitute for an `ALTER TABLE`
+  migration for existing databases. Always produce both when adding a column to an existing table.
+- **Data classification — do not mix these:**
+  - `src/main/resources/schema.sql` — DDL only; no data rows.
+  - `src/main/resources/example-data.sql` — H2 demo data; uses TRUNCATE; **never run against MySQL**.
+  - `src/main/resources/mysql-example-data.sql` — MySQL demo/reference data; uses INSERT IGNORE; upgrade-safe.
+  - `src/test/resources/test-data-*.sql` — test fixtures only; never run in production.
+  - `src/main/resources/migrations/migrate-*.sql` — operator-applied upgrade migrations only.
+- **H2 compatibility:** H2 2.x does not support all MySQL DDL syntax. Test any migration SQL under
+  H2, or add an H2-compatible equivalent in `src/test/resources/migrations/` with a Spring profile
+  condition if the test profile must run migrations.
+- **Additive changes** (new nullable column with no constraint, new table, new index) do not risk
+  data loss. Still document in a migration file for operators.
+- **Destructive changes** (column removal, type narrowing, NOT NULL on rows without a default,
+  new unique constraint on potentially non-unique data) require: a confirmed business decision,
+  a backfill or validation step recorded in the migration file, and explicit human approval
+  before the migration file is written by Bob.
+- **Known un-migrated change:** `orders.idempotency_key VARCHAR(64) UNIQUE` was added to
+  `schema.sql` during checkout-flow-01 by editing `CREATE TABLE IF NOT EXISTS`, without a
+  companion migration file. The migration file
+  `src/main/resources/migrations/migrate-20260926-orders-add-idempotency-key.sql` documents
+  the `ALTER TABLE` needed for any pre-checkout-flow-01 MySQL database.
+- **Sources:** `src/main/resources/schema.sql`, `src/main/resources/application.properties`,
+  `src/main/resources/application-mysql.properties`, `pom.xml`.
+
 ## UI or other relevant conventions
 
 - **Thymeleaf templates** in `src/main/resources/templates/`. Relevant only if portal/web controllers or views are in scope.

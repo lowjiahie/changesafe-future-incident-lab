@@ -181,8 +181,13 @@ To add a Guardian:
    Phase 5 (Impact analysis) section: "if change touches <domain>, activate <guardian-name>
    Guardian and include its evidence in the impact map."
 
-Examples of future Guardians: `payment-integrity`, `database-migration`, `api-compatibility`.
-None are implemented in the current MVP; this extension model is the placeholder for them.
+**Implemented Guardians:**
+
+| Guardian | Trigger | Output sections |
+| --- | --- | --- |
+| `database-migration` | Change touches `schema.sql`, `application*.properties` datasource-init keys, or any `src/main/resources/**/*.sql` file | Schema change classification; upgrade impact; migration SQL recommendation; data safety questions |
+
+**Future Guardian examples (not yet implemented):** `payment-integrity`, `api-compatibility`.
 
 ---
 
@@ -218,3 +223,46 @@ The sample application used by this experiment is based on
 licensed under the [MIT License](../LICENSE). The ChangeSafe workflow, templates, scripts, and
 documentation in this directory are the team's work for the IBM Bob 2.0 Hackathon and are not
 an official version of the upstream project.
+
+---
+
+## Bobcoin budget notes
+
+### Measured session costs (this project)
+
+| Task | Bob task ID | Bobcoins | Context fill | Primary cost driver |
+| --- | --- | --- | --- | --- |
+| Plan / build spec read | `d039ddb47b0a5f8e54a8b873c4b61b22` | 7.48 | 9 % | Planning-only; low context. Non-recurring. |
+| Initial scaffold build | `12db0cbc1bb316fb0c06603e45d0f7ea` | 15.61 | 46 % | One-time: two large spec docs + full project inspection + all templates and scripts. Non-recurring for this project. |
+| Checkout flow audit | `9b5771306d8cd2fdacf3c5b6880e5e99` | 18.80 | 78 % | Broad 10-risk investigation; both guardians fired; no early-stop applied; full evidence pack written in-context. Representative repeat-run high. |
+
+These are the only three sessions with recorded measurements. All numbers are read from the
+Bob IDE task consumption panel screenshots in `bob_sessions/`. Do not add rows without a
+corresponding screenshot.
+
+### Budget monitoring (manual)
+
+There is no automatic Bobcoin meter. Read the Bob IDE task consumption panel manually at the
+three checkpoints built into the ChangeSafe skill:
+
+1. **Intake** — before starting Phase 2. Record the reading as `Budget at intake` in the
+   change-brief header. If balance ≤ `RESERVE_THRESHOLD` (default 5 Bobcoins), stop and
+   deliver a minimal scoped report.
+2. **Post-investigation** — at the end of Phase 5. If balance ≤ threshold or the optional
+   `RUN_CAP` has been reached, pause and ask the requester before continuing.
+3. **Pre-fix** — at the end of Phase 7, before writing application code. Same check.
+
+The `RESERVE_THRESHOLD` defaults to 5 Bobcoins remaining. The `RUN_CAP` is optional and
+set by the requester at intake; if not set, only the threshold is enforced.
+
+### Important caveats
+
+- **Bobcoins ≠ tokens.** IBM does not publish a fixed conversion ratio. Do not assume a
+  fixed cost per run or per token.
+- **Per-run cost is not predictable.** Cost depends on context fill, file sizes, number of
+  guardians, and model behaviour. The 18.80-coin run (78 % fill) is an observed upper bound
+  for a broad audit with no early-stop; a focused, two-file change should cost significantly
+  less, but this is an estimate, not a guarantee.
+- **Efficiency gates are instructions, not enforced limits.** The convention-reuse gate,
+  complexity gate, and risk-count guard in the skill reduce context use by instruction. They
+  rely on the AI following those instructions; there is no hard technical cap.
