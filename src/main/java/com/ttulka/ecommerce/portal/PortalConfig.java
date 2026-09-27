@@ -1,8 +1,10 @@
 package com.ttulka.ecommerce.portal;
 
+import com.ttulka.ecommerce.sales.catalog.FindProducts;
 import com.ttulka.ecommerce.sales.order.AssignOrderToCustomer;
 import com.ttulka.ecommerce.sales.order.PlaceOrder;
 import com.ttulka.ecommerce.shipping.delivery.PrepareDelivery;
+import com.ttulka.ecommerce.warehouse.Warehouse;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,8 +16,8 @@ import org.springframework.context.annotation.Configuration;
 class PortalConfig {
 
     @Bean
-    PlaceOrderFromCart placeOrderFromCart(PlaceOrder placeOrder) {
-        return new PlaceOrderFromCart(placeOrder);
+    PlaceOrderFromCart placeOrderFromCart(PlaceOrder placeOrder, FindProducts findProducts) {
+        return new PlaceOrderFromCart(placeOrder, findProducts);
     }
 
     @Bean
@@ -26,7 +28,8 @@ class PortalConfig {
     @Bean
     CheckoutOrder checkoutOrder(PlaceOrderFromCart placeOrderFromCart,
                                 PrepareOrderDelivery prepareOrderDelivery,
-                                AssignOrderToCustomer assignOrderToCustomer) {
-        return new CheckoutOrder(placeOrderFromCart, prepareOrderDelivery, assignOrderToCustomer);
+                                AssignOrderToCustomer assignOrderToCustomer,
+                                Warehouse warehouse) {
+        return new CheckoutOrder(placeOrderFromCart, prepareOrderDelivery, assignOrderToCustomer, warehouse);
     }
 }

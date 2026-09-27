@@ -1,15 +1,17 @@
 package com.ttulka.ecommerce.portal;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import com.ttulka.ecommerce.common.primitives.Money;
 import com.ttulka.ecommerce.sales.cart.Cart;
 import com.ttulka.ecommerce.sales.cart.item.CartItem;
+import com.ttulka.ecommerce.sales.catalog.FindProducts;
+import com.ttulka.ecommerce.sales.catalog.product.ProductId;
 import com.ttulka.ecommerce.sales.order.OrderId;
 import com.ttulka.ecommerce.sales.order.PlaceOrder;
 import com.ttulka.ecommerce.sales.order.item.OrderItem;
-import com.ttulka.ecommerce.sales.order.item.ProductId;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -23,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class PlaceOrderFromCart {
 
     private final @NonNull PlaceOrder placeOrder;
+    private final @NonNull FindProducts findProducts;
 
     /**
      * Places a new order created from the cart.
@@ -34,20 +37,29 @@ public class PlaceOrderFromCart {
         if (!cart.hasItems()) {
             throw new PlaceOrderFromCart.NoItemsToOrderException();
         }
+        List<CartItem> items = cart.items();
+        // R-09: total is re-priced from the catalog — the client-supplied cart price is never
+        // used for billing (safety contract: total = sum(catalogPrice × quantity)).
+        Money total = items.stream()
+                .map(item -> findProducts
+                        .byId(new ProductId(item.productId().value()))
+                        .price()
+                        .multi(item.quantity().value()))
+                .reduce(Money::add)
+                .orElse(Money.ZERO);
         // here a command message PlaceOrder could be sent for lower coupling
         placeOrder.place(new OrderId(orderId),
-                         cart.items().stream()
+                         items.stream()
                                  .map(this::toOrderItem)
                                  .collect(Collectors.toList()),
-                         cart.items().stream()
-                                 .map(CartItem::total)
-                                 .reduce(Money::add)
-                                 .orElse(Money.ZERO),
+                         total,
                          idempotencyKey);
     }
 
     private OrderItem toOrderItem(CartItem cartItem) {
-        return new OrderItem(new ProductId(cartItem.productId().value()), cartItem.quantity());
+        return new OrderItem(
+                new com.ttulka.ecommerce.sales.order.item.ProductId(cartItem.productId().value()),
+                cartItem.quantity());
     }
 
     /**

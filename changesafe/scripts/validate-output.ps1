@@ -251,9 +251,9 @@ if (-not $Template) {
         [regex]::Matches($Content, '\|\s*(AC-\d+)\s*\|') | ForEach-Object { $_.Groups[1].Value } | Sort-Object -Unique
     }
 
-    $BriefAcIds = Get-AcIds $BriefFile
-    $RiskAcIds  = Get-AcIds $RiskFile
-    $CompAcIds  = Get-AcIds $CompFile
+    $BriefAcIds = @(Get-AcIds $BriefFile)
+    $RiskAcIds  = @(Get-AcIds $RiskFile)
+    $CompAcIds  = @(Get-AcIds $CompFile)
 
     if ($BriefAcIds.Count -gt 0 -and $RiskAcIds.Count -gt 0) {
         $BriefSet = [System.Collections.Generic.HashSet[string]]$BriefAcIds

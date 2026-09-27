@@ -55,6 +55,12 @@ final class CartIdFromCookies {
     private Cookie asCookie(String name, String value) {
         var cookie = new Cookie(name, value);
         cookie.setPath("/");
+        // R-06: harden cookie against XSS and cross-site request forgery (BR-005).
+        // Secure is set only when the connection is already HTTPS to avoid breaking
+        // plain-HTTP environments such as local dev and integration tests.
+        cookie.setHttpOnly(true);
+        cookie.setSecure(request.isSecure());
+        cookie.setAttribute("SameSite", "Strict");
         return cookie;
     }
 }

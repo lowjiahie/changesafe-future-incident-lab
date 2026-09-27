@@ -1,0 +1,18 @@
+﻿{
+    "schemaVersion":  1,
+    "runId":  "checkout-flow-01",
+    "phase":  "before-fix",
+    "capturedAt":  "2026-09-26T20:00:47.9315363+08:00",
+    "sourceState":  "274af07a38bf541d8a434a34b375ffe1479b17b7 (working tree has uncommitted changes)",
+    "command":  ".\\mvnw.cmd test -Dspring.profiles.active=test -Dtest=PlaceOrderTest,OrderControllerTest,CheckoutOrderTest,PlaceOrderFromCartTest,OrderWorkFlowTest --no-transfer-progress",
+    "javaVersion":  "UNKNOWN",
+    "testProfile":  "test",
+    "result":  "PASS",
+    "exitCode":  0,
+    "testsRun":  24,
+    "failures":  0,
+    "errors":  0,
+    "skipped":  0,
+    "durationSeconds":  34.91,
+    "logPath":  "logs/before-fix-20260926-200012.log"
+}

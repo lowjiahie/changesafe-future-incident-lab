@@ -1,15 +1,16 @@
 package com.ttulka.ecommerce.portal.web;
 
+import java.util.Set;
 import java.util.UUID;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import com.ttulka.ecommerce.identity.user.Username;
 import com.ttulka.ecommerce.portal.CheckoutOrder;
 import com.ttulka.ecommerce.portal.PlaceOrderFromCart;
 import com.ttulka.ecommerce.sales.cart.Cart;
-import com.ttulka.ecommerce.identity.user.Username;
 import com.ttulka.ecommerce.sales.cart.RetrieveCart;
 import com.ttulka.ecommerce.sales.order.Customer;
 import com.ttulka.ecommerce.sales.order.PlaceOrder;
@@ -39,6 +40,10 @@ class OrderController {
 
     private static final String SESSION_CHECKOUT_TOKEN = "checkoutToken";
 
+    // R-10: only codes that map to real i18n keys are accepted; anything else falls back to default.
+    private static final Set<String> KNOWN_ERROR_CODES =
+            Set.of("duplicate", "noitems", "requires", "outofstock", "default");
+
     private final @NonNull RetrieveCart retrieveCart;
     private final @NonNull CheckoutOrder checkoutOrder;
 
@@ -57,7 +62,6 @@ class OrderController {
     @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String place(@RequestParam(required = false) String name,
                         @RequestParam(required = false) String address,
-                        @RequestParam(required = false) String idempotencyKey,
                         HttpServletRequest request, HttpServletResponse response, Model model) {
         model.addAttribute("name", name == null ? "" : name);
         model.addAttribute("address", address == null ? "" : address);
@@ -84,13 +88,24 @@ class OrderController {
         Cart cart = retrieveCart.byId(new CartIdFromCookies(request, response).cartId());
         Address deliveryAddress = new Address(person, place);
         Username username = LoggedInUserFromSession.username(request);
+
+        // R-02: use the server-issued session token as the idempotency key — the client-supplied
+        // value is ignored so it cannot be tampered with or omitted to bypass duplicate protection.
+        HttpSession session = request.getSession(false);
+        String sessionToken = session != null ? (String) session.getAttribute(SESSION_CHECKOUT_TOKEN) : null;
+
         try {
             if (username == null) {
-                checkoutOrder.checkout(cart, deliveryAddress, idempotencyKey);
+                checkoutOrder.checkout(cart, deliveryAddress, sessionToken);
             } else {
-                checkoutOrder.checkout(cart, deliveryAddress, new Customer(username.value()), idempotencyKey);
+                checkoutOrder.checkout(cart, deliveryAddress, new Customer(username.value()), sessionToken);
             }
         } catch (PlaceOrder.DuplicateOrderException e) {
+            // R-03: first order succeeded — clear the cart so it reflects reality.
+            cart.empty();
+            // R-01: regenerate the session token so the user can navigate back and try again.
+            String newToken = UUID.randomUUID().toString();
+            request.getSession(true).setAttribute(SESSION_CHECKOUT_TOKEN, newToken);
             return "redirect:/order/error?message=duplicate";
         }
         request.getSession().removeAttribute(SESSION_CHECKOUT_TOKEN);
@@ -102,13 +117,17 @@ class OrderController {
         return "order-success";
     }
 
+    // R-10: sanitise the message code before passing it to the template to prevent i18n key injection.
     @GetMapping("/error")
-    public String error(String message, Model model) {
-        model.addAttribute("messageCode", message);
+    public String error(@RequestParam(required = false) String message, Model model) {
+        String safe = (message != null && KNOWN_ERROR_CODES.contains(message)) ? message : "default";
+        model.addAttribute("messageCode", safe);
         return "order-error";
     }
 
-    @ExceptionHandler({PlaceOrderFromCart.NoItemsToOrderException.class, IllegalArgumentException.class})
+    @ExceptionHandler({PlaceOrderFromCart.NoItemsToOrderException.class,
+                        CheckoutOrder.OutOfStockException.class,
+                        IllegalArgumentException.class})
     String exception(Exception ex) {
         return "redirect:/order/error?message=" + errorCode(ex);
     }
@@ -116,6 +135,9 @@ class OrderController {
     private String errorCode(Exception e) {
         if (e instanceof PlaceOrderFromCart.NoItemsToOrderException) {
             return "noitems";
+        }
+        if (e instanceof CheckoutOrder.OutOfStockException) {
+            return "outofstock";
         }
         if (e instanceof IllegalArgumentException) {
             return "requires";

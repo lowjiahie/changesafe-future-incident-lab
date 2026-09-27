@@ -8,6 +8,7 @@ import com.ttulka.ecommerce.sales.order.OrderId;
 import com.ttulka.ecommerce.sales.order.PlaceOrder;
 import com.ttulka.ecommerce.sales.order.item.OrderItem;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,7 +38,14 @@ class PlaceOrderJdbc implements PlaceOrder {
                 throw new PlaceOrder.DuplicateOrderException();
             }
         }
-        new OrderJdbc(orderId, total, items, idempotencyKey, jdbcTemplate, eventPublisher)
-                .place();
+        // R-04: the UNIQUE constraint on idempotency_key is the true safety net for concurrent
+        // submissions. Translate any DB-level violation to the application-level exception so
+        // callers always receive DuplicateOrderException rather than an unhandled 500.
+        try {
+            new OrderJdbc(orderId, total, items, idempotencyKey, jdbcTemplate, eventPublisher)
+                    .place();
+        } catch (DataIntegrityViolationException e) {
+            throw new PlaceOrder.DuplicateOrderException();
+        }
     }
 }

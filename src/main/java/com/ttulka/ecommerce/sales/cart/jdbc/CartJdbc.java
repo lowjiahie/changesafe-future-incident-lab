@@ -29,24 +29,21 @@ final class CartJdbc implements Cart {
 
     private final @NonNull JdbcTemplate jdbcTemplate;
 
-    private List<CartItem> items;
-
     @Override
     public CartId id() {
         return id;
     }
 
+    // R-08: always query the DB — no in-process cache that could return stale data when the
+    // cart is mutated between calls (e.g., concurrent browser tabs sharing the same CART_ID).
     @Override
     public List<CartItem> items() {
-        if (items == null) {
-            items = jdbcTemplate.queryForList(
-                    "SELECT product_id, title, price, quantity FROM cart_items " +
-                    "WHERE cart_id = ?", id.value())
-                    .stream()
-                    .map(this::toCartItem)
-                    .collect(Collectors.toList());
-        }
-        return items;
+        return jdbcTemplate.queryForList(
+                "SELECT product_id, title, price, quantity FROM cart_items " +
+                "WHERE cart_id = ?", id.value())
+                .stream()
+                .map(this::toCartItem)
+                .collect(Collectors.toList());
     }
 
     private CartItem toCartItem(Map<String, Object> entry) {

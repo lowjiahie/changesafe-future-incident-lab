@@ -3,10 +3,14 @@ package com.ttulka.ecommerce.portal;
 import java.util.UUID;
 
 import com.ttulka.ecommerce.sales.cart.Cart;
+import com.ttulka.ecommerce.sales.cart.item.CartItem;
 import com.ttulka.ecommerce.sales.order.AssignOrderToCustomer;
 import com.ttulka.ecommerce.sales.order.Customer;
 import com.ttulka.ecommerce.sales.order.OrderId;
 import com.ttulka.ecommerce.shipping.delivery.Address;
+import com.ttulka.ecommerce.warehouse.Amount;
+import com.ttulka.ecommerce.warehouse.ProductId;
+import com.ttulka.ecommerce.warehouse.Warehouse;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,12 +27,14 @@ public class CheckoutOrder {
     private final @NonNull PlaceOrderFromCart placeOrderFromCart;
     private final @NonNull PrepareOrderDelivery prepareOrderDelivery;
     private final @NonNull AssignOrderToCustomer assignOrderToCustomer;
+    private final @NonNull Warehouse warehouse;
 
     /**
      * Checks out a guest order that is not linked to any customer.
      */
     @Transactional
     public UUID checkout(@NonNull Cart cart, @NonNull Address deliveryAddress, String idempotencyKey) {
+        checkStock(cart);
         UUID orderId = UUID.randomUUID();
         placeOrderFromCart.placeOrder(orderId, cart, idempotencyKey);
         prepareOrderDelivery.prepareDelivery(orderId, deliveryAddress);
@@ -41,11 +47,29 @@ public class CheckoutOrder {
      */
     @Transactional
     public UUID checkout(@NonNull Cart cart, @NonNull Address deliveryAddress, @NonNull Customer customer, String idempotencyKey) {
+        checkStock(cart);
         UUID orderId = UUID.randomUUID();
         placeOrderFromCart.placeOrder(orderId, cart, idempotencyKey);
         assignOrderToCustomer.assign(new OrderId(orderId), customer);
         prepareOrderDelivery.prepareDelivery(orderId, deliveryAddress);
         cart.empty();
         return orderId;
+    }
+
+    // R-05: reject checkout early when any item is out of stock (BR-003).
+    private void checkStock(@NonNull Cart cart) {
+        for (CartItem item : cart.items()) {
+            ProductId productId = new ProductId(item.productId().value());
+            if (!warehouse.leftInStock(productId).hasEnough(new Amount(item.quantity().value()))) {
+                throw new CheckoutOrder.OutOfStockException();
+            }
+        }
+    }
+
+    /**
+     * OutOfStockException is thrown when one or more cart items are not available in sufficient
+     * quantity to fulfil the order.
+     */
+    public static class OutOfStockException extends RuntimeException {
     }
 }
