@@ -82,8 +82,23 @@ Phase 10). Do not assume the tool can read its own mid-task consumption automati
      reuse path.
    - If it is DRAFT: remind the user it needs approval before app-code generation. Proceed with
      analysis; do not generate Java code yet.
-   - If it does not exist: run the first-encounter onboarding pass (read README.md, pom.xml,
-     representative source and test files) and draft the rule for review before continuing.
+   - If it does not exist: run the first-encounter onboarding pass.
+     Issue the following four reads as a **single concurrent tool-call batch** (not
+     subagents — these are bounded read-only files; subagents are not warranted here
+     and would count against the two-guardian-per-run limit):
+     - `README.md`
+     - `pom.xml`
+     - Representative source file(s) (e.g. a JDBC use-case implementation and a domain
+       interface from the bounded context most relevant to the proposed change)
+     - Representative test file(s) (e.g. a `@JdbcTest` unit test and an integration test
+       that exercises a comparable workflow)
+
+     After all four reads complete, reconcile the observations: identify any conflicts
+     between what the README describes and what the source code shows (naming conventions,
+     package structure, test patterns, dependency rules). Surface conflicts explicitly.
+     Draft the conventions rule from the reconciled observations and present it to the
+     requester for approval. **Do not adopt the draft rule for convention checking or code
+     generation until the requester explicitly approves it.**
 2. Inspect `git status` to identify uncommitted user changes. Do not overwrite or claim them.
 3. Re-check the relevant convention against files touched by the proposed change.
 
@@ -126,10 +141,20 @@ Phase 10). Do not assume the tool can read its own mid-task consumption automati
    references to those files from packages outside their bounded context, skip the
    impact-explorer guardian. Record "Local change — no cross-module guardian spawned" in the
    change-brief impact section and proceed to step 4.
-   Otherwise, if the change crosses module boundaries and the question is non-trivial, spawn
-   one read-only `explore` subagent using the guardian spec at
-   `.bob/skills/changesafe/guardians/impact-explorer/GUARDIAN.md`.
-   Pass only the fields defined in that spec's **Input packet** table.
+   Otherwise, if the change crosses module boundaries and the question is non-trivial, select
+   the appropriate guardian based on the layers touched:
+   - **Single-layer change** (all changed files fall within one layer pattern — `rest`,
+     `jdbc`, `listeners`, `domain`, or `portal`): spawn one read-only `explore` subagent
+     using the guardian spec at
+     `.bob/skills/changesafe/guardians/impact-explorer/GUARDIAN.md`.
+     Pass only the fields defined in that spec's **Input packet** table.
+   - **Multi-layer change** (changed files span ≥ 2 distinct layer patterns): spawn one
+     read-only `explore` subagent using the guardian spec at
+     `.bob/skills/changesafe/guardians/parallel-layer-explorer/GUARDIAN.md`.
+     Pass only the fields defined in that spec's **Input packet** table, including the
+     `layers_detected` field listing each identified layer label.
+     This guardian investigates each layer concurrently using parallel tool calls within
+     its single invocation and counts as one guardian slot.
 4. **Database-migration routing:** If the proposed change touches `schema.sql`, any
    `application*.properties` datasource-init key (`spring.sql.init.*`, `spring.datasource.*`),
    or any `src/main/resources/**/*.sql` file, activate the `database-migration` guardian using
