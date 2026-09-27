@@ -1,42 +1,230 @@
 # ChangeSafe: Future Incident Lab
 
-This repository uses a Java e-commerce application as the sample project for **ChangeSafe**, an experimental prototype for the **IBM Bob 2.0 Hackathon**. ChangeSafe explores how IBM Bob can help developers understand a proposed change, anticipate failure scenarios, turn risks into executable tests, and collect evidence before release. The application below provides a realistic order, billing, warehouse, and shipping workflow for that experiment.
+**Business-aware, risk-tested development powered by IBM Bob IDE.**
 
-## Original project and attribution
+ChangeSafe organizes a developer's change request into business clarification, impact analysis, risk-focused tests, approved implementation, and traceable verification evidence. This repository uses a Java e-commerce sample as the incident lab for the IBM Bob 2.0 Hackathon.
 
-The sample application was created by **Tomas Tulka** in [ttulka/ddd-example-ecommerce](https://github.com/ttulka/ddd-example-ecommerce). We are using and adapting his work for this hackathon experiment. The original project is licensed under the **MIT License**; its copyright notice and license terms are retained in [LICENSE](LICENSE). Credit for the original application and its architecture belongs to the original author. ChangeSafe-specific experiments and changes in this repository are our team's work and are not an official version of the upstream project.
+## What ChangeSafe solves
 
-All orders and failure scenarios prepared for the hackathon demonstration should use synthetic data. No customer records or personal information are needed.
+Changing checkout can affect orders, stock, payment and delivery—even when only one file is edited. Developers spend effort recovering business rules, tracing dependencies, choosing tests and preparing review evidence. Ambiguous requirements and missing adverse-condition tests can lead to incorrect implementation and rework.
+
+ChangeSafe connects those activities into one reusable workflow. It asks about material uncertainty, follows reviewed project conventions, investigates code-backed risks, and separates verified results from remaining unknowns. It does not guarantee that all production incidents are prevented.
+
+## Quick start: no MySQL required
+
+Prerequisites: Git and **JDK 17**. The Maven wrapper is included; first use requires network access for dependencies. Run commands from the repository root.
+
+Windows PowerShell:
+
+```powershell
+# Replace this example with your actual JDK 17 path if needed.
+$env:JAVA_HOME = 'C:\path\to\your\jdk-17'
+$env:Path = "$env:JAVA_HOME\bin;$env:Path"
+java -version
+.\mvnw.cmd spring-boot:run "-Dspring-boot.run.profiles=h2-demo"
+```
+
+macOS/Linux, with JDK 17 configured:
+
+```sh
+./mvnw spring-boot:run -Dspring-boot.run.profiles=h2-demo
+```
+
+Open **http://localhost:8080/**. Spring Boot serves the Thymeleaf frontend; no separate npm/frontend server is needed. Stop with Ctrl+C. The H2 demo database is in memory and resets when the process stops. Use synthetic data only.
 
 ## Run with MySQL
 
-The application uses MySQL by default. It creates missing tables on startup and inserts missing sample catalog and stock rows without deleting existing orders. Create an empty database first (for example, in MySQL Workbench):
+Create a dedicated local database:
 
 ```sql
-CREATE DATABASE IF NOT EXISTS changesafe CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE IF NOT EXISTS changesafe
+  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
-Install a JDK 17 and set `JAVA_HOME` to its actual installation directory. The project is compiled for Java 17. In PowerShell on Windows, replace the example path below with your JDK 17 path, then start the application:
+Configure the connection in the same PowerShell terminal:
 
 ```powershell
-$env:JAVA_HOME = 'C:\path\to\your\jdk-17'
-$env:Path = "$env:JAVA_HOME\bin;$env:Path"
-java -version  # Confirm this reports Java 17
-$env:DB_USERNAME = 'root'
-$env:DB_PASSWORD = Read-Host 'MySQL password'
-.\mvnw.cmd clean test
+$env:DB_URL = 'jdbc:mysql://localhost:3310/changesafe?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC'
+$env:DB_USERNAME = 'your-local-db-user'
+# Local development only: input is visible; do not screen-record passwords.
+$env:DB_PASSWORD = Read-Host 'Local MySQL password'
 .\mvnw.cmd spring-boot:run
 ```
 
-Open <http://localhost:8080>. The default connection is `jdbc:mysql://localhost:3306/changesafe`. If your MySQL server uses another host, port, or database name, set `DB_URL` in the same terminal before starting, for example:
+Use your actual MySQL port; the checked-in default is **3310**, not 3306. The user must have access to this database. Set your own credentials; checked-in fallbacks are demo defaults, not production security configuration. Never point the lab at customer/production data.
+
+| Configuration | Purpose |
+| --- | --- |
+| [application.properties](src/main/resources/application.properties) | Default mysql profile and SQL initialization |
+| [application-mysql.properties](src/main/resources/application-mysql.properties) | DB_URL, DB_USERNAME, DB_PASSWORD and sample data |
+| [application-h2-demo.properties](src/main/resources/application-h2-demo.properties) | In-memory application demo |
+| [application-test.properties](src/test/resources/application-test.properties) | H2 test environment |
+
+Startup executes the configured schema and seed SQL. CREATE TABLE IF NOT EXISTS does not upgrade existing table columns. Files under [migrations](src/main/resources/migrations) are manually reviewed/applied; they are not an automatic migration runner. Check preconditions and preserve existing data. Do not drop tables simply to upgrade them.
+
+## Run tests
 
 ```powershell
-$env:DB_URL = 'jdbc:mysql://localhost:3307/changesafe?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC'
+.\mvnw.cmd test "-Dspring.profiles.active=test"
+# Run one safety-contract test:
+.\mvnw.cmd test "-Dspring.profiles.active=test" "-Dtest=OrderAddressRequiredTest"
 ```
 
-The connection settings are in [`application-mysql.properties`](src/main/resources/application-mysql.properties). Do not commit credentials. Tests use an H2 database through the `test` profile. To run the sample application without MySQL, pass `-Dspring-boot.run.profiles=h2-demo` to `mvnw.cmd spring-boot:run`; this creates an in-memory database that resets when the application stops.
+Tests use H2. This is an incident lab, so an unresolved or intentionally seeded defect may produce an expected failing safety test. Confirm failures against the current implementation; do not weaken test expectations to obtain a green build. Historical results apply only to their recorded source state.
 
-The sections below describe the original sample application's design and how to run it. They are preserved as a reference while the ChangeSafe experiment is developed.
+## Run ChangeSafe in Bob IDE
+
+1. Open this repository in IBM Bob IDE.
+2. Verify that **ChangeSafe** appears in the mode picker and **/changesafe** is discovered.
+3. Review [.bob/rules/01-project-conventions.md](.bob/rules/01-project-conventions.md); approve supported conventions before dependent code generation.
+4. Select ChangeSafe mode and start with a short request:
+
+```text
+/changesafe
+Review the checkout flow for potential problems.
+Explain findings in simple language.
+Do not change application code until I approve.
+```
+
+The workflow should proactively clarify material business uncertainty. Confirm business rules and approve the proposed implementation scope. The slash command does not grant extra permissions; authorized app/test edits require an appropriate edit-capable mode. If IDE discovery fails, verify the supported configuration and explicitly ask Bob to activate the changesafe skill as a fallback.
+
+## Architecture
+
+ChangeSafe is a **Bob IDE workflow**, not a separate server or an LLM endpoint embedded in Spring Boot.
+
+```text
+Developer request
+       |
+       v
+ChangeSafe coordinator (mode + command + skill)
+       |
+       +-- Project conventions and confirmed business rules
+       +-- Relevant read-only Guardian investigations
+       +-- Deterministic test and output-validation scripts
+       |
+       v
+Application source + tests + actual execution results
+       |
+       v
+Change brief + risk report + before/after comparison
+       |
+       v
+Human decision / optional authorized PR
+```
+
+The sample app is a modular monolith. Portal coordinates web use cases; Sales manages catalog, carts and orders; Billing, Warehouse and Shipping participate in the order event flow; Identity handles sample users. Common contains shared primitives and events.
+
+```text
+.bob/
+  custom_modes.yaml
+  commands/changesafe.md
+  rules/01-project-conventions.md
+  skills/changesafe/
+    SKILL.md
+    guardians/
+      impact-explorer/GUARDIAN.md
+      test-gap-explorer/GUARDIAN.md
+      parallel-layer-explorer/GUARDIAN.md
+      database-migration/GUARDIAN.md
+changesafe/
+  business-rules.md
+  templates/
+  scripts/
+  evidence/<run-id>/
+src/main/java/com/ttulka/ecommerce/   # Application modules
+src/main/resources/                 # Views, assets, config and SQL
+src/test/                           # Tests and synthetic fixtures
+bob_sessions/                       # Actual Bob consumption screenshots
+CHANGESAFE_BOB_BUILD_BRIEF.md
+CHANGESAFE_OUTPUT_CONTRACT.md
+```
+
+Guardians investigate impact, test gaps, independent layer questions or database evolution. Their files are reusable instructions, not permanently running agents. Routing is conditional; respect the run-wide invocation limit and budget. Parallel tasks must not share conflicting writes or test state.
+
+## Workflow
+
+```text
+1. Receive requirement
+2. Understand project
+3. Clarify and record business rules
+4. Create lightweight PRD / plan
+5. Analyze direct and downstream impact
+6. Identify risks and select safety contracts
+7. Generate/reuse tests and run before-change baseline
+8. Obtain approval and implement focused changes
+9. Replay tests and relevant regression checks
+10. Review acceptance criteria
+11. Generate and validate evidence pack
+12. Create PR only if explicitly authorized
+```
+
+Clarification can occur at any stage. Technical failures trigger bounded investigation; missing evidence remains NOT VERIFIED. Finishing code and tests is not the end: the plan must explicitly include evidence delivery.
+
+A PREVENTED claim requires a reproduced pre-fix failure and a passing replay of the same check after the fix. A new after-only passing test improves coverage but does not establish that red-to-green proof.
+
+## Compare with the before-fix branch
+
+For the deliberately vulnerable demo baseline, refer to **demo/before-fix** (local commit at documentation time: **0c44310**). Its DEMO-BRANCH.md describes the reverted checkout/cart protections. Compare it with **main** to inspect subsequent changes. Main is the comparison branch, not a claim of production readiness.
+
+**Do not merge demo/before-fix into main.** Run it only locally with synthetic H2 data. Stop the app before changing versions and do not reuse a valuable database across schema versions.
+
+Read-only comparison from the current checkout:
+
+```powershell
+git diff --stat demo/before-fix main
+git diff demo/before-fix main -- src/main/java src/main/resources
+git show demo/before-fix:DEMO-BRANCH.md
+```
+
+For a local version switch, first inspect git status and preserve any edits. Only if the checkout is clean:
+
+```powershell
+git switch demo/before-fix
+.\mvnw.cmd spring-boot:run "-Dspring-boot.run.profiles=h2-demo"
+# Stop the process with Ctrl+C before switching back.
+git switch main
+.\mvnw.cmd spring-boot:run "-Dspring-boot.run.profiles=h2-demo"
+```
+
+At documentation time, demo/before-fix is present locally but no origin/demo/before-fix remote-tracking branch is listed. A fresh clone may therefore not have it. The maintainer must explicitly publish the branch before asking online reviewers to use it; this README update does not push anything.
+
+After publication, a fresh clone can obtain it with:
+
+```powershell
+git fetch origin
+git switch --track origin/demo/before-fix
+```
+
+The demo baseline is a controlled reconstruction. Do not describe it as the exact historical source state of an earlier run unless source references establish that. Identical checks and settings should be used for a fair before/after comparison; record any necessary differences.
+
+## Outputs, evidence and budget
+
+Each run preserves its own change-brief.md, risk-report.md, comparison.md, execution summaries and original logs under changesafe/evidence/. Use [CHANGESAFE_OUTPUT_CONTRACT.md](CHANGESAFE_OUTPUT_CONTRACT.md) for exact formatting and [changesafe/README.md](changesafe/README.md) for detailed commands.
+
+The validator checks implemented structural rules; it cannot certify business correctness, screenshot authenticity or complete coverage. Actual script output names and report links must match the current contract.
+
+For hackathon submission, each member manually saves every used Bob task's actual consumption summary in bob_sessions/. Task JSON exports are supplementary, not screenshot replacements. Attribute human or Codex continuation work separately from Bob-assisted changes.
+
+Budget controls use a default 5-Bobcoin reserve and an optional requester-defined run cap. Consumption is monitored manually in the IDE. Context reuse, targeted tests and conditional investigations are efficiency strategies, not guaranteed savings or hard technical limits.
+
+## Limitations and troubleshooting
+
+- Passing selected tests does not prove all concurrency, payment, inventory or security risks are fixed.
+- A stock preflight alone is not an atomic reservation or proof against overselling.
+- Migration scripts require review and disposable-database validation before application.
+- Verify java -version / JAVA_HOME; this project compiles for Java 17.
+- For MySQL errors, check DB_URL, port, permissions and credentials; use h2-demo for simple demos.
+- For port conflicts, launch with `"-Dspring-boot.run.arguments=--server.port=8081"` and use that browser port.
+- Inspect target/surefire-reports to distinguish build/environment issues from assertion failures.
+- No commit, push, PR, merge or deployment is implied by running ChangeSafe.
+
+## Original project and attribution
+
+The sample application was created by **Tomas Tulka** in [ttulka/ddd-example-ecommerce](https://github.com/ttulka/ddd-example-ecommerce). Its original architecture and application belong to the author; the [MIT License](LICENSE) and attribution are retained. Our adaptations and ChangeSafe experiments are not an official upstream or IBM product.
+
+Use synthetic fixtures only. Do not commit credentials, personal information, client records or confidential assets.
+
+The following original architecture discussion is preserved as historical background, not a complete statement of this adapted application's current behavior.
 
 ---
 
