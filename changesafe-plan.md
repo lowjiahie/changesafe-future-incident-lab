@@ -1,5 +1,9 @@
 # ChangeSafe: Future Incident Lab — Build Plan
 
+> **IBM Bob assisted:** This plan was produced by IBM Bob IDE (Plan mode, task ID
+> `d039ddb47b0a5f8e54a8b873c4b61b22`, 7.48 Bobcoins). See
+> [`bob-assistance-evidence.md`](bob-assistance-evidence.md) for full session evidence.
+
 > Stage A output. Reviewed against `CHANGESAFE_BOB_BUILD_BRIEF.md` and `CHANGESAFE_OUTPUT_CONTRACT.md`.
 > No files have been edited yet. Each sub-task below is self-contained and must be completed in order.
 > After each sub-task, update its status here and wait for approval before proceeding.

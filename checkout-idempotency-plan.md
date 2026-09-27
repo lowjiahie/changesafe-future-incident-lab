@@ -1,5 +1,10 @@
 # Plan — Checkout Idempotency Protection
 
+> **IBM Bob assisted:** This plan was produced by IBM Bob IDE as part of the ChangeSafe
+> workflow. It is a sub-plan generated during the checkout-flow-01 ChangeSafe run
+> (task ID `9b5771306d8cd2fdacf3c5b6880e5e99`, 18.80 Bobcoins). See
+> [`bob-assistance-evidence.md`](bob-assistance-evidence.md) for full session evidence.
+
 ## Top-Level Overview
 
 **Goal:** Prevent duplicate orders and charges when a user double-clicks the checkout button
