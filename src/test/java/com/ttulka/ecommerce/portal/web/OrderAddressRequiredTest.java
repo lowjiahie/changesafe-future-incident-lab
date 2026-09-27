@@ -10,6 +10,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.ui.ExtendedModelMap;
+import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -38,7 +39,8 @@ class OrderAddressRequiredTest {
         ExtendedModelMap model = new ExtendedModelMap();
 
         String view = assertDoesNotThrow(() -> controller.place(
-                "Test Name", address, request, new MockHttpServletResponse(), model),
+                "Test Name", address, request, new MockHttpServletResponse(), model,
+                new RedirectAttributesModelMap()),
                 "Missing address must show validation feedback, not throw an exception");
 
         assertAll(

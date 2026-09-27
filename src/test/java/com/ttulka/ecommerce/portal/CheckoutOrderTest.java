@@ -104,7 +104,7 @@ class CheckoutOrderTest {
         // R-05: warehouse says only 5 in stock; cart requests 10
         CartItem item = new CartItem(new ProductId("P-OOS"), new Title("Test"), new Money(1f), new Quantity(10));
         when(cart.items()).thenReturn(List.of(item));
-        when(warehouse.leftInStock(any())).thenReturn(new InStock(new Amount(5)));
+        when(warehouse.leftInStockForUpdate(any())).thenReturn(new InStock(new Amount(5)));
 
         assertThrows(CheckoutOrder.OutOfStockException.class,
                      () -> checkoutOrder.checkout(cart, address, null));

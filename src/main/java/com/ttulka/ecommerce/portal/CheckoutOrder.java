@@ -57,10 +57,12 @@ public class CheckoutOrder {
     }
 
     // R-05: reject checkout early when any item is out of stock (BR-003).
+    // BR-013: uses leftInStockForUpdate (SELECT ... FOR UPDATE) so concurrent checkouts block
+    // on the lock rather than both reading "in stock" before either has committed.
     private void checkStock(@NonNull Cart cart) {
         for (CartItem item : cart.items()) {
             ProductId productId = new ProductId(item.productId().value());
-            if (!warehouse.leftInStock(productId).hasEnough(new Amount(item.quantity().value()))) {
+            if (!warehouse.leftInStockForUpdate(productId).hasEnough(new Amount(item.quantity().value()))) {
                 throw new CheckoutOrder.OutOfStockException();
             }
         }

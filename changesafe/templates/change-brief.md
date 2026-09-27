@@ -39,6 +39,7 @@
 | Step | Planned action | Dependency / checkpoint |
 | --- | --- | --- |
 | 1 | <bounded action> | <approval or confirmed rule, or N/A> |
+| last | Generate evidence pack — fill `change-brief.md`, `risk-report.md`, `comparison.md`; update `plan.md` sub-task statuses; run `validate-output.ps1` | Phase 11; all prior steps complete |
 
 ## 6. Decisions and approval
 
